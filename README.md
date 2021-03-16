@@ -1,6 +1,6 @@
 
 
-# Project structure: 
+# Project structure : 
 
 
 ├──── Main test                 #finds and validates intervals for MNIST set 
