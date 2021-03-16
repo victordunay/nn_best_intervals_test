@@ -1,6 +1,6 @@
-# neural_network_robustness_test_for_MNIST
 
-the test structure is :
+
+# project structure is 
 
 
 ├──── Main test                 #finds and validates intervals for MNIST set 
