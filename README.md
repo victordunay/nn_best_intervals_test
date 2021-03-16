@@ -3,7 +3,7 @@
 the test structure is :
 
 
-├──── Main test                 #finds and validates intervals for MNIST set
+├──── Main test                 #finds and validates intervals for MNIST set 
            
 ├────────Attack models          #Handles the adversarial process
                
@@ -13,3 +13,6 @@ the test structure is :
                   
 ├─────────────────Parameters    #Configures attack methods and search parameters 
             
+# Code usage :
+
+
