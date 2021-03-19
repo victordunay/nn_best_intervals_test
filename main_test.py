@@ -8,6 +8,13 @@ Top file for executing search for maximum valid environment algorithm
 
 import torch
 import os
+import multiprocessing as mp
+
+
+
+
+
+
 
 # ================================================================
 # import own files
@@ -18,14 +25,44 @@ import attack_models
 import parameters
 import global_tasks
 
+
+
+def parallel_process(model_, results_path_: str, ID_: int, mnist_features_, mnist_labels_,adversarial_generator_, image_size: list):
+		
+		print("start process with ID =",ID_)
+		# ================================================================
+        #  generate adversarial examples
+        # ================================================================
+        global_tasks.generate_adversarial_examples_set(model_, results_path_, ID_, mnist_features_, mnist_labels_,
+                                                      adversarial_generator_)
+
+        # ================================================================
+        # calculate mean vector between all adversarial attack methods
+        # ================================================================
+
+        adversarial_examples_set = global_tasks.calculate_mean(results_path_, ID_, image_size)
+
+
+
+
+	return ID_;
+
+
+
+
 if __name__ == "__main__":
 
+    # ================================================================
+    # Init multiprocessing
+    # ================================================================
+	print("num of available CPU are ",mp.cpu_count())
+	pool = mp.Pool(5)
     # ================================================================
     # set project directory and tested nn model
     # ================================================================
 
     results_path = 'adversarial_examples_set'
-    dataset_path = './data/mnist_test.csv'
+    dataset_path = './data/mnist_train.csv'
     neural_network_path = 'nn_models/' + parameters.neural_network + '.pth'
 
     if not os.path.exists(results_path):
@@ -56,18 +93,25 @@ if __name__ == "__main__":
     # ================================================================
     interval_solver = find_best_env.find_best_env(parameters.search_params)
 
-    for ID in parameters.image_ids:
+	
+
+	
+
+	results = [pool.apply(parallel_process, args=(model,results_path,ID,mnist_features,mnist_labels,adversarial_generator,parameters.image_size) for ID in parameters.image_ids]
+
+	
+   # for ID in parameters.image_ids:
         # ================================================================
         #  generate adversarial examples
         # ================================================================
-        global_tasks.generate_adversarial_examples_set(model, results_path, ID, mnist_features, mnist_labels,
+        # global_tasks.generate_adversarial_examples_set(model, results_path, ID, mnist_features, mnist_labels,
                                                       adversarial_generator)
 
         # ================================================================
         # calculate mean vector between all adversarial attack methods
         # ================================================================
 
-        adversarial_examples_set = global_tasks.calculate_mean(results_path, ID, parameters.image_size)
+        # adversarial_examples_set = global_tasks.calculate_mean(results_path, ID, parameters.image_size)
 
         # ================================================================
         # view adversarial process results
