@@ -13,9 +13,6 @@ import multiprocessing as mp
 
 
 
-
-
-
 # ================================================================
 # import own files
 # ================================================================
@@ -42,6 +39,9 @@ def parallel_process(model_, results_path_: str, ID_: int, mnist_features_, mnis
 
 
 
+
+
+	
 
 if __name__ == "__main__":
 
@@ -78,9 +78,17 @@ if __name__ == "__main__":
 	#  interval_solver instantiation
 	# ================================================================
 	interval_solver = find_best_env.find_best_env(parameters.search_params)
-	results = [pool.apply(parallel_process, args=(model,results_path,ID,mnist_features,mnist_labels,adversarial_generator,parameters.image_size)) for ID in parameters.image_ids]
+	processes=[mp.Process(target=parallel_process,args=(model,results_path,ID,mnist_features,mnist_labels,adversarial_generator,parameters.image_size)) for ID in parameters.image_ids]
+	for p in processes:
+		p.start()
+	for p in processes:
+	    p.join()
+	#results = [pool.apply(parallel_process, args=(model,results_path,ID,mnist_features,mnist_labels,adversarial_generator,parameters.image_size)) for ID in parameters.image_ids]
 
-	
+
+
+
+
    # for ID in parameters.image_ids:
         # ================================================================
         #  generate adversarial examples
