@@ -25,7 +25,7 @@ if __name__ == "__main__":
     # ================================================================
 
     results_path = 'adversarial_examples_set'
-    dataset_path = './data/mnist_train.csv'
+    dataset_path = './data/mnist_test.csv'
     neural_network_path = 'nn_models/' + parameters.neural_network + '.pth'
 
     if not os.path.exists(results_path):
