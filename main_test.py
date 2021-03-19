@@ -25,26 +25,17 @@ import attack_models
 import parameters
 import global_tasks
 
-
-
 def parallel_process(model_, results_path_: str, ID_: int, mnist_features_, mnist_labels_,adversarial_generator_, image_size: list):
-		
+	
 	print("start process with ID =",ID_)
 	# ================================================================
-    #  generate adversarial examples
-    # ================================================================
-    global_tasks.generate_adversarial_examples_set(model_, results_path_, ID_, mnist_features_, mnist_labels_,
-                                                      adversarial_generator_)
-
+	#  generate adversarial examples
+	# ================================================================
+	global_tasks.generate_adversarial_examples_set(model_, results_path_, ID_, mnist_features_, mnist_labels_,adversarial_generator_)
 	# ================================================================
 	# calculate mean vector between all adversarial attack methods
 	# ================================================================
-
 	adversarial_examples_set = global_tasks.calculate_mean(results_path_, ID_, image_size)
-
-
-
-
 	return ID_;
 
 
