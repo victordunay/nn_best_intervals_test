@@ -49,7 +49,7 @@ if __name__ == "__main__":
     # Init multiprocessing
     # ================================================================
 	print("num of available CPU are ",mp.cpu_count())
-	pool = mp.Pool(5)
+	pool = mp.Pool(mp.cpu_count())
     # ================================================================
     # set project directory and tested nn model
     # ================================================================
