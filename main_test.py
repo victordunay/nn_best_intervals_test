@@ -78,7 +78,7 @@ if __name__ == "__main__":
 	#  interval_solver instantiation
 	# ================================================================
 	interval_solver = find_best_env.find_best_env(parameters.search_params)
-	results = [pool.apply(parallel_process, args=(model,results_path,ID,mnist_features,mnist_labels,adversarial_generator,parameters.image_size) for ID in parameters.image_ids]
+	results = [pool.apply(parallel_process, args=(model,results_path,ID,mnist_features,mnist_labels,adversarial_generator,parameters.image_size)) for ID in parameters.image_ids]
 
 	
    # for ID in parameters.image_ids:
