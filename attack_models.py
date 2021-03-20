@@ -11,8 +11,6 @@ import numpy as np
 import cw
 import torchvision.transforms as transforms
 import jsma_main
-from tqdm import tqdm 
-
 
 
 class attacks:
@@ -47,7 +45,7 @@ class attacks:
             goals_list.remove(int(manual_should_be))
 
         intervals_list = []
-        for reg_factor in tqdm(self.gd_reg_list,desc="gd reg factor status"):
+        for reg_factor in self.gd_reg_list:
             for t in goals_list:
                 manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
