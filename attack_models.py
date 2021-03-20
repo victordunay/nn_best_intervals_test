@@ -47,6 +47,7 @@ class attacks:
         intervals_list = []
         for reg_factor in self.gd_reg_list:
             for t in goals_list:
+			print("goals_list=  reg_factor= ",t,reg_factor)
                 manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
 
