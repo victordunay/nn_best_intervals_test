@@ -1,10 +1,18 @@
+"""
+this file defines all the parameters to configure the attack models and the search for maximum environment algorithm
 
+"""
+
+# ================================================================
+#  general test parameters
+# ================================================================
+image_size = [28, 28]
 pixel_res = 1 / 255.0
 targeted_labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 # ================================================================
 #  MNIST images IDs for test
 # ================================================================
-image_ids = list(range(1,3)
+image_ids = list(range(1,3))
 
 # ================================================================
 #  gradient descent & regularization based attack hyper-parameters
