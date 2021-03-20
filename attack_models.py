@@ -1,4 +1,64 @@
 
+"""
+attacks class handles the adversarial examples generation process
+"""
+# ================================================================
+# import python packages
+# ================================================================
+import torch
+import torch.nn as nn
+import numpy as np
+import cw
+import torchvision.transforms as transforms
+import jsma_main
+
+
+class attacks:
+
+    def __init__(self, attack_params: dict):
+        self.pixel_res = attack_params['pixel_res']
+        self.image_size = attack_params['image_size']
+        self.gd_reg_list = attack_params['gd_reg_list']
+        self.lr = attack_params['gd_lr']
+        self.gd_max_iter = attack_params['gd_max_iter']
+        self.pgd_max_iter = attack_params['pgd_max_iter']
+        self.pgd_lr = attack_params['pgd_lr']
+        self.pgd_rand_vector_size = attack_params['pgd_rand_vector_size']
+        self.pgd_examples_per_random_val = attack_params['pgd_examples_per_random_val']
+        self.cw_rand_vector_size = attack_params['cw_rand_vector_size']
+        self.cw_lr = attack_params['cw_lr']
+        self.cw_search_steps = attack_params['cw_search_steps']
+        self.cw_max_iter = attack_params['cw_max_iter']
+        self.cw_c_range = attack_params['cw_c_range']
+        self.jsma_max_dist = attack_params['jsma_max_dist']
+        self.jsma_max_iter = attack_params['jsma_max_iter']
+        self.jsma_lr = attack_params['jsma_lr']
+        self.targeted_labels=attack_params['targeted_labels']
+
+    def generate_gradient_descent_adversarial_examples_set(self, net, dataset_img_idx, x_test_tensor, y_test_tensor,
+                                                           results_path):
+        goals_list = self.targeted_labels
+        loss_fn = nn.NLLLoss()
+        loss_fn_for_input = nn.MSELoss()
+        manual_should_be = y_test_tensor[dataset_img_idx]
+        if int(manual_should_be) in self.targeted_labels:
+            goals_list.remove(int(manual_should_be))
+
+        intervals_list = []
+        for reg_factor in self.gd_reg_list:
+            for t in goals_list:
+                manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
+                    1]) * self.pixel_res
+
+                adv_example = manual_tens
+                adversarial_goal = torch.tensor([t])
+                lam = torch.tensor([reg_factor])
+                for i in range(self.gd_max_iter):
+                    manual_prediction = net(adv_example)
+                    _, predicted = torch.max(manual_prediction.data, 1)
+
+                    adv_example.requires_grad = True
+                    Y_predicted = net(adv_example)
                     if predicted == adversarial_goal:
                         adv_example.requires_grad = False
                         break
