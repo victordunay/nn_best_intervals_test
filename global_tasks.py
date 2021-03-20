@@ -99,31 +99,8 @@ def calculate_mean(results_path_: str, ID_: int, image_size: list):
     return adversarial_examples_set_
 
 
-def generate_adversarial_examples_set(model_, results_path_: str, ID_: int, mnist_features_, mnist_labels_,
-                                      adversarial_generator_):
-    """
-    Adversarial examples generation for MNIST dataset
-    This process is a part of searching algorithm for the largest valid classified environment of a given image
-
-    :param mnist_labels_: MNIST dataset labels
-    :param mnist_features_: MNIST dataset images
-    :param ID_: MNIST input ID for best environment test
-    :param model_:  PyTorch neural network model
-    :param results_path_: the directory in which the results can be found when the adversarial process ends
-    :param adversarial_generator_: adversarial process class
-
-
-    :generate_adversarial_examples_set creates 4 vectors for each input ID :
-
-    >>1)mean between all adversarial examples using gradient descent & regularization term
-    >>2)mean between all adversarial examples using projected gradient descent
-    >>3)mean between all adversarial examples using carlini-wagner attack
-    >>4)mean between all adversarial examples using jacobian based sailancy map attack
-
-
-    The attack_params dict. configures the hyper-parameters of each attack method
-    """
-	print("do cw ID=",ID_)
+def generate_adversarial_examples_set(model_, results_path_: str, ID_: int, mnist_features_, mnist_labels_,adversarial_generator_):
+    print("do cw ID=",ID_)
 	adversarial_generator_.generate_carlini_wagner_adversarial_examples_set(model_, ID_, mnist_features_, mnist_labels_,results_path_)
 	print("do jsma ID=",ID_)
 	adversarial_generator_.generate_jsma_adversarial_examples_set(model_, ID_, mnist_features_, mnist_labels_,results_path_)
