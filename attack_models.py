@@ -47,6 +47,7 @@ class attacks:
         intervals_list = []
         for reg_factor in self.gd_reg_list:
             for t in goals_list:
+                print(t)
                 manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
 
@@ -86,7 +87,6 @@ class attacks:
                                                                           self.image_size[1]) * self.pixel_res
                 current_list = (manual_tens - adv_example).numpy()
                 intervals_list.append(current_list)
-				print("goal=",t)
                 net.zero_grad()
 
         intervals_list = np.asarray(intervals_list)
