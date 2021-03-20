@@ -86,6 +86,7 @@ class attacks:
                                                                           self.image_size[1]) * self.pixel_res
                 current_list = (manual_tens - adv_example).numpy()
                 intervals_list.append(current_list)
+				print("goal=",t)
                 net.zero_grad()
 
         intervals_list = np.asarray(intervals_list)
