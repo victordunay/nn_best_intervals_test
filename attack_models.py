@@ -51,7 +51,7 @@ class attacks:
                     1]) * self.pixel_res
 
                 adv_example = manual_tens
-				print("goal= ",t,"reg=  ",reg_factor)
+		print("goal= ",t,"reg=  ",reg_factor)
                 adversarial_goal = torch.tensor([t])
                 lam = torch.tensor([reg_factor])
                 for i in range(self.gd_max_iter):
