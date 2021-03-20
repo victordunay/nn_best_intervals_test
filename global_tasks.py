@@ -123,8 +123,7 @@ def generate_adversarial_examples_set(model_, results_path_: str, ID_: int, mnis
 
     The attack_params dict. configures the hyper-parameters of each attack method
     """
-
-    # ================================================================
+	# ================================================================
     # generate adversarial examples using all methods
     # ================================================================
 	print("do gd ID=",ID_)
