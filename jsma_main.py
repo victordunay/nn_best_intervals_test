@@ -112,7 +112,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
         # if increasing_saliency_value[0] > decreasing_saliency_value[0]:
         if increasing_saliency_value.item() > decreasing_saliency_value.item():
             if (count % 100 == 0):
-                print("count=", count, "       ", "idx=", increasing_feature_index, "        ", "val=",
+                #print("count=", count, "       ", "idx=", increasing_feature_index, "        ", "val=",
                       input_features.data[0][increasing_feature_index], "    ", "elements left=",
                       np.sum(search_space.numpy()))
 
@@ -124,7 +124,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
 
         else:
             if (count % 100 == 0):
-                print("count=", count, "       ", "idx=", decreasing_feature_index, "        ", "val=",
+                #print("count=", count, "       ", "idx=", decreasing_feature_index, "        ", "val=",
                       input_features.data[0][decreasing_feature_index], "    ", "elements left=",
                       np.sum(search_space.numpy()))
             input_features.data[0][decreasing_feature_index] -= lr
