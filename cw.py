@@ -85,7 +85,7 @@ def from_tanh_space(x, box):
     """
     _box_mul = (box[1] - box[0]) * 0.5
     _box_plus = (box[1] + box[0]) * 0.5
-    return np.tanh(x.detach().numpy()) * _box_mul + _box_plus
+    return torch.tensor(np.tanh(x.detach().numpy()) * _box_mul + _box_plus)
 
 
 class L2Adversary(object):
