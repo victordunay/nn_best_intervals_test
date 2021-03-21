@@ -40,7 +40,19 @@ def atanh(x, eps=1e-6):
     print("inside4")
     x = x * (1 - eps)
     print("inside5")
-    return 0.5 * torch.log((1.0 + x) / (1.0 - x))
+    up = (1.0 + x)
+    print("inside6")
+
+    down = (1.0 - x)
+    print("inside7")
+    a = 0.5
+    divide = up / down
+    print("inside8")
+    div_log = torch.log(divide)
+    print("inside9")
+
+    return a * div_log
+
 
 def to_tanh_space(x, box):
     # type: (Union[Variable, torch.FloatTensor], Tuple[float, float]) -> Union[Variable, torch.FloatTensor]
@@ -58,6 +70,7 @@ def to_tanh_space(x, box):
     _box_plus = (box[1] + box[0]) * 0.5
     print("inside3")
     return atanh((x - _box_plus) / _box_mul)
+
 
 def from_tanh_space(x, box):
     # type: (Union[Variable, torch.FloatTensor], Tuple[float, float]) -> Union[Variable, torch.FloatTensor]
@@ -119,7 +132,7 @@ class L2Adversary(object):
 
     def __init__(self, targeted=True, confidence=0.0, c_range=(1e-3, 1e10),
                  search_steps=10, max_steps=1000, abort_early=True,
-                 box=(-1., 1.), optimizer_lr=1e-2, init_rand=False,std_rand=1e-3):
+                 box=(-1., 1.), optimizer_lr=1e-2, init_rand=False, std_rand=1e-3):
         """
         :param targeted: ``True`` to perform targeted attack in ``self.run``
                method
@@ -239,7 +252,7 @@ class L2Adversary(object):
 
         # run the model a little bit to get the `num_classes`
         num_classes = model(Variable(inputs[0][None, :], requires_grad=False)).size(1)  # type: int
-        batch_size = 1##inputs.size(0)  # type: int
+        batch_size = 1  ##inputs.size(0)  # type: int
         print("4")
 
         # `lower_bounds_np`, `upper_bounds_np` and `scale_consts_np` are used
@@ -289,15 +302,14 @@ class L2Adversary(object):
 
         optimizer = optim.Adam([pert_tanh_var], lr=self.optimizer_lr)
 
-
         for sstep in range(self.binary_search_steps):
             if self.repeat and sstep == self.binary_search_steps - 1:
                 scale_consts_np = upper_bounds_np
-            print("sstep=",sstep)
+            print("sstep=", sstep)
             scale_consts = torch.from_numpy(np.copy(scale_consts_np)).float()  # type: torch.FloatTensor
             scale_consts = runutils.make_cuda_consistent(model, scale_consts)[0]
             scale_consts_var = Variable(scale_consts, requires_grad=False)
-            #print ('Using scale consts:', list(scale_consts_np) ) # FIXME
+            # print ('Using scale consts:', list(scale_consts_np) ) # FIXME
 
             # the minimum L2 norms of perturbations found during optimization
             best_l2 = np.ones(batch_size) * np.inf
@@ -322,9 +334,9 @@ class L2Adversary(object):
                 # update best attack found during optimization
                 pert_predictions_np = np.argmax(pert_outputs_np, axis=1)
                 comp_pert_predictions_np = np.argmax(
-                        self._compensate_confidence(pert_outputs_np,
-                                                    targets_np),
-                        axis=1)
+                    self._compensate_confidence(pert_outputs_np,
+                                                targets_np),
+                    axis=1)
                 for i in range(batch_size):
                     l2 = pert_norms_np[i]
                     cppred = comp_pert_predictions_np[i]
@@ -405,7 +417,7 @@ class L2Adversary(object):
 
         perts_norm_var = torch.pow(advxs_var - inputs_var, 2)
         perts_norm_var = torch.sum(perts_norm_var.view(
-                perts_norm_var.size(0), -1), 1)
+            perts_norm_var.size(0), -1), 1)
 
         # In Carlini's code, `target_activ_var` is called `real`.
         # It should be a Variable of tensor of dimension [B], such that the
@@ -415,7 +427,7 @@ class L2Adversary(object):
         # noinspection PyArgumentList
         target_activ_var = torch.sum(targets_oh_var * pert_outputs_var, 1)
         inf = 1e4  # sadly pytorch does not work with np.inf;
-                   # 1e4 is also used in Carlini's code
+        # 1e4 is also used in Carlini's code
         # In Carlini's code, `maxother_activ_var` is called `other`.
         # It should be a Variable of tensor of dimension [B], such that the
         # `maxother_activ_var[i]` is the maximum final activation of all classes
