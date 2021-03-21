@@ -262,7 +262,7 @@ class attacks:
                                           target_class, max_distortion=dist, max_iter=self.jsma_max_iter, lr=self.jsma_lr)
                 jsma_adv.requires_grad = False
 
-                manual_prediction = net(torch.tensor(jsma_adv))
+                manual_prediction = net(jsma_adv.clone().detach())
                 _, predicted = torch.max(manual_prediction.data, 1)
 
                 chosen_pic = chosen_pic.numpy()
