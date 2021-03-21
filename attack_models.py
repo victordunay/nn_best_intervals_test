@@ -173,7 +173,7 @@ class attacks:
         chosen_pic = torch.unsqueeze(chosen_pic, 0)
         norm = transforms.Compose([transforms.ToPILImage(),transforms.ToTensor(),transforms.Normalize((0.5,), (0.5,))])
 
-        chosen_pic = norm(chosen_pic.numpy())
+        chosen_pic = norm(torch.tensor(chosen_pic))
         if int(manual_should_be) in targeted_labels:
             targeted_labels.remove(int(manual_should_be))
         mean, std = (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)
