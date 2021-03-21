@@ -8,7 +8,7 @@ this file defines all the parameters to configure the attack models and the sear
 # ================================================================
 image_size = [28, 28]
 pixel_res = 1 / 255.0
-targeted_labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+targeted_labels = [0, 1]
 # ================================================================
 #  MNIST images IDs for test
 # ================================================================
@@ -33,10 +33,10 @@ pgd_rand_vector_size = 4
 #  carlini wagner attack hyper-parameters
 # ================================================================
 cw_rand_vector_size = 2
-cw_lr = [5e-4, 1e-3, 5e-3]  # Todo was   [5e-4, 1e-3, 5e-3]
+cw_lr = [5e-4]  # Todo was   [5e-4, 1e-3, 5e-3]
 cw_search_steps = 10  # Todo was 10
 cw_c_range = (1e-3, 1e10)
-cw_max_iter = 1000
+cw_max_iter = 100
 
 # ================================================================
 #  jsma attack hyper-parameters
