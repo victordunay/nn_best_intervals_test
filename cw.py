@@ -36,20 +36,13 @@ def atanh(x, eps=1e-6):
     :param eps: used to enhance numeric stability
     :return: :math:`\\tanh^{-1}{x}`, of the same type as ``x``
     """
-    print("inside4")
     x = x * (1 - eps)
-    print("inside5")
     up = (1.0 + x)
-    print("inside6")
 
     down = (1.0 - x)
-    print("inside7")
     a = 0.5
     divide = up / down
-    print("inside8")
-    print("divide=",divide)
     div_log = np.log(divide)
-    print("inside9")
 
     return a * div_log
 
@@ -64,11 +57,8 @@ def to_tanh_space(x, box):
     :return: the batch of tensors in tanh-space, of the same dimension;
              the returned tensor is on the same device as ``x``
     """
-    print("inside1")
     _box_mul = (box[1] - box[0]) * 0.5
-    print("inside2")
     _box_plus = (box[1] + box[0]) * 0.5
-    print("inside3")
     return atanh((x - _box_plus) / _box_mul)
 
 
@@ -237,23 +227,19 @@ class L2Adversary(object):
         assert isinstance(model, nn.Module)
         assert len(inputs.size()) == 4
         assert len(targets.size()) == 1
-        print("1")
         # get a copy of targets in numpy before moving to GPU, used when doing
         # the binary search on `scale_const`
         targets_np = targets.clone().cpu().numpy()  # type: np.ndarray
-        print("2")
 
         # the type annotations here are used only for type hinting and do
         # not indicate the actual type (cuda or cpu); same applies to all codes
         # below
         inputs = runutils.make_cuda_consistent(model, inputs)[0]  # type: torch.FloatTensor
         targets = runutils.make_cuda_consistent(model, targets)[0]  # type: torch.FloatTensor
-        print("3")
 
         # run the model a little bit to get the `num_classes`
         num_classes = model(Variable(inputs[0][None, :], requires_grad=False)).size(1)  # type: int
         batch_size = 1  ##inputs.size(0)  # type: int
-        print("4")
 
         # `lower_bounds_np`, `upper_bounds_np` and `scale_consts_np` are used
         # for binary search of each `scale_const` in the batch. The element-wise
@@ -261,7 +247,6 @@ class L2Adversary(object):
         lower_bounds_np = np.zeros(batch_size)
         upper_bounds_np = np.ones(batch_size) * self.c_range[1]
         scale_consts_np = np.ones(batch_size) * self.c_range[0]
-        print("5")
 
         # Optimal attack to be found.
         # The three "placeholders" are defined as:
@@ -273,23 +258,16 @@ class L2Adversary(object):
         o_best_l2 = np.ones(batch_size) * np.inf
         o_best_l2_ppred = -np.ones(batch_size)
         o_best_advx = inputs.clone().cpu().numpy()  # type: np.ndarray
-        print("6")
 
         # convert `inputs` to tanh-space
         inputs_tanh = self._to_tanh_space(inputs)  # type: torch.FloatTensor
-        print("7")
         inputs_tanh_var = Variable(inputs_tanh, requires_grad=False)
-        print("8")
 
         # the one-hot encoding of `targets`
         targets_oh = torch.zeros(targets.size() + (num_classes,))  # type: torch.FloatTensor
-        print("9")
         targets_oh = runutils.make_cuda_consistent(model, targets_oh)[0]
-        print("10")
         targets_oh.scatter_(1, targets.unsqueeze(1), 1.0)
-        print("11")
         targets_oh_var = Variable(targets_oh, requires_grad=False)
-        print("12")
 
         # the perturbation variable to optimize.
         # `pert_tanh` is essentially the adversarial perturbation in tanh-space.
@@ -305,7 +283,6 @@ class L2Adversary(object):
         for sstep in range(self.binary_search_steps):
             if self.repeat and sstep == self.binary_search_steps - 1:
                 scale_consts_np = upper_bounds_np
-            print("sstep=", sstep)
             scale_consts = torch.from_numpy(np.copy(scale_consts_np)).float()  # type: torch.FloatTensor
             scale_consts = runutils.make_cuda_consistent(model, scale_consts)[0]
             scale_consts_var = Variable(scale_consts, requires_grad=False)
@@ -318,9 +295,7 @@ class L2Adversary(object):
             best_l2_ppred = -np.ones(batch_size)
             # previous (summed) batch loss, to be used in early stopping policy
             prev_batch_loss = np.inf  # type: float
-            print("10")
             for optim_step in range(self.max_steps):
-                print("optim_step=",optim_step)
                 batch_loss, pert_norms_np, pert_outputs_np, advxs_np = \
                     self._optimize(model, optimizer, inputs_tanh_var,
                                    pert_tanh_var, targets_oh_var,
@@ -331,7 +306,6 @@ class L2Adversary(object):
                     if batch_loss > prev_batch_loss * (1 - self.ae_tol):
                         break
                     prev_batch_loss = batch_loss
-                print("13")
 
                 # update best attack found during optimization
                 pert_predictions_np = np.argmax(pert_outputs_np, axis=1)
@@ -339,7 +313,6 @@ class L2Adversary(object):
                     self._compensate_confidence(pert_outputs_np,
                                                 targets_np),
                     axis=1)
-                print("14")
                 for i in range(batch_size):
                     l2 = pert_norms_np[i]
                     cppred = comp_pert_predictions_np[i]
@@ -412,17 +385,13 @@ class L2Adversary(object):
         """
         # the adversarial examples in the image space
         # of dimension [B x C x H x W]
-        print("inside100")
         advxs_var = self._from_tanh_space(inputs_tanh_var + pert_tanh_var)  # type: Variable
-        print("inside101")
 
         # the perturbed activation before softmax
         pert_outputs_var = model(advxs_var)  # type: Variable
-        print("inside102")
 
         # the original inputs
         inputs_var = self._from_tanh_space(inputs_tanh_var)  # type: Variable
-        print("inside103")
 
         perts_norm_var = torch.pow(advxs_var - inputs_var, 2)
         perts_norm_var = torch.sum(perts_norm_var.view(
