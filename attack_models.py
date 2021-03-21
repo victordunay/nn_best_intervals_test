@@ -192,9 +192,7 @@ class attacks:
             for std_rand in std_rand_list_for_test:
                 for targeted_flag in targeted_flag_list:
                     for optimizer_lr in self.cw_lr:
-                        print("optimizer_lr=", optimizer_lr)
-                        print('std_rand=', std_rand)
-                        print('targeted_flag=', targeted_flag)
+
                         if not targeted_flag:
                             targeted_labels_for_test = [targeted_labels[0]]
                         else:
@@ -216,7 +214,7 @@ class attacks:
                             adversarial_examples = adversary(net, chosen_pic, targets, to_numpy=False)
                             assert isinstance(adversarial_examples, torch.FloatTensor)
                             assert adversarial_examples.size() == chosen_pic.size()
-
+                            print("passed adv")
                             res = adversarial_examples.reshape(-1, self.image_size[0], self.image_size[1])
                             res = res.numpy()
                             res = np.squeeze(res, axis=0)
