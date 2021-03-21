@@ -412,11 +412,17 @@ class L2Adversary(object):
         """
         # the adversarial examples in the image space
         # of dimension [B x C x H x W]
+        print("inside100")
         advxs_var = self._from_tanh_space(inputs_tanh_var + pert_tanh_var)  # type: Variable
+        print("inside101")
+
         # the perturbed activation before softmax
         pert_outputs_var = model(advxs_var)  # type: Variable
+        print("inside102")
+
         # the original inputs
         inputs_var = self._from_tanh_space(inputs_tanh_var)  # type: Variable
+        print("inside103")
 
         perts_norm_var = torch.pow(advxs_var - inputs_var, 2)
         perts_norm_var = torch.sum(perts_norm_var.view(
