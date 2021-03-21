@@ -274,7 +274,7 @@ class L2Adversary(object):
         # In Carlini's code it's denoted as `modifier`
         pert_tanh = torch.zeros(inputs.size())  # type: torch.FloatTensor
         if self.init_rand:
-            nn.init.normal_.nn.init.normal(pert_tanh, mean=0, std=self.std_rand)
+            nn.init.normal_(pert_tanh, mean=0, std=self.std_rand)
         pert_tanh = runutils.make_cuda_consistent(model, pert_tanh)[0]
         pert_tanh_var = Variable(pert_tanh, requires_grad=True)
 
