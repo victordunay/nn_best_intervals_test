@@ -320,6 +320,7 @@ class L2Adversary(object):
             prev_batch_loss = np.inf  # type: float
             print("10")
             for optim_step in range(self.max_steps):
+                print("optim_step=",optim_step)
                 batch_loss, pert_norms_np, pert_outputs_np, advxs_np = \
                     self._optimize(model, optimizer, inputs_tanh_var,
                                    pert_tanh_var, targets_oh_var,
@@ -330,6 +331,7 @@ class L2Adversary(object):
                     if batch_loss > prev_batch_loss * (1 - self.ae_tol):
                         break
                     prev_batch_loss = batch_loss
+                print("13")
 
                 # update best attack found during optimization
                 pert_predictions_np = np.argmax(pert_outputs_np, axis=1)
@@ -337,6 +339,7 @@ class L2Adversary(object):
                     self._compensate_confidence(pert_outputs_np,
                                                 targets_np),
                     axis=1)
+                print("14")
                 for i in range(batch_size):
                     l2 = pert_norms_np[i]
                     cppred = comp_pert_predictions_np[i]
