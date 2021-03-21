@@ -1,4 +1,3 @@
-
 """
 attacks class handles the adversarial examples generation process
 """
@@ -33,7 +32,7 @@ class attacks:
         self.jsma_max_dist = attack_params['jsma_max_dist']
         self.jsma_max_iter = attack_params['jsma_max_iter']
         self.jsma_lr = attack_params['jsma_lr']
-        self.targeted_labels=attack_params['targeted_labels']
+        self.targeted_labels = attack_params['targeted_labels']
 
     def generate_gradient_descent_adversarial_examples_set(self, net, dataset_img_idx, x_test_tensor, y_test_tensor,
                                                            results_path):
@@ -169,12 +168,14 @@ class attacks:
         manual_test = x_test_tensor.reshape(-1, self.image_size[0], self.image_size[1])
         manual_should_be = y_test_tensor[dataset_img_idx]
         chosen_pic = manual_test[dataset_img_idx, :, :] * self.pixel_res
-        chosen_pic = torch.unsqueeze(chosen_pic, 0)
-   
+
         norm = transforms.Normalize((0.5,), (0.5,))
 
-        chosen_pic = norm(chosen_pic)
         chosen_pic = torch.unsqueeze(chosen_pic, 0)
+        chosen_pic = norm(chosen_pic)
+
+        chosen_pic = torch.unsqueeze(chosen_pic, 0)
+
         if int(manual_should_be) in targeted_labels:
             targeted_labels.remove(int(manual_should_be))
         mean, std = (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)
@@ -191,6 +192,9 @@ class attacks:
             for std_rand in std_rand_list_for_test:
                 for targeted_flag in targeted_flag_list:
                     for optimizer_lr in self.cw_lr:
+                        print("optimizer_lr=", optimizer_lr)
+                        print('std_rand=', std_rand)
+                        print('targeted_flag=', targeted_flag)
                         if not targeted_flag:
                             targeted_labels_for_test = [targeted_labels[0]]
                         else:
@@ -260,10 +264,11 @@ class attacks:
                 chosen_pic = manual_test[dataset_img_idx, :, :] * self.pixel_res
 
                 jsma_adv = jsma_main.jsma(net, chosen_pic.reshape(-1, self.image_size[0] * self.image_size[1]),
-                                          target_class, max_distortion=dist, max_iter=self.jsma_max_iter, lr=self.jsma_lr)
+                                          target_class, max_distortion=dist, max_iter=self.jsma_max_iter,
+                                          lr=self.jsma_lr)
                 jsma_adv.requires_grad = False
 
-                manual_prediction = net(jsma_adv.clone().detach())
+                manual_prediction = net(torch.tensor(jsma_adv))
                 _, predicted = torch.max(manual_prediction.data, 1)
 
                 chosen_pic = chosen_pic.numpy()
