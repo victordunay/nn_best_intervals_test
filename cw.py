@@ -259,14 +259,19 @@ class L2Adversary(object):
 
         # convert `inputs` to tanh-space
         inputs_tanh = self._to_tanh_space(inputs)  # type: torch.FloatTensor
+        print("7")
         inputs_tanh_var = Variable(inputs_tanh, requires_grad=False)
+        print("8")
 
         # the one-hot encoding of `targets`
         targets_oh = torch.zeros(targets.size() + (num_classes,))  # type: torch.FloatTensor
+        print("9")
         targets_oh = runutils.make_cuda_consistent(model, targets_oh)[0]
+        print("10")
         targets_oh.scatter_(1, targets.unsqueeze(1), 1.0)
+        print("11")
         targets_oh_var = Variable(targets_oh, requires_grad=False)
-        print("7")
+        print("12")
 
         # the perturbation variable to optimize.
         # `pert_tanh` is essentially the adversarial perturbation in tanh-space.
@@ -276,10 +281,9 @@ class L2Adversary(object):
             nn.init.normal(pert_tanh, mean=0, std=self.std_rand)
         pert_tanh = runutils.make_cuda_consistent(model, pert_tanh)[0]
         pert_tanh_var = Variable(pert_tanh, requires_grad=True)
-        print("8")
 
         optimizer = optim.Adam([pert_tanh_var], lr=self.optimizer_lr)
-        print("9")
+
 
         for sstep in range(self.binary_search_steps):
             if self.repeat and sstep == self.binary_search_steps - 1:
