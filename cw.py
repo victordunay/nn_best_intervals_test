@@ -37,7 +37,9 @@ def atanh(x, eps=1e-6):
     :param eps: used to enhance numeric stability
     :return: :math:`\\tanh^{-1}{x}`, of the same type as ``x``
     """
+    print("inside4")
     x = x * (1 - eps)
+    print("inside5")
     return 0.5 * torch.log((1.0 + x) / (1.0 - x))
 
 def to_tanh_space(x, box):
