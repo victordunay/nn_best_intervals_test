@@ -211,6 +211,7 @@ class attacks:
                                 targets = torch.tensor([targeted_labels[targeted_label]])
                             else:
                                 targets = torch.tensor([int(manual_should_be)])
+                            print("started adv")
                             adversarial_examples = adversary(net, chosen_pic, targets, to_numpy=False)
                             assert isinstance(adversarial_examples, torch.FloatTensor)
                             assert adversarial_examples.size() == chosen_pic.size()
