@@ -50,8 +50,11 @@ def to_tanh_space(x, box):
     :return: the batch of tensors in tanh-space, of the same dimension;
              the returned tensor is on the same device as ``x``
     """
+    print("inside1")
     _box_mul = (box[1] - box[0]) * 0.5
+    print("inside2")
     _box_plus = (box[1] + box[0]) * 0.5
+    print("inside3")
     return atanh((x - _box_plus) / _box_mul)
 
 def from_tanh_space(x, box):
