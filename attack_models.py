@@ -170,10 +170,11 @@ class attacks:
         manual_should_be = y_test_tensor[dataset_img_idx]
         chosen_pic = manual_test[dataset_img_idx, :, :] * self.pixel_res
         chosen_pic = torch.unsqueeze(chosen_pic, 0)
-        chosen_pic = torch.unsqueeze(chosen_pic, 0)
+   
         norm = transforms.Normalize((0.5,), (0.5,))
 
         chosen_pic = norm(chosen_pic)
+        chosen_pic = torch.unsqueeze(chosen_pic, 0)
         if int(manual_should_be) in targeted_labels:
             targeted_labels.remove(int(manual_should_be))
         mean, std = (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)
