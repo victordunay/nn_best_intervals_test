@@ -171,7 +171,7 @@ class attacks:
         chosen_pic = manual_test[dataset_img_idx, :, :] * self.pixel_res
         chosen_pic = torch.unsqueeze(chosen_pic, 0)
         chosen_pic = torch.unsqueeze(chosen_pic, 0)
-        norm = transforms.Normalize((0.5,), (0.5,))
+        norm = transforms.compose([transforms.ToTensor(),transforms.Normalize((0.5,), (0.5,))])
 
         chosen_pic = norm(chosen_pic)
         if int(manual_should_be) in targeted_labels:
