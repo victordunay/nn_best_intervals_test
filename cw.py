@@ -7,7 +7,6 @@ Referential implementation:
 """
 import operator as op
 import pdb
-
 from typing import Union, Tuple
 
 import numpy as np
@@ -48,7 +47,8 @@ def atanh(x, eps=1e-6):
     a = 0.5
     divide = up / down
     print("inside8")
-    div_log = torch.log(divide)
+    print("divide=",divide)
+    div_log = np.log(divide)
     print("inside9")
 
     return a * div_log
