@@ -49,7 +49,7 @@ class attacks:
             for t in goals_list:
                 manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
-                
+
                 adv_example = manual_tens
                 adversarial_goal = torch.tensor([t])
                 lam = torch.tensor([reg_factor])
@@ -261,6 +261,7 @@ class attacks:
                 jsma_adv = jsma_main.jsma(net, chosen_pic.reshape(-1, self.image_size[0] * self.image_size[1]),
                                           target_class, max_distortion=dist, max_iter=self.jsma_max_iter, lr=self.jsma_lr)
                 jsma_adv.requires_grad = False
+				print("I am here for idx=",dataset_img_idx)
 
                 manual_prediction = net(torch.tensor(jsma_adv))
                 _, predicted = torch.max(manual_prediction.data, 1)
