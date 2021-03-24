@@ -46,15 +46,19 @@ class attacks:
         intervals_list = []
         for reg_factor in self.gd_reg_list:
             for t in goals_list:
+                print("goal is =",t,"reg =",reg_factor)
                 manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
 
                 adv_example = manual_tens
                 adversarial_goal = torch.tensor([t])
                 lam = torch.tensor([reg_factor])
+                print("1")
                 for i in range(self.gd_max_iter):
                     manual_prediction = net(adv_example)
+
                     _, predicted = torch.max(manual_prediction.data, 1)
+
 
                     adv_example.requires_grad = True
                     Y_predicted = net(adv_example)
@@ -78,6 +82,7 @@ class attacks:
 
                     adv_example -= self.lr * x_grad
                     adv_example = torch.clamp(adv_example, min=0, max=1)
+                print("2")
                 adv_example = adv_example.reshape(-1, self.image_size[0] * self.image_size[1])
 
                 adv_example = adv_example.reshape(self.image_size[0], self.image_size[1])
@@ -86,6 +91,7 @@ class attacks:
                 current_list = (manual_tens - adv_example).numpy()
                 intervals_list.append(current_list)
                 net.zero_grad()
+                print("3")
 
         intervals_list = np.asarray(intervals_list)
 
