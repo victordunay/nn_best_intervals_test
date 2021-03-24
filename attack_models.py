@@ -84,14 +84,23 @@ class attacks:
                     adv_example = torch.clamp(adv_example, min=0, max=1)
                 print("2")
                 adv_example = adv_example.reshape(-1, self.image_size[0] * self.image_size[1])
+                print("3")
 
                 adv_example = adv_example.reshape(self.image_size[0], self.image_size[1])
+                print("4")
+
                 manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(self.image_size[0],
                                                                           self.image_size[1]) * self.pixel_res
+                print("5")
+
                 current_list = (manual_tens - adv_example).numpy()
+                print("6")
+
                 intervals_list.append(current_list)
+                print("7")
+
                 net.zero_grad()
-                print("3")
+                print("8")
 
         intervals_list = np.asarray(intervals_list)
 
