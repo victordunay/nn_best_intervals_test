@@ -12,14 +12,14 @@ targeted_labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 # ================================================================
 #  MNIST images IDs for test
 # ================================================================
-image_ids = list(range(1,256))
+image_ids = list(range(1, 256))
 
 # ================================================================
 #  gradient descent & regularization based attack hyper-parameters
 # ================================================================
-gd_reg_list = [0, 1, 10, 100]
+gd_reg_list = [0,1] # Todo was [0, 1, 10, 100]
 gd_lr = 0.001
-gd_max_iter = 5000
+gd_max_iter = 100  # Todo was 5000
 
 # ================================================================
 #  projected gradient descent attack hyper-parameters
