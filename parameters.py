@@ -19,7 +19,7 @@ image_ids = list(range(1, 256))
 # ================================================================
 gd_reg_list = [0, 1, 10, 100]
 gd_lr = 0.001
-gd_max_iter = 5000
+gd_max_iter =  5000
 
 # ================================================================
 #  projected gradient descent attack hyper-parameters
@@ -33,10 +33,10 @@ pgd_rand_vector_size = 4
 #  carlini wagner attack hyper-parameters
 # ================================================================
 cw_rand_vector_size = 2
-cw_lr = [5e-4]  # Todo was[5e-4, 1e-3, 5e-3]
-cw_search_steps = 2  # Todo was10
+cw_lr = [5e-4, 1e-3, 5e-3]
+cw_search_steps = 10
 cw_c_range = (1e-3, 1e10)
-cw_max_iter = 10  # Todo was 1000
+cw_max_iter = 1000
 
 # ================================================================
 #  jsma attack hyper-parameters
