@@ -8,7 +8,7 @@ this file defines all the parameters to configure the attack models and the sear
 # ================================================================
 image_size = [28, 28]
 pixel_res = 1 / 255.0
-targeted_labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+targeted_labels = [0, 1]
 # ================================================================
 #  MNIST images IDs for test
 # ================================================================
@@ -42,7 +42,7 @@ cw_max_iter = 1000
 #  jsma attack hyper-parameters
 # ================================================================
 jsma_max_dist = [1]  # Todo was[1, 0.8]
-jsma_max_iter = 1000  # Todo was 50000
+jsma_max_iter = 100  # Todo was 50000
 jsma_lr = 0.3 / 255
 
 # ================================================================
