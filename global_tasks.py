@@ -127,18 +127,18 @@ def generate_adversarial_examples_set(model_, results_path_: str, ID_: int, mnis
     # generate adversarial examples using all methods
     # ================================================================
 
-    print("do cw")
+    #print("do cw")
 
-    adversarial_generator_.generate_carlini_wagner_adversarial_examples_set(model_, ID_, mnist_features_, mnist_labels_,
+    #adversarial_generator_.generate_carlini_wagner_adversarial_examples_set(model_, ID_, mnist_features_, mnist_labels_,
                                                                             results_path_)
 
-    print("do gd")
+    #print("do gd")
 
-    adversarial_generator_.generate_gradient_descent_adversarial_examples_set(model_, ID_, mnist_features_,
+    #adversarial_generator_.generate_gradient_descent_adversarial_examples_set(model_, ID_, mnist_features_,
                                                                               mnist_labels_, results_path_)
 
-    print("do pgd")
-    adversarial_generator_.generate_projected_gradient_descent_adversarial_examples_set(model_, ID_, mnist_features_,
+    #print("do pgd")
+    #adversarial_generator_.generate_projected_gradient_descent_adversarial_examples_set(model_, ID_, mnist_features_,
                                                                                         mnist_labels_, results_path_)
 
     print("do jsma")
