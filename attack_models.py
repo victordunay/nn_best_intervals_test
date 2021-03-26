@@ -10,6 +10,7 @@ import numpy as np
 import cw
 import torchvision.transforms as transforms
 import jsma_main
+import matplotlib.pyplot as plt
 
 
 class attacks:
@@ -61,6 +62,23 @@ class attacks:
                     Y_predicted = net(adv_example)
                     if predicted == adversarial_goal:
                         adv_example.requires_grad = False
+                        print("predicted is  =", adversarial_goal,"iter end =",i)
+
+                        examples = [manual_tens.reshape(28,28), adv_example.reshape(28,28), np.subtract(manual_tens, adv_example).reshape(28,28)]
+                        tit = ["ORIGINAL IMAGE", "ADVERSARIAL EXAMPLE", "DIFFERENCE"]
+
+                        plt.figure(figsize=(12, 12))
+
+                        for j in range(3):
+                            plt.subplot(1, 3, j + 1)
+
+                            ex = examples[j]
+                            plt.title(tit[j])
+                            plt.imshow(ex, cmap="gray")
+                            plt.colorbar()
+                        plt.tight_layout()
+                        plt.show()
+
                         break
 
                     loss_adversarial = loss_fn(Y_predicted, adversarial_goal) + lam * loss_fn_for_input(adv_example,
@@ -89,7 +107,6 @@ class attacks:
                 current_list = (manual_tens - adv_example).numpy()
 
                 intervals_list.append(current_list)
-
 
         intervals_list = np.asarray(intervals_list)
 
@@ -267,6 +284,7 @@ class attacks:
                 jsma_adv = jsma_main.jsma(net, chosen_pic.reshape(-1, self.image_size[0] * self.image_size[1]),
                                           target_class, max_distortion=dist, max_iter=self.jsma_max_iter,
                                           lr=self.jsma_lr)
+
                 jsma_adv.requires_grad = False
 
                 manual_prediction = net(torch.tensor(jsma_adv))
@@ -279,6 +297,7 @@ class attacks:
                 jsma_adv = np.squeeze(jsma_adv, axis=0)
                 current_list = chosen_pic - jsma_adv
                 intervals_list.append(current_list)
+                print("done ID",dataset_img_idx,"targ=",target_class)
 
         intervals_list = np.asarray(intervals_list)
 
