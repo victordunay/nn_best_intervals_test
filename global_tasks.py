@@ -82,7 +82,7 @@ def calculate_mean(results_path_: str, ID_: int, image_size: list):
      :param image_size: tested image width and height
      :param ID_: MNIST input ID for best environment test
      """
-    jsma_adversarial_examples = np.load(results_path_ + '/jsma_mean_vector_ID_' + str(ID_) + '_.npy')
+    jsma_adversarial_examples = np.load('./'+results_path_ + '/jsma_mean_vector_ID_' + str(ID_) + '_.npy')
     pgd_adversarial_examples = np.load(results_path_ + '/pgd_mean_vector_ID_' + str(ID_) + '_.npy')
     carlini_wagner_adversarial_examples = np.load(
         results_path_ + '/carlini_wagner_mean_vector_ID_' + str(ID_) + '_.npy')
