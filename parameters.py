@@ -25,7 +25,7 @@ gd_max_iter =  5000
 #  projected gradient descent attack hyper-parameters
 # ================================================================
 pgd_lr = 0.001
-pgd_max_iter = 150000
+pgd_max_iter = 80000 # Todo was 150000
 pgd_examples_per_random_val = 10
 pgd_rand_vector_size = 4
 
@@ -42,7 +42,7 @@ cw_max_iter = 1000
 #  jsma attack hyper-parameters
 # ================================================================
 jsma_max_dist = [1,0.8]  # Todo was[1, 0.8]
-jsma_max_iter = 1000  # Todo was 50000
+jsma_max_iter = 20000  # Todo was 50000
 jsma_lr = 0.3 / 255
 
 # ================================================================
