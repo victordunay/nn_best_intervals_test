@@ -30,7 +30,13 @@ def parallel_process(model_, results_path_: str, ID_: int, mnist_features_, mnis
     # ================================================================
     # calculate mean vector between all adversarial attack methods
     # ================================================================
-    adversarial_examples_set = global_tasks.calculate_mean(results_path_, ID_, image_size)
+    #adversarial_examples_set = global_tasks.calculate_mean(results_path_, ID_, image_size)
+
+    # ================================================================
+    # view adversarial process results
+    # ================================================================
+    global_tasks.view_adversarial_results(ID_, results_path, mnist_features)
+
     return ID_
 
 
