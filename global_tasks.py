@@ -21,15 +21,18 @@ def view_adversarial_results(ID_: int, results_path_: str, mnist_features):
      :param mnist_features: MNIST dataset images
      :param ID_: MNIST input ID for best environment test
      """
+    print("1")
     adv_example = np.load(results_path_ + '/total_mean_ID_' + str(ID_) + '_.npy')
     manual_tens = mnist_features[ID_, :, ].reshape(-1, parameters.image_size[0], parameters.image_size[1])
     manual_tens = manual_tens * parameters.pixel_res
     manual_tens = np.squeeze(manual_tens, axis=0)
+    print("2")
 
     examples = [manual_tens, adv_example, np.subtract(manual_tens, adv_example)]
     tit = ["ORIGINAL IMAGE", "ADVERSARIAL EXAMPLE", "DIFFERENCE"]
 
     plt.figure(figsize=(12, 12))
+    print("3")
 
     for j in range(3):
         plt.subplot(1, 3, j + 1)
@@ -40,6 +43,7 @@ def view_adversarial_results(ID_: int, results_path_: str, mnist_features):
         plt.colorbar()
     plt.tight_layout()
     plt.show()
+    print("4")
 
 
 def load_dataset(dataset_path_):
