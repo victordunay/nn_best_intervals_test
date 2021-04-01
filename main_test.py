@@ -35,7 +35,13 @@ def parallel_process(model_, results_path_: str, ID_: int, mnist_features_, mnis
     # ================================================================
     # view adversarial process results
     # ================================================================
-    global_tasks.view_adversarial_results(ID_, results_path, mnist_features)
+    #global_tasks.view_adversarial_results(ID_, results_path, mnist_features)
+
+    # ================================================================
+    # find maximum environment
+    # ================================================================
+
+    interval_solver.find_max_intervals(results_path,ID_, mnist_features, mnist_labels)
 
     return ID_
 
