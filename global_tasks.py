@@ -40,7 +40,7 @@ def view_adversarial_results(ID_: int, results_path_: str, mnist_features):
         plt.colorbar()
     plt.tight_layout()
     plt.show()
-    plt.savefig('result_ID_'+ID_+'.png')
+    plt.savefig('result_ID_'+str(ID_)+'.png')
     print("2")
 
 
