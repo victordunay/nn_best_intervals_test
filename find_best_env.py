@@ -457,19 +457,24 @@ class find_best_env:
         pd.DataFrame(img_for_eran).to_csv("./images_for_test/img_for_test_ID_" + str(ID) + ".csv", header=None,
                                           index=None)
 
-    def find_max_intervals(self, mean_adversarial_examples_results, ID, mnist_features, mnist_labels):
+    def find_max_intervals(self,results_path, ID, mnist_features, mnist_labels):
         """
         find_max_intervals function is the main class task which performs the steps for finding the maximum environment
 
+        :param results_path:
         :param mnist_labels: MNIST dataset labels
         :param mnist_features: MNIST dataset features
         :param ID: MNIST dataset image ID
         :param mean_adversarial_examples_results: the mean between all adversarial images
 
         """
+        mean_adversarial_examples_results=np.load('../../'+results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
-        intervals_results_path = '/home/eran/Desktop/intervals_results'
+        #intervals_results_path = '/home/eran/Desktop/intervals_results'
+        intervals_results_path = '/nn_best_intervals_test/intervals_results'
+
         if not os.path.exists(intervals_results_path):
             os.makedirs(intervals_results_path)
         start_low_list = [np.amin(mean_adversarial_examples_results) + self.increment_factor * i * self.pixel_res for i
