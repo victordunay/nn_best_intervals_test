@@ -228,7 +228,7 @@ class find_best_env:
                 if len(eps_plus) - 2 in ind[:, :]:
                     if polarity == "down" and np.amax(orig[ind[:, :] == len(eps_plus) - 2]) < self.pixel_res:
                         empty_bin = True
-                    elif polarity == "up" and np.amin(orig[ind[:, :] == len(eps_plus) - 2]) > 1 - self.pixel_res:
+                    elif polarity == "up" and np.amin(orig[ind[:, :] intervals_path== len(eps_plus) - 2]) > 1 - self.pixel_res:
                         empty_bin = True
                     else:
                         for idx in range(ind.shape[1]):
@@ -474,7 +474,7 @@ class find_best_env:
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
         #intervals_results_path = '/home/eran/Desktop/intervals_results'
-        intervals_results_path = '/nn_best_intervals_test/intervals_results'
+        intervals_results_path = '../../nn_best_intervals_test/intervals_results'
 
         if not os.path.exists(intervals_results_path):
             os.makedirs(intervals_results_path)
