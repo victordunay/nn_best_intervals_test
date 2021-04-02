@@ -428,7 +428,8 @@ class find_best_env:
 
              :param ID: MNIST dataset image ID
              """
-        crr_img_path = "/home/eran/Desktop/img_for_test_ID_" + str(ID) + ".csv"
+        #crr_img_path = "/home/eran/Desktop/img_for_test_ID_" + str(ID) + ".csv"
+        crr_img_path = "../../nn_best_intervals_test/images_for_test/img_for_test_ID_" + str(ID) + ".csv"
         shutil.copy(crr_img_path, "../data/mnist_test.csv")
         crr_img = open(crr_img_path).read().strip().split(",")[1:]
         crr_img = [float(numeric_string) for numeric_string in crr_img]
@@ -442,7 +443,7 @@ class find_best_env:
                    :param mnist_features: MNIST dataset features
                    :param ID: MNIST dataset image ID
                    """
-        images_for_test_path = 'images_for_test'
+        images_for_test_path = '../../nn_best_intervals_test/images_for_test'
         if not os.path.exists(images_for_test_path):
             os.makedirs(images_for_test_path)
         manual_test = mnist_features.reshape(-1, self.image_size[0], self.image_size[1])
@@ -454,7 +455,7 @@ class find_best_env:
         img_for_eran = np.concatenate((label_eran.astype('int'), img_for_eran.astype('int')), axis=1)
         img_for_eran[img_for_eran == mnist_labels[ID]] = int(mnist_labels[ID])
         # Todo pd.DataFrame(img_for_eran).to_csv("/home/eran/Desktop/img_for_test_ID_" + str(ID) + ".csv", header=None,index=None)
-        pd.DataFrame(img_for_eran).to_csv("./images_for_test/img_for_test_ID_" + str(ID) + ".csv", header=None,
+        pd.DataFrame(img_for_eran).to_csv(images_for_test_path+"/img_for_test_ID_" + str(ID) + ".csv", header=None,
                                           index=None)
 
     def find_max_intervals(self,results_path, ID, mnist_features, mnist_labels):
