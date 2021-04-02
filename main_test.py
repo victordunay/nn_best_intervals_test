@@ -58,7 +58,7 @@ if __name__ == "__main__":
     # ================================================================
     results_path = 'adversarial_examples_set'
     dataset_path = '../../nn_best_intervals_test/data/mnist_test.csv'
-    neural_network_path = 'nn_models/' + parameters.neural_network + '.pth'
+    neural_network_path = '../../nn_best_intervals_test/nn_models/' + parameters.neural_network + '.pth'
     if not os.path.exists(results_path):
         os.makedirs(results_path)
     # ================================================================
