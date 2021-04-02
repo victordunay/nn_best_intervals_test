@@ -759,5 +759,7 @@ class find_best_env:
             bin = ind[:, idx]
             epsilon_intervals_pos.append(epsilon_pos_list[bin[-1]])
             epsilon_intervals_neg.append(epsilon_neg_list[bin[-1]])
-        np.save('/home/eran/Desktop/epsilon_intervals_pos.npy', epsilon_intervals_pos)
-        np.save('/home/eran/Desktop/epsilon_intervals_neg.npy', epsilon_intervals_neg)
+        #np.save('/home/eran/Desktop/epsilon_intervals_pos.npy', epsilon_intervals_pos)
+        #np.save('/home/eran/Desktop/epsilon_intervals_neg.npy', epsilon_intervals_neg)
+        np.save('../../nn_best_intervals_test/epsilon_intervals_pos.npy', epsilon_intervals_pos)
+        np.save('../../nn_best_intervals_test/epsilon_intervals_neg.npy', epsilon_intervals_neg)
