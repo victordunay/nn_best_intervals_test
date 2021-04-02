@@ -57,7 +57,7 @@ if __name__ == "__main__":
     # set project directory and tested nn model
     # ================================================================
     results_path = 'adversarial_examples_set'
-    dataset_path = './data/mnist_test.csv'
+    dataset_path = '../../nn_best_intervals_test/data/mnist_test.csv'
     neural_network_path = 'nn_models/' + parameters.neural_network + '.pth'
     if not os.path.exists(results_path):
         os.makedirs(results_path)
