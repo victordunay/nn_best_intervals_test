@@ -339,8 +339,8 @@ class find_best_env:
             np.save(self.intervals_path + '_neg.npy', interval_minus)
             if high > self.pixel_res:
                 high = high - self.pixel_res
-                if low < -self.pixel_res:
-                    low = low + self.pixel_res
+            if low < -self.pixel_res:
+                low = low + self.pixel_res
             termination = bool(low >= -self.pixel_res) and bool(high <= self.pixel_res)
 
         low = start_low
