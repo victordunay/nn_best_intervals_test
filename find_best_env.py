@@ -391,8 +391,6 @@ class find_best_env:
             low = low - self.pixel_res
 
             termination = bool(low <= minimum) and bool(high >= maximum)
-        np.save('/home/eran/Desktop/test_debug_plus' + str(test_idx) + '_.npy', interval_plus)
-        np.save('/home/eran/Desktop/test_debug_plus' + str(test_idx) + '_.npy', interval_minus)
 
         np.save(intervals_results_path + '/ID_' + str(ID) + 'init_at_' + str(test_idx) + 'plus.npy', interval_plus)
         np.save(intervals_results_path + '/ID_' + str(ID) + 'init_at_' + str(test_idx) + 'minus.npy', interval_minus)
