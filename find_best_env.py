@@ -263,7 +263,7 @@ class find_best_env:
                 """
         prev_plus, prev_minus, empty_bin = self.update_pre_expand_attempt(bins, eps_minus, eps_plus, bot2top,
                                                                           polarity, side,
-                                                                          mean_adversarial_examples_results, orig,ID)
+                                                                          mean_adversarial_examples_results, orig)
         if empty_bin:
             return prev_plus, prev_minus
         verified = self.run_eran(ID)
