@@ -47,7 +47,7 @@ class find_best_env:
 
     def update_post_expand_attempt(self, minimum: float, maximum: float, bins: list, eps_minus: list, eps_plus: list,
                                    bot2top: bool, high: float, low: float, mean_adversarial_examples_results,
-                                   first_update: bool):
+                                   first_update: bool,ID:int):
 
         """
             update_post_expand_attempt function updates bins,eps_plus and eps_minus vectors after
@@ -116,8 +116,10 @@ class find_best_env:
             bin_ = ind[:, idx]
             v_plus.append(eps_plus[bin_[-1]])
             v_minus.append(eps_minus[bin_[-1]])
-        np.save(self.intervals_path + '_pos.npy', v_plus)
-        np.save(self.intervals_path + '_neg.npy', v_minus)
+        np.save(self.intervals_path +str(ID)+ '/tf_verify/epsilon_intervals_pos.npy', v_plus)
+        np.save(self.intervals_path +str(ID)+ '/tf_verify/epsilon_intervals_neg.npy', v_minus)
+
+
         return v_plus, v_minus, first_update
 
     def update_pre_expand_attempt(self, bins: list, eps_minus: list, eps_plus: list, bot2top: bool, polarity: str,
@@ -335,7 +337,7 @@ class find_best_env:
                                                                                           eps_minus,
                                                                                           eps_plus, bot2top, high, low,
                                                                                           mean_adversarial_examples_results,
-                                                                                          first_update)
+                                                                                          first_update,ID)
             np.save(self.intervals_path + '_pos.npy', interval_plus)
             np.save(self.intervals_path + '_neg.npy', interval_minus)
             if high > self.pixel_res:
@@ -354,7 +356,7 @@ class find_best_env:
                                                                                       eps_minus,
                                                                                       eps_plus, bot2top, high, low,
                                                                                       mean_adversarial_examples_results,
-                                                                                      first_update)
+                                                                                      first_update,ID)
 
         low = low - self.pixel_res
         high = high + self.pixel_res
@@ -385,7 +387,7 @@ class find_best_env:
                                                                                           eps_plus, bot2top,
                                                                                           high, low,
                                                                                           mean_adversarial_examples_results,
-                                                                                          first_update)
+                                                                                          first_update,ID)
             np.save(self.intervals_path + '_pos.npy', interval_plus)
             np.save(self.intervals_path + '_neg.npy', interval_minus)
             high = high + self.pixel_res
@@ -486,7 +488,7 @@ class find_best_env:
         test_idx = 0
         for start_low, start_high in zip(start_low_list, start_high_list):
             test_idx += 1
-            self.reset_intervals(mean_adversarial_examples_results)
+            self.reset_intervals(mean_adversarial_examples_results,ID)
             bot2top = False
             minimum = np.amin(mean_adversarial_examples_results)
             maximum = np.amax(mean_adversarial_examples_results)
@@ -744,7 +746,7 @@ class find_best_env:
 
         plt.show()
 
-    def reset_intervals(self, adversarial_examples_set):
+    def reset_intervals(self, adversarial_examples_set,ID:int):
         vector = adversarial_examples_set.reshape(-1, 784)
         bins = [-1, -0.005, 0, 0.005, 1]
         ind = np.digitize(vector, bins)
@@ -761,5 +763,5 @@ class find_best_env:
         #np.save('/home/eran/Desktop/epsilon_intervals_pos.npy', epsilon_intervals_pos)
         #np.save('/home/eran/Desktop/epsilon_intervals_neg.npy', epsilon_intervals_neg)
 
-        np.save(self.intervals_path + '_pos.npy', epsilon_intervals_pos)
-        np.save(self.intervals_path + '_neg.npy', epsilon_intervals_neg)
+        np.save(self.intervals_path +str(ID)+ '/tf_verify/epsilon_intervals_pos.npy', epsilon_intervals_pos)
+        np.save(self.intervals_path +str(ID)+ '/tf_verify/epsilon_intervals_neg.npy', epsilon_intervals_neg)
