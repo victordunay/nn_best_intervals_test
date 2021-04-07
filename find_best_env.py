@@ -28,12 +28,13 @@ class find_best_env:
         self.only_left = ["left"]
         self.polarities = ["up", "down"]
 
-    def run_eran(self):
+    def run_eran(self,ID:int):
 
         """
         run_eran function calls ERAN analyzer using expanded intervals
         """
         dummy_epsilon = 0.001
+        os.system("cd ../../ERAN"+str(ID)+"/tf_verify")
         os.system("python3 . --netname " + self.model_path + " --epsilon " + str(
             dummy_epsilon) + " --domain " + self.eran_domain + "  --dataset mnist  > ./out 2>./error")
         res = open("./out", "r").read()
@@ -243,7 +244,7 @@ class find_best_env:
         return prev_plus, prev_minus, empty_bin
 
     def expand_attempt(self, low: float, high: float, bins: list, eps_plus: list, eps_minus: list, side: str,
-                       polarity: str, bot2top: bool, mean_adversarial_examples_results, orig):
+                       polarity: str, bot2top: bool, mean_adversarial_examples_results, orig,ID:int):
 
         """
                 expand_attempt function attempts to expand the current best known intervals
@@ -262,16 +263,16 @@ class find_best_env:
                 """
         prev_plus, prev_minus, empty_bin = self.update_pre_expand_attempt(bins, eps_minus, eps_plus, bot2top,
                                                                           polarity, side,
-                                                                          mean_adversarial_examples_results, orig)
+                                                                          mean_adversarial_examples_results, orig,ID)
         if empty_bin:
             return prev_plus, prev_minus
-        verified = self.run_eran()
+        verified = self.run_eran(ID)
         print("verified=", verified, "\n")
 
         if verified:
 
             prev_plus, prev_minus = self.expand_attempt(low, high, bins, eps_plus, eps_minus, side, polarity, bot2top,
-                                                        mean_adversarial_examples_results, orig)
+                                                        mean_adversarial_examples_results, orig,ID)
         else:
             eps_plus = prev_plus
             eps_minus = prev_minus
@@ -327,7 +328,7 @@ class find_best_env:
                                                                                   eps_minus, side, polarity,
                                                                                   bot2top,
                                                                                   mean_adversarial_examples_results,
-                                                                                  orig)
+                                                                                  orig,ID)
                     eps_plus = curr_best_eps_plus
                     eps_minus = curr_best_eps_minus
             interval_plus, interval_minus, first_update = self.update_post_expand_attempt(minimum, maximum, bins,
@@ -375,7 +376,7 @@ class find_best_env:
                                                                                   eps_minus, side, polarity,
                                                                                   bot2top,
                                                                                   mean_adversarial_examples_results,
-                                                                                  orig)
+                                                                                  orig,ID)
                     eps_plus = curr_best_eps_plus
                     eps_minus = curr_best_eps_minus
 
