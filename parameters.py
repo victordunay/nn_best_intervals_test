@@ -65,7 +65,7 @@ neural_network = 'relu_3_100_mnist'
 eran_domain = 'deepzono'
 model_path = './models/' + neural_network + '.tf'
 #intervals_path = '/home/eran/Desktop/epsilon_intervals'
-intervals_path =  'epsilon_intervals'
+intervals_path =  '../../ERAN'
 num_of_tests_per_img = 10
 increment_factor = 40
 
