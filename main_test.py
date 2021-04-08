@@ -26,22 +26,22 @@ def parallel_process(model_, results_path_: str, ID_: int, mnist_features_, mnis
     # ================================================================
     #  generate adversarial examples
     # ================================================================
-    #global_tasks.generate_adversarial_examples_set(model_, results_path_, ID_, mnist_features_, mnist_labels_,adversarial_generator_)
+    # global_tasks.generate_adversarial_examples_set(model_, results_path_, ID_, mnist_features_, mnist_labels_,adversarial_generator_)
     # ================================================================
     # calculate mean vector between all adversarial attack methods
     # ================================================================
-    #adversarial_examples_set = global_tasks.calculate_mean(results_path_, ID_, image_size)
+    # adversarial_examples_set = global_tasks.calculate_mean(results_path_, ID_, image_size)
 
     # ================================================================
     # view adversarial process results
     # ================================================================
-    #global_tasks.view_adversarial_results(ID_, results_path, mnist_features)
+    # global_tasks.view_adversarial_results(ID_, results_path, mnist_features)
 
     # ================================================================
     # find maximum environment
     # ================================================================
 
-    interval_solver.find_max_intervals(results_path,ID_, mnist_features, mnist_labels)
+    interval_solver.find_max_intervals(results_path, ID_, mnist_features, mnist_labels)
 
     return ID_
 
@@ -81,6 +81,10 @@ if __name__ == "__main__":
     #  interval_solver instantiation
     # ================================================================
     interval_solver = find_best_env.find_best_env(parameters.search_params)
+    for ID in parameters.image_ids:
+        interval_solver.find_max_intervals(results_path, ID, mnist_features, mnist_labels)
+
+""" 
     processes = [mp.Process(target=parallel_process, args=(
     model, results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
                  parameters.image_ids]
@@ -88,6 +92,7 @@ if __name__ == "__main__":
         p.start()
     for p in processes:
         p.join()
+ """
 # results = [pool.apply(parallel_process, args=(model,results_path,ID,mnist_features,mnist_labels,adversarial_generator,parameters.image_size)) for ID in parameters.image_ids]
 
 
