@@ -115,8 +115,8 @@ class find_best_env:
             bin_ = ind[:, idx]
             v_plus.append(eps_plus[bin_[-1]])
             v_minus.append(eps_minus[bin_[-1]])
-        np.save(self.intervals_path +str(ID)+ '/tf_verify/epsilon_intervals_pos.npy', v_plus)
-        np.save(self.intervals_path +str(ID)+ '/tf_verify/epsilon_intervals_neg.npy', v_minus)
+        np.save(self.intervals_path + '/tf_verify/epsilon_intervals_pos.npy', v_plus)
+        np.save(self.intervals_path + '/tf_verify/epsilon_intervals_neg.npy', v_minus)
 
 
         return v_plus, v_minus, first_update
@@ -762,5 +762,5 @@ class find_best_env:
         #np.save('/home/eran/Desktop/epsilon_intervals_pos.npy', epsilon_intervals_pos)
         #np.save('/home/eran/Desktop/epsilon_intervals_neg.npy', epsilon_intervals_neg)
 
-        np.save(self.intervals_path +str(ID)+ '/tf_verify/epsilon_intervals_pos.npy', epsilon_intervals_pos)
-        np.save(self.intervals_path +str(ID)+ '/tf_verify/epsilon_intervals_neg.npy', epsilon_intervals_neg)
+        np.save(self.intervals_path + '/tf_verify/epsilon_intervals_pos.npy', epsilon_intervals_pos)
+        np.save(self.intervals_path + '/tf_verify/epsilon_intervals_neg.npy', epsilon_intervals_neg)
