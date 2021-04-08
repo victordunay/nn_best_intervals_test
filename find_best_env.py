@@ -34,7 +34,6 @@ class find_best_env:
         run_eran function calls ERAN analyzer using expanded intervals
         """
         dummy_epsilon = 0.001
-        os.system("cd ../../ERAN"+str(ID)+"/tf_verify")
         os.system("python3 . --netname " + self.model_path + " --epsilon " + str(
             dummy_epsilon) + " --domain " + self.eran_domain + "  --dataset mnist  > ./out 2>./error")
         res = open("./out", "r").read()
