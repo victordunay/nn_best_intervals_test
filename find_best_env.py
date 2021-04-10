@@ -530,6 +530,7 @@ class find_best_env:
 
 
         print("bins_after" + str(ID) + "_ is ", bins)
+        tmp_bins=np.asarray(tmp_bins)
         bin_neg = tmp_bins[tmp_bins < 0]
 
 
