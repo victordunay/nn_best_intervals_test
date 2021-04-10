@@ -603,7 +603,7 @@ class find_best_env:
         for j in range(len(bins) - 1):
             # bins_string.append(j)
             bins_string.append("{:.4f}".format(bins[j]) + '<' + "{:.4f}".format(bins[j + 1]))
-        plt.bar(bins_string, elements_per_bin, color='dodgerblue', width=1)
+        #plt.bar(bins_string, elements_per_bin, color='dodgerblue', width=1)
         plt.title("normalized valid interval per bin for solution histogram")
         plt.xlabel('bin index')
         plt.ylabel('number of pixels per bin')
