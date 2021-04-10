@@ -521,7 +521,7 @@ class find_best_env:
         v_minus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4minus.npy')
 
         bins = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'bins.npy')
-        print("bins_"+std(ID)+"_ is ",bins)
+        print("bins_"+str(ID)+"_ is ",bins)
         mean_adversarial_examples_results = np.load(
             '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
@@ -532,7 +532,7 @@ class find_best_env:
 
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
-        
+
         bins_size = len(bins)
         offset = 30
         scale = 10
