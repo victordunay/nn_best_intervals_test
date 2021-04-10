@@ -545,7 +545,7 @@ class find_best_env:
         plt.savefig('offset_intervals_' + str(ID) + '.png')
 
         fig = plt.figure(figsize=(10, 5))
-
+        print("<<<<<<<<<<<<test print is ",sum_intervals.shape)
         plt.plot(np.linspace(1, 409, 409), sum_intervals, 'or', markersize=8, label="init at~100%")
 
         ind = np.digitize(mean_adversarial_examples_results, bins)
@@ -609,7 +609,7 @@ class find_best_env:
         plt.xlabel('bin index')
         plt.ylabel('number of pixels per bin')
         plt.show()
-        plt.savefig('test_assumption_' + str(ID) + '.png')
+        plt.savefig('../../nn_best_intervals_test/intervals_results/test_assumption_' + str(ID) + '.png')
 
     def show_intervals(self, ID: int, results_path: str, mnist_features, mnist_labels):
 
@@ -729,7 +729,7 @@ class find_best_env:
         plt.legend()
         plt.text(0.5, 0.5, "size is")
         plt.show()
-        plt.savefig('no_offset_intervals_' + str(ID) + '.png')
+        plt.savefig('../../nn_best_intervals_test/intervals_results/no_offset_intervals_' + str(ID) + '.png')
 
         # plt.show()
         plt.axis([0, self.image_size[0] * self.image_size[1], 0, 1])
@@ -819,7 +819,7 @@ class find_best_env:
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
         plt.show()
-        plt.savefig('offset_intervals_' + str(ID) + '.png')
+        plt.savefig('../../nn_best_intervals_test/intervals_results/offset_intervals_' + str(ID) + '.png')
 
     def reset_intervals(self, adversarial_examples_set, ID: int):
         vector = adversarial_examples_set.reshape(-1, 784)
