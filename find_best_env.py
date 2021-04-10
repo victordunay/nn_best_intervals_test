@@ -529,7 +529,6 @@ class find_best_env:
         bins=np.asarray(tmp_bins)
 
 
-        print("bins_after" + str(ID) + "_ is ", bins)
         tmp_bins=np.asarray(tmp_bins)
         bin_neg = tmp_bins[tmp_bins < 0]
 
@@ -659,6 +658,24 @@ class find_best_env:
         v_plus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4plus.npy')
         v_minus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4minus.npy')
 
+
+        print("<<<<<<<<<<<<<<<<<<<IDX"+str(ID)+">>>>>>>>>>>>>> test for compare ")
+ 
+
+        print("diff12=",v_plus-v_plus2)
+        print("diff13=",v_plus-v_plus3)
+        print("diff14=",v_plus-v_plus4)
+        print("diff23=",v_plus2-v_plus3)
+        print("diff24=",v_plus2-v_plus4)
+        print("diff34=",v_plus3-v_plus4)
+        print("now min<<<<<<<<<<<<<<<<<<")
+        print("diff12=", v_minus - v_minus2)
+        print("diff13=", v_minus -v_minus3)
+        print("diff14=", v_minus - v_minus4)
+        print("diff23=",v_minus2 - v_minus3)
+        print("diff24=", v_minus2 -v_minus4)
+        print("diff34=", v_minus3 -v_minus4)
+        
         self.load_image(ID, mnist_features, mnist_labels)
         orig = self.read_sample(ID)
 
