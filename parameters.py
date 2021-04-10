@@ -11,7 +11,7 @@ targeted_labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 # ================================================================
 #  MNIST images IDs for test
 # ================================================================
-image_ids = list(range(1,256))
+image_ids = list(range(9,256))
 
 # ================================================================
 #  gradient descent & regularization based attack hyper-parameters
@@ -65,6 +65,8 @@ eran_domain = 'deepzono'
 model_path = './models/' + neural_network + '.tf'
 #intervals_path = '/home/eran/Desktop/epsilon_intervals'
 intervals_path =  'epsilon_intervals'
+intervals_results_path = '../../nn_best_intervals_test/intervals_results'
+
 num_of_tests_per_img = 4
 increment_factor = 40
 
@@ -73,4 +75,4 @@ increment_factor = 40
 # ================================================================
 search_params = dict(increment_factor=increment_factor, num_of_tests_per_img=num_of_tests_per_img,
                      eran_domain=eran_domain, pixel_res=pixel_res, model_path=model_path, image_size=image_size,
-                     intervals_path=intervals_path)
+                     intervals_path=intervals_path,intervals_results_path=intervals_results_path)
