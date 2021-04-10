@@ -660,7 +660,7 @@ class find_best_env:
 
 
         print("<<<<<<<<<<<<<<<<<<<IDX"+str(ID)+">>>>>>>>>>>>>> test for compare ")
- 
+
 
         print("diff12=",v_plus-v_plus2)
         print("diff13=",v_plus-v_plus3)
@@ -675,7 +675,7 @@ class find_best_env:
         print("diff23=",v_minus2 - v_minus3)
         print("diff24=", v_minus2 -v_minus4)
         print("diff34=", v_minus3 -v_minus4)
-        
+
         self.load_image(ID, mnist_features, mnist_labels)
         orig = self.read_sample(ID)
 
