@@ -309,7 +309,7 @@ class find_best_env:
         high = round(start_high / self.pixel_res) * self.pixel_res
         termination = bool(low > -1 * self.pixel_res) and bool(high < 1 * self.pixel_res)
         iter_ = 0
-
+        print("start test idx "+str(test_idx)+"st_low   ="+str(low)+"   st_high   ="+str(high)+"     $$$$$$$$$$$$$$$$$$$$$$$$$4")
         while not termination:
             print("iter=", iter_)
             print("low=", low, "\n")
@@ -323,8 +323,8 @@ class find_best_env:
                 sides = ["right", "left"]
             for side in sides:
                 for polarity in self.polarities:
-                    print("side=", side, "\n")
-                    print("polarity=", polarity, "\n")
+                    #print("side=", side, "\n")
+                    #print("polarity=", polarity, "\n")
 
                     curr_best_eps_plus, curr_best_eps_minus = self.expand_attempt(low, high, bins, eps_plus,
                                                                                   eps_minus, side, polarity,
@@ -362,7 +362,9 @@ class find_best_env:
         high = high + self.pixel_res
         print("<<<<<<<<<<<<<<<<<< done first part >>>>>>>>>>>>>>")
         while not termination:
-
+            print("iter=", iter_)
+            print("low=", low, "\n")
+            print("high=", high, "\n")
             iter_ = iter_ + 1
             if bool(low < minimum + self.pixel_res):
                 sides = self.only_right
