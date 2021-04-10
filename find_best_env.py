@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import os
 import shutil
 import pandas as pd
+import decimal
 
 
 class find_best_env:
@@ -23,12 +24,13 @@ class find_best_env:
         self.intervals_path = search_params['intervals_path']
         self.num_of_tests_per_img = search_params['num_of_tests_per_img']
         self.increment_factor = search_params['increment_factor']
+        self.intervals_results_path = search_params['intervals_results_path']
         self.sides = ["right", "left"]
         self.only_right = ["right"]
         self.only_left = ["left"]
         self.polarities = ["up", "down"]
 
-    def run_eran(self,ID:int):
+    def run_eran(self, ID: int):
 
         """
         run_eran function calls ERAN analyzer using expanded intervals
@@ -46,7 +48,7 @@ class find_best_env:
 
     def update_post_expand_attempt(self, minimum: float, maximum: float, bins: list, eps_minus: list, eps_plus: list,
                                    bot2top: bool, high: float, low: float, mean_adversarial_examples_results,
-                                   first_update: bool,ID:int):
+                                   first_update: bool, ID: int):
 
         """
             update_post_expand_attempt function updates bins,eps_plus and eps_minus vectors after
@@ -115,9 +117,8 @@ class find_best_env:
             bin_ = ind[:, idx]
             v_plus.append(eps_plus[bin_[-1]])
             v_minus.append(eps_minus[bin_[-1]])
-        np.save(self.intervals_path +'_pos.npy', v_plus)
+        np.save(self.intervals_path + '_pos.npy', v_plus)
         np.save(self.intervals_path + '_neg.npy', v_minus)
-
 
         return v_plus, v_minus, first_update
 
@@ -245,7 +246,7 @@ class find_best_env:
         return prev_plus, prev_minus, empty_bin
 
     def expand_attempt(self, low: float, high: float, bins: list, eps_plus: list, eps_minus: list, side: str,
-                       polarity: str, bot2top: bool, mean_adversarial_examples_results, orig,ID:int):
+                       polarity: str, bot2top: bool, mean_adversarial_examples_results, orig, ID: int):
 
         """
                 expand_attempt function attempts to expand the current best known intervals
@@ -273,7 +274,7 @@ class find_best_env:
         if verified:
 
             prev_plus, prev_minus = self.expand_attempt(low, high, bins, eps_plus, eps_minus, side, polarity, bot2top,
-                                                        mean_adversarial_examples_results, orig,ID)
+                                                        mean_adversarial_examples_results, orig, ID)
         else:
             eps_plus = prev_plus
             eps_minus = prev_minus
@@ -283,7 +284,7 @@ class find_best_env:
     def find_max_environment(self, minimum: float, maximum: float, start_low: float, start_high: float, bins: list,
                              bot2top: bool,
                              mean_adversarial_examples_results, eps_plus: list, eps_minus: list,
-                             first_update: bool, orig, intervals_results_path, ID, test_idx):
+                             first_update: bool, orig, ID, test_idx):
 
         """
                       expand_attempt function attempts to expand the current best known intervals
@@ -329,14 +330,14 @@ class find_best_env:
                                                                                   eps_minus, side, polarity,
                                                                                   bot2top,
                                                                                   mean_adversarial_examples_results,
-                                                                                  orig,ID)
+                                                                                  orig, ID)
                     eps_plus = curr_best_eps_plus
                     eps_minus = curr_best_eps_minus
             interval_plus, interval_minus, first_update = self.update_post_expand_attempt(minimum, maximum, bins,
                                                                                           eps_minus,
                                                                                           eps_plus, bot2top, high, low,
                                                                                           mean_adversarial_examples_results,
-                                                                                          first_update,ID)
+                                                                                          first_update, ID)
             np.save(self.intervals_path + '_pos.npy', interval_plus)
             np.save(self.intervals_path + '_neg.npy', interval_minus)
             if high > self.pixel_res:
@@ -355,7 +356,7 @@ class find_best_env:
                                                                                       eps_minus,
                                                                                       eps_plus, bot2top, high, low,
                                                                                       mean_adversarial_examples_results,
-                                                                                      first_update,ID)
+                                                                                      first_update, ID)
 
         low = low - self.pixel_res
         high = high + self.pixel_res
@@ -377,7 +378,7 @@ class find_best_env:
                                                                                   eps_minus, side, polarity,
                                                                                   bot2top,
                                                                                   mean_adversarial_examples_results,
-                                                                                  orig,ID)
+                                                                                  orig, ID)
                     eps_plus = curr_best_eps_plus
                     eps_minus = curr_best_eps_minus
 
@@ -386,7 +387,7 @@ class find_best_env:
                                                                                           eps_plus, bot2top,
                                                                                           high, low,
                                                                                           mean_adversarial_examples_results,
-                                                                                          first_update,ID)
+                                                                                          first_update, ID)
             np.save(self.intervals_path + '_pos.npy', interval_plus)
             np.save(self.intervals_path + '_neg.npy', interval_minus)
             high = high + self.pixel_res
@@ -394,10 +395,11 @@ class find_best_env:
 
             termination = bool(low <= minimum) and bool(high >= maximum)
 
-        np.save(intervals_results_path + '/ID_' + str(ID) + 'init_at_' + str(test_idx) + 'plus.npy', interval_plus)
-        np.save(intervals_results_path + '/ID_' + str(ID) + 'init_at_' + str(test_idx) + 'minus.npy', interval_minus)
+        np.save(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_' + str(test_idx) + 'plus.npy', interval_plus)
+        np.save(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_' + str(test_idx) + 'minus.npy',
+                interval_minus)
         if test_idx == 1:
-            np.save(intervals_results_path + '/ID_' + str(ID) + 'bins.npy', bins)
+            np.save(self.intervals_results_path + '/ID_' + str(ID) + 'bins.npy', bins)
 
     def show_hist(self, mean_adversarial_examples_results, bins: list):
         mean_adversarial_examples_results = mean_adversarial_examples_results.reshape(-1, self.image_size[0] *
@@ -428,7 +430,7 @@ class find_best_env:
 
              :param ID: MNIST dataset image ID
              """
-        #crr_img_path = "/home/eran/Desktop/img_for_test_ID_" + str(ID) + ".csv"
+        # crr_img_path = "/home/eran/Desktop/img_for_test_ID_" + str(ID) + ".csv"
         crr_img_path = "../../nn_best_intervals_test/images_for_test/img_for_test_ID_" + str(ID) + ".csv"
         shutil.copy(crr_img_path, "../data/mnist_test.csv")
         crr_img = open(crr_img_path).read().strip().split(",")[1:]
@@ -455,10 +457,10 @@ class find_best_env:
         img_for_eran = np.concatenate((label_eran.astype('int'), img_for_eran.astype('int')), axis=1)
         img_for_eran[img_for_eran == mnist_labels[ID]] = int(mnist_labels[ID])
         # Todo pd.DataFrame(img_for_eran).to_csv("/home/eran/Desktop/img_for_test_ID_" + str(ID) + ".csv", header=None,index=None)
-        pd.DataFrame(img_for_eran).to_csv(images_for_test_path+"/img_for_test_ID_" + str(ID) + ".csv", header=None,
+        pd.DataFrame(img_for_eran).to_csv(images_for_test_path + "/img_for_test_ID_" + str(ID) + ".csv", header=None,
                                           index=None)
 
-    def find_max_intervals(self,results_path, ID, mnist_features, mnist_labels):
+    def find_max_intervals(self, results_path, ID, mnist_features, mnist_labels):
         """
         find_max_intervals function is the main class task which performs the steps for finding the maximum environment
 
@@ -469,25 +471,25 @@ class find_best_env:
         :param mean_adversarial_examples_results: the mean between all adversarial images
 
         """
-        mean_adversarial_examples_results=np.load('../../nn_best_intervals_test/'+results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+        mean_adversarial_examples_results = np.load('../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
-        #intervals_results_path = '/home/eran/Desktop/intervals_results'
-        intervals_results_path = '../../nn_best_intervals_test/intervals_results'
 
-        if not os.path.exists(intervals_results_path):
-            os.makedirs(intervals_results_path)
-        start_low_list = [np.amin(mean_adversarial_examples_results) + (np.amin(mean_adversarial_examples_results)/self.num_of_tests_per_img )* i * self.pixel_res for i
+        if not os.path.exists(self.intervals_results_path):
+            os.makedirs(self.intervals_results_path)
+        start_low_list = [np.amin(mean_adversarial_examples_results) + (
+                np.amin(mean_adversarial_examples_results) / self.num_of_tests_per_img) * i * self.pixel_res for i
                           in
                           range(self.num_of_tests_per_img)]
-        start_high_list = [np.amax(mean_adversarial_examples_results) - (np.amax(mean_adversarial_examples_results)/self.num_of_tests_per_img)* i * self.pixel_res for i
+        start_high_list = [np.amax(mean_adversarial_examples_results) - (
+                np.amax(mean_adversarial_examples_results) / self.num_of_tests_per_img) * i * self.pixel_res for i
                            in
                            range(self.num_of_tests_per_img)]
         test_idx = 0
         for start_low, start_high in zip(start_low_list, start_high_list):
             test_idx += 1
-            self.reset_intervals(mean_adversarial_examples_results,ID)
+            self.reset_intervals(mean_adversarial_examples_results, ID)
             bot2top = False
             minimum = np.amin(mean_adversarial_examples_results)
             maximum = np.amax(mean_adversarial_examples_results)
@@ -501,20 +503,36 @@ class find_best_env:
 
             self.find_max_environment(minimum, maximum, start_low, start_high, bins, bot2top,
                                       mean_adversarial_examples_results, eps_plus, eps_minus, first_update, s,
-                                      intervals_results_path, ID, test_idx)
+                                      ID, test_idx)
 
-    def show_hist_final(self, mean_adversarial_examples_results, bins1: list, bins2: list, bins3: list, bins4: list,
-                        v_plus: list, v_minus: list, v_plus2: list, v_minus2: list, v_plus3: list, v_minus3: list,
-                        v_plus4: list, v_minus4: list):
+    def show_hist_final(self, ID: int,results_path:str):
+
+        v_plus = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_1plus.npy')
+        v_minus = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_1minus.npy')
+
+        v_plus2 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_2plus.npy')
+        v_minus2 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_2minus.npy')
+
+        v_plus3 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_3plus.npy')
+        v_minus3 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_3minus.npy')
+
+        v_plus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4plus.npy')
+        v_minus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4minus.npy')
+
+        bins = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'bins.npy')
+
+        mean_adversarial_examples_results = np.load('../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+
+
         mean_adversarial_examples_results = mean_adversarial_examples_results.reshape(-1, self.image_size[0] *
                                                                                       self.image_size[1])
 
         ##test assumption
 
-        ind = np.digitize(mean_adversarial_examples_results, bins1)
+        ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
 
-        bins_size = len(bins1)
+        bins_size = len(bins)
         sum_intervals = []
         for i in range(bins_size):
             bins_pixels = np.asarray([ind == i])
@@ -523,15 +541,15 @@ class find_best_env:
             num_of_pixels_in_bin = np.sum(bins_pixels)
             sum_intervals.append(
                 (np.sum(v_plus[bins_pixels]) - np.sum(v_minus[bins_pixels]) / num_of_pixels_in_bin) * 10 + 30)
+        plt.savefig('offset_intervals_' + str(ID) + '.png')
 
         fig = plt.figure(figsize=(10, 5))
 
         plt.plot(np.linspace(1, 409, 409), sum_intervals, 'or', markersize=8, label="init at~100%")
 
-        ind = np.digitize(mean_adversarial_examples_results, bins2)
+        ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
 
-        bins_size = len(bins2)
         sum_intervals = []
         for i in range(bins_size):
             bins_pixels = np.asarray([ind == i])
@@ -543,10 +561,9 @@ class find_best_env:
 
         plt.plot(np.linspace(1, 409, 409), sum_intervals, 'og', markersize=6, label="init at~60%")
 
-        ind = np.digitize(mean_adversarial_examples_results, bins3)
+        ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
 
-        bins_size = len(bins3)
         sum_intervals = []
         for i in range(bins_size):
             bins_pixels = np.asarray([ind == i])
@@ -557,10 +574,9 @@ class find_best_env:
                 (np.sum(v_plus3[bins_pixels]) - np.sum(v_minus3[bins_pixels]) / num_of_pixels_in_bin) * 10 + 30)
 
         plt.plot(np.linspace(1, 409, 409), sum_intervals, 'ob', markersize=4, label="init at~40%")
-        ind = np.digitize(mean_adversarial_examples_results, bins4)
+        ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
 
-        bins_size = len(bins4)
         sum_intervals = []
         for i in range(bins_size):
             bins_pixels = np.asarray([ind == i])
@@ -573,28 +589,66 @@ class find_best_env:
         plt.plot(np.linspace(1, 409, 409), sum_intervals, 'oc', markersize=2, label="init at~20%")
         plt.legend()
 
-        elements_per_bin2 = []
-        for i in range(len(bins2) - 1):
+        elements_per_bin = []
+        for i in range(len(bins) - 1):
             counter = 0
             for j in range(self.image_size[0] * self.image_size[1]):
 
-                if bins2[i] <= mean_adversarial_examples_results[:, j] <= bins2[i + 1]:
+                if bins[i] <= mean_adversarial_examples_results[:, j] <= [i + 1]:
                     counter += 1
 
-            elements_per_bin2.append(counter)
+            elements_per_bin.append(counter)
 
         bins_string = []
-        for j in range(len(bins2) - 1):
+        for j in range(len(bins) - 1):
             # bins_string.append(j)
-            bins_string.append("{:.4f}".format(bins2[j]) + '<' + "{:.4f}".format(bins2[j + 1]))
-        plt.bar(bins_string, elements_per_bin2, color='dodgerblue', width=1)
+            bins_string.append("{:.4f}".format(bins[j]) + '<' + "{:.4f}".format(bins[j + 1]))
+        plt.bar(bins_string, elements_per_bin, color='dodgerblue', width=1)
         plt.title("normalized valid interval per bin for solution histogram")
         plt.xlabel('bin index')
         plt.ylabel('number of pixels per bin')
         plt.show()
+        plt.savefig('test_assumption_' + str(ID) + '.png')
 
-    def show_intervals(self, adversarial_examples_set, v_plus: list, v_minus: list, v_plus2: list, v_minus2: list,
-                       v_plus3: list, v_minus3: list, v_plus4: list, v_minus4: list, orig):
+
+    def show_intervals(self, ID: int,results_path:str):
+
+        v_plus = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_1plus.npy')
+        v_minus = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_1minus.npy')
+
+        v_plus2 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_2plus.npy')
+        v_minus2 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_2minus.npy')
+
+        v_plus3 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_3plus.npy')
+        v_minus3 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_3minus.npy')
+
+        v_plus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4plus.npy')
+        v_minus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4minus.npy')
+
+        orig = self.read_sample(ID)
+
+        for i in range(self.image_size[0] * self.image_size[1]):
+            if v_plus[i] + orig[i] > 1:
+                v_plus[i] = 1 - orig[i]
+            if v_plus2[i] + orig[i] > 1:
+                v_plus2[i] = 1 - orig[i]
+            if v_plus3[i] + orig[i] > 1:
+                v_plus3[i] = 1 - orig[i]
+            if v_plus4[i] + orig[i] > 1:
+                v_plus4[i] = 1 - orig[i]
+
+            if v_minus[i] + orig[i] < 0:
+                v_minus[i] = -orig[i]
+            if v_minus2[i] + orig[i] < 0:
+                v_minus2[i] = -orig[i]
+            if v_minus3[i] + orig[i] < 0:
+                v_minus3[i] = -orig[i]
+            if v_minus4[i] + orig[i] < 0:
+                v_minus4[i] = -orig[i]
+
+        adversarial_examples_set = np.load('../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+
+
         adversarial_examples_set = adversarial_examples_set.reshape(-1, 784)
         adversarial_examples_set = np.squeeze(adversarial_examples_set, axis=0)
         v_minus = [i * (-1) for i in v_minus]
@@ -608,6 +662,9 @@ class find_best_env:
         size_test_minus = size_test_minus / self.pixel_res + 1
 
         size_1 = size_test_plus + size_test_minus
+        size1 = decimal.Decimal(1)
+        for i in range(self.image_size[0] * self.image_size[1]):
+            size1 *= decimal.Decimal(size_1[i])
 
         size_test_plus = v_plus2.copy()
         size_test_minus = np.asarray(v_minus2).copy()
@@ -615,11 +672,19 @@ class find_best_env:
         size_test_minus = size_test_minus / self.pixel_res + 1
         size_2 = size_test_plus + size_test_minus
 
+        size2 = decimal.Decimal(1)
+        for i in range(self.image_size[0] * self.image_size[1]):
+            size2 *= decimal.Decimal(size_2[i])
+
         size_test_plus = v_plus3.copy()
         size_test_minus = np.asarray(v_minus3).copy()
         size_test_plus = size_test_plus / self.pixel_res + 1
         size_test_minus = size_test_minus / self.pixel_res + 1
         size_3 = size_test_plus + size_test_minus
+
+        size3 = decimal.Decimal(1)
+        for i in range(self.image_size[0] * self.image_size[1]):
+            size3 *= decimal.Decimal(size_3[i])
 
         size_test_plus = v_plus4.copy()
         size_test_minus = np.asarray(v_minus4).copy()
@@ -627,125 +692,135 @@ class find_best_env:
         size_test_minus = size_test_minus / self.pixel_res + 1
         size_4 = size_test_plus + size_test_minus
 
-        div1_2 = np.prod(size_1 / size_2)
-        div1_3 = np.prod(size_1 / size_3)
-        div1_4 = np.prod(size_1 / size_4)
+        size4 = decimal.Decimal(1)
+        for i in range(self.image_size[0] * self.image_size[1]):
+            size4 *= decimal.Decimal(size_4[i])
 
-        div2_3 = np.prod(size_2 / size_3)
-        div2_4 = np.prod(size_2 / size_4)
-
-        div3_4 = np.prod(size_3 / size_4)
-
-        print("div1_2=", div1_2)
-        print("div1_3=", div1_3)
-        print("div1_4=", div1_4)
-        print("div2_3=", div2_3)
-        print("div2_4=", div2_4)
-        print("div3_4=", div3_4)
-
-        print("diff1 plus", "\n", np.sum(v_plus - v_plus2) / self.pixel_res)
-        print("diff1 minus=", "\n", np.sum(np.asarray(v_minus) - np.asarray(v_minus2)) / self.pixel_res)
-
-        print("diff1 plus", "\n", np.sum(v_plus - v_plus3) / self.pixel_res)
-        print("diff1 minus=", "\n", np.sum(np.asarray(v_minus) - np.asarray(v_minus3)) / self.pixel_res)
-
-        print("diff1 plus", "\n", np.sum(v_plus - v_plus4) / self.pixel_res)
-        print("diff1 minus=", "\n", np.sum(np.asarray(v_minus) - np.asarray(v_minus4)) / self.pixel_res)
         fig = plt.figure(figsize=(10, 5))
-        plt.errorbar(np.linspace(1, 784, num=784), np.zeros(784), xerr=None,
-                     yerr=[[i / self.pixel_res for i in v_minus], [i / self.pixel_res for i in v_plus]], fmt='none',
-                     color='b',
-                     label="normalized size is 10^10 init at ~100%", elinewidth=8)
-        plt.errorbar(np.linspace(1, 784, num=784), np.zeros(784), xerr=None,
-                     yerr=[[i / self.pixel_res for i in v_minus2], [i / self.pixel_res for i in v_plus2]], fmt='none',
-                     color='r',
-                     label=" normalized size is 5*10^9 init at ~60%", elinewidth=6)
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+            np.zeros(self.image_size[0] * self.image_size[1]), xerr=None,
+            yerr=[[i / self.pixel_res for i in v_minus], [i / self.pixel_res for i in v_plus]], fmt='none',
+            color='b',
+            label="normalized size is" + str(size1) + "  init at ~100%", elinewidth=8)
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+            np.zeros(self.image_size[0] * self.image_size[1]), xerr=None,
+            yerr=[[i / self.pixel_res for i in v_minus2], [i / self.pixel_res for i in v_plus2]], fmt='none',
+            color='r',
+            label=" normalized size is" + str(size2) + "  init at ~60%", elinewidth=6)
 
-        plt.errorbar(np.linspace(1, 784, num=784), np.zeros(784), xerr=None,
-                     yerr=[[i / self.pixel_res for i in v_minus3], [i / self.pixel_res for i in v_plus3]], fmt='none',
-                     color='g',
-                     label="normalized size is 10^4 init at ~40%", elinewidth=4)
-        plt.errorbar(np.linspace(1, 784, num=784), np.zeros(784), xerr=None,
-                     yerr=[[i / self.pixel_res for i in v_minus4], [i / self.pixel_res for i in v_plus4]], fmt='none',
-                     color='fuchsia',
-                     label="normalized size is 10^0 1nit at ~20%", elinewidth=2)
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+            np.zeros(self.image_size[0] * self.image_size[1]), xerr=None,
+            yerr=[[i / self.pixel_res for i in v_minus3], [i / self.pixel_res for i in v_plus3]], fmt='none',
+            color='g',
+            label="normalized size is " + str(size3) + "  init at ~40%", elinewidth=4)
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+            np.zeros(self.image_size[0] * self.image_size[1]), xerr=None,
+            yerr=[[i / self.pixel_res for i in v_minus4], [i / self.pixel_res for i in v_plus4]], fmt='none',
+            color='fuchsia',
+            label="normalized size is " + str(size4) + "  init at ~20%", elinewidth=2)
         plt.title("intervals comparison")
         plt.xlabel('pixel index')
         plt.ylabel('valid pixel environment')
         plt.legend()
         plt.text(0.5, 0.5, "size is")
         plt.show()
+        plt.savefig('no_offset_intervals_' + str(ID) + '.png')
 
         # plt.show()
-        plt.axis([0, 784, 0, 1])
+        plt.axis([0, self.image_size[0] * self.image_size[1], 0, 1])
         plt.subplot(4, 2, 1)
-        plt.plot(np.linspace(1, 784, num=784), orig, 'or', markersize=1)
+        plt.plot(np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+                 orig, 'or', markersize=1)
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
-        plt.errorbar(np.linspace(1, 784, num=784), orig, xerr=None, yerr=[v_minus, v_plus], fmt='none', color='b',
-                     label="4")
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]), orig,
+            xerr=None, yerr=[v_minus, v_plus], fmt='none', color='b',
+            label="4")
         plt.title('best valid intervals with original image offset init at ~100%')
 
         plt.subplot(4, 2, 2)
         # plt.plot(np.linspace(1,784,num=784),orig,'or',markersize=1)
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
-        plt.errorbar(np.linspace(1, 784, num=784), np.zeros(784), xerr=None, yerr=[v_minus, v_plus], fmt='none',
-                     color='b', label="4")
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+            np.zeros(self.image_size[0] * self.image_size[1]), xerr=None, yerr=[v_minus, v_plus], fmt='none',
+            color='b', label="4")
         plt.title('best valid intervals with zero offset init at ~100%')
 
         plt.subplot(4, 2, 3)
-        plt.plot(np.linspace(1, 784, num=784), orig, 'or', markersize=1)
+        plt.plot(np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+                 orig, 'or', markersize=1)
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
-        plt.errorbar(np.linspace(1, 784, num=784), orig, xerr=None, yerr=[v_minus2, v_plus2], fmt='none', color='b',
-                     label="4")
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]), orig,
+            xerr=None, yerr=[v_minus2, v_plus2], fmt='none', color='b',
+            label="4")
         plt.title('best valid intervals with original image offset init at ~60%')
 
         plt.subplot(4, 2, 4)
         # plt.plot(np.linspace(1,784,num=784),orig,'or',markersize=1)
 
-        plt.errorbar(np.linspace(1, 784, num=784), np.zeros(784), xerr=None, yerr=[v_minus2, v_plus2], fmt='none',
-                     color='b', label="4")
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+            np.zeros(self.image_size[0] * self.image_size[1]), xerr=None, yerr=[v_minus2, v_plus2], fmt='none',
+            color='b', label="4")
         plt.title('best valid intervals with zero offset init at ~60%')
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
         plt.subplot(4, 2, 5)
-        plt.plot(np.linspace(1, 784, num=784), orig, 'or', markersize=1)
+        plt.plot(np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+                 orig, 'or', markersize=1)
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
-        plt.errorbar(np.linspace(1, 784, num=784), orig, xerr=None, yerr=[v_minus3, v_plus3], fmt='none', color='b',
-                     label="4")
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]), orig,
+            xerr=None, yerr=[v_minus3, v_plus3], fmt='none', color='b',
+            label="4")
         plt.title('best valid intervals with original image offset init at ~40%')
         plt.subplot(4, 2, 6)
         # plt.plot(np.linspace(1,784,num=784),orig,'or',markersize=1)
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
-        plt.errorbar(np.linspace(1, 784, num=784), np.zeros(784), xerr=None, yerr=[v_minus3, v_plus3], fmt='none',
-                     color='b', label="4")
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+            np.zeros(self.image_size[0] * self.image_size[1]), xerr=None, yerr=[v_minus3, v_plus3], fmt='none',
+            color='b', label="4")
         plt.title('best valid intervals with zero offset init at ~40%')
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
         plt.subplot(4, 2, 7)
-        plt.plot(np.linspace(1, 784, num=784), orig, 'or', markersize=1)
+        plt.plot(np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+                 orig, 'or', markersize=1)
 
-        plt.errorbar(np.linspace(1, 784, num=784), orig, xerr=None, yerr=[v_minus4, v_plus4], fmt='none', color='b',
-                     label="4")
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]), orig,
+            xerr=None, yerr=[v_minus4, v_plus4], fmt='none', color='b',
+            label="4")
         plt.title('best valid intervals with original image offset init at ~20%')
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
         plt.subplot(4, 2, 8)
         # plt.plot(np.linspace(1,784,num=784),orig,'or',markersize=1)
 
-        plt.errorbar(np.linspace(1, 784, num=784), np.zeros(784), xerr=None, yerr=[v_minus4, v_plus4], fmt='none',
-                     color='b', label="4")
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+            np.zeros(self.image_size[0] * self.image_size[1]), xerr=None, yerr=[v_minus4, v_plus4], fmt='none',
+            color='b', label="4")
         plt.title('best valid intervals with zero offset init at ~20%')
 
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
         plt.show()
+        plt.savefig('offset_intervals_' + str(ID) + '.png')
 
-    def reset_intervals(self, adversarial_examples_set,ID:int):
+    def reset_intervals(self, adversarial_examples_set, ID: int):
         vector = adversarial_examples_set.reshape(-1, 784)
         bins = [-1, -0.005, 0, 0.005, 1]
         ind = np.digitize(vector, bins)
@@ -759,8 +834,8 @@ class find_best_env:
             bin = ind[:, idx]
             epsilon_intervals_pos.append(epsilon_pos_list[bin[-1]])
             epsilon_intervals_neg.append(epsilon_neg_list[bin[-1]])
-        #np.save('/home/eran/Desktop/epsilon_intervals_pos.npy', epsilon_intervals_pos)
-        #np.save('/home/eran/Desktop/epsilon_intervals_neg.npy', epsilon_intervals_neg)
+        # np.save('/home/eran/Desktop/epsilon_intervals_pos.npy', epsilon_intervals_pos)
+        # np.save('/home/eran/Desktop/epsilon_intervals_neg.npy', epsilon_intervals_neg)
 
         np.save(self.intervals_path + '_pos.npy', epsilon_intervals_pos)
         np.save(self.intervals_path + '_neg.npy', epsilon_intervals_neg)
