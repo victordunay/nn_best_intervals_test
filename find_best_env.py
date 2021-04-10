@@ -396,7 +396,7 @@ class find_best_env:
 
         np.save(intervals_results_path + '/ID_' + str(ID) + 'init_at_' + str(test_idx) + 'plus.npy', interval_plus)
         np.save(intervals_results_path + '/ID_' + str(ID) + 'init_at_' + str(test_idx) + 'minus.npy', interval_minus)
-        if test_idx == 0:
+        if test_idx == 1:
             np.save(intervals_results_path + '/ID_' + str(ID) + 'bins.npy', bins)
 
     def show_hist(self, mean_adversarial_examples_results, bins: list):
