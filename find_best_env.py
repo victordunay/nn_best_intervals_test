@@ -545,7 +545,7 @@ class find_best_env:
         plt.savefig('offset_intervals_' + str(ID) + '.png')
 
         fig = plt.figure(figsize=(10, 5))
-        print("<<<<<<<<<<<<test print is ",sum_intervals.shape)
+        print("<<<<<<<<<<<<test print is ",len(sum_intervals))
         plt.plot(np.linspace(1, 409, 409), sum_intervals, 'or', markersize=8, label="init at~100%")
 
         ind = np.digitize(mean_adversarial_examples_results, bins)
