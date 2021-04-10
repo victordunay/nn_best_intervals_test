@@ -471,7 +471,8 @@ class find_best_env:
         :param mean_adversarial_examples_results: the mean between all adversarial images
 
         """
-        mean_adversarial_examples_results = np.load('../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+        mean_adversarial_examples_results = np.load(
+            '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
@@ -505,7 +506,7 @@ class find_best_env:
                                       mean_adversarial_examples_results, eps_plus, eps_minus, first_update, s,
                                       ID, test_idx)
 
-    def show_hist_final(self, ID: int,results_path:str):
+    def show_hist_final(self, ID: int, results_path: str):
 
         v_plus = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_1plus.npy')
         v_minus = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_1minus.npy')
@@ -521,8 +522,8 @@ class find_best_env:
 
         bins = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'bins.npy')
 
-        mean_adversarial_examples_results = np.load('../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
-
+        mean_adversarial_examples_results = np.load(
+            '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         mean_adversarial_examples_results = mean_adversarial_examples_results.reshape(-1, self.image_size[0] *
                                                                                       self.image_size[1])
@@ -610,8 +611,7 @@ class find_best_env:
         plt.show()
         plt.savefig('test_assumption_' + str(ID) + '.png')
 
-
-    def show_intervals(self, ID: int,results_path:str):
+    def show_intervals(self, ID: int, results_path: str, mnist_features, mnist_labels):
 
         v_plus = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_1plus.npy')
         v_minus = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_1minus.npy')
@@ -625,6 +625,7 @@ class find_best_env:
         v_plus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4plus.npy')
         v_minus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4minus.npy')
 
+        self.load_image(ID, mnist_features, mnist_labels)
         orig = self.read_sample(ID)
 
         for i in range(self.image_size[0] * self.image_size[1]):
@@ -646,8 +647,8 @@ class find_best_env:
             if v_minus4[i] + orig[i] < 0:
                 v_minus4[i] = -orig[i]
 
-        adversarial_examples_set = np.load('../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
-
+        adversarial_examples_set = np.load(
+            '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         adversarial_examples_set = adversarial_examples_set.reshape(-1, 784)
         adversarial_examples_set = np.squeeze(adversarial_examples_set, axis=0)
