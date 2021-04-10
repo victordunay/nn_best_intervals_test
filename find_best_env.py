@@ -521,7 +521,12 @@ class find_best_env:
         v_minus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4minus.npy')
 
         bins = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'bins.npy')
-        print("bins_"+str(ID)+"_ is ",bins)
+        print("bins_before" + str(ID) + "_ is ", bins)
+        for i in range(len(bins)):
+            if (abs(bins[i]) < 1 / 255):
+                bins.remove(bins[i])
+        print("bins_after" + str(ID) + "_ is ", bins)
+
         mean_adversarial_examples_results = np.load(
             '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
