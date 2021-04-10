@@ -530,13 +530,11 @@ class find_best_env:
 
 
         print("bins_after" + str(ID) + "_ is ", bins)
-        bin_neg = bins[bins < 0]
-        bin_pos = bins[bins > 0]
-        print("bin_neg",bin_neg)
-        print("bin_pos",bin_pos)
+        bin_neg = tmp_bins[tmp_bins < 0]
 
-        vline_h=np.amin(bin_pos)
-        vline_l=np.amax(bin_neg)
+
+        vline_h=np.argmax(bin_neg)
+        vline_l=vline_h+1
         vline_mean=(vline_h+vline_l)/2
         mean_adversarial_examples_results = np.load(
             '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
@@ -642,7 +640,7 @@ class find_best_env:
         plt.title("normalized valid interval per bin for solution histogram")
         plt.xlabel('bin index')
         plt.ylabel('number of pixels per bin')
-        plt.vlines(x=vline_mean,ymin=0,ymax=max(elements_per_bin))
+        plt.vlines(x=vline_mean,ymin=0,ymax=max(elements_per_bin),colors='purple')
         plt.show()
         plt.savefig('../../nn_best_intervals_test/intervals_results/test_assumption_' + str(ID) + '.png')
 
