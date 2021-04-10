@@ -521,7 +521,7 @@ class find_best_env:
         v_minus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4minus.npy')
 
         bins = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'bins.npy')
-
+        print("bins_"+std(ID)+"_ is ",bins)
         mean_adversarial_examples_results = np.load(
             '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
@@ -532,20 +532,27 @@ class find_best_env:
 
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
-
+        
         bins_size = len(bins)
+        offset = 30
+        scale = 10
+
         sum_intervals = []
         for i in range(bins_size):
             bins_pixels = np.asarray([ind == i])
             bins_pixels = np.squeeze(bins_pixels, axis=0)
             bins_pixels = np.squeeze(bins_pixels, axis=0)
             num_of_pixels_in_bin = np.sum(bins_pixels)
-            sum_intervals.append(
-                (np.sum(v_plus[bins_pixels]) - np.sum(v_minus[bins_pixels]) / num_of_pixels_in_bin) * 10 + 30)
-        plt.savefig('offset_intervals_' + str(ID) + '.png')
+
+            if num_of_pixels_in_bin == 0:
+                sum_intervals.append(offset)
+            else:
+                sum_intervals.append((np.sum(v_plus[bins_pixels]) - np.sum(
+                    v_minus[bins_pixels]) / num_of_pixels_in_bin) * scale + offset)
 
         fig = plt.figure(figsize=(10, 5))
-        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'or', markersize=8, label="init at~100%")
+        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'or', markersize=8,
+                 label="init at~100%")
 
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
@@ -556,10 +563,14 @@ class find_best_env:
             bins_pixels = np.squeeze(bins_pixels, axis=0)
             bins_pixels = np.squeeze(bins_pixels, axis=0)
             num_of_pixels_in_bin = np.sum(bins_pixels)
-            sum_intervals.append(
-                (np.sum(v_plus2[bins_pixels]) - np.sum(v_minus2[bins_pixels]) / num_of_pixels_in_bin) * 10 + 30)
+            if num_of_pixels_in_bin == 0:
+                sum_intervals.append(offset)
+            else:
+                sum_intervals.append((np.sum(v_plus2[bins_pixels]) - np.sum(
+                    v_minus2[bins_pixels]) / num_of_pixels_in_bin) * scale + offset)
 
-        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'og', markersize=6, label="init at~60%")
+        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'og', markersize=6,
+                 label="init at~60%")
 
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
@@ -570,10 +581,14 @@ class find_best_env:
             bins_pixels = np.squeeze(bins_pixels, axis=0)
             bins_pixels = np.squeeze(bins_pixels, axis=0)
             num_of_pixels_in_bin = np.sum(bins_pixels)
-            sum_intervals.append(
-                (np.sum(v_plus3[bins_pixels]) - np.sum(v_minus3[bins_pixels]) / num_of_pixels_in_bin) * 10 + 30)
+            if num_of_pixels_in_bin == 0:
+                sum_intervals.append(offset)
+            else:
+                sum_intervals.append((np.sum(v_plus3[bins_pixels]) - np.sum(
+                    v_minus3[bins_pixels]) / num_of_pixels_in_bin) * scale + offset)
 
-        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'ob', markersize=4, label="init at~40%")
+        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'ob', markersize=4,
+                 label="init at~40%")
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
 
@@ -583,10 +598,14 @@ class find_best_env:
             bins_pixels = np.squeeze(bins_pixels, axis=0)
             bins_pixels = np.squeeze(bins_pixels, axis=0)
             num_of_pixels_in_bin = np.sum(bins_pixels)
-            sum_intervals.append(
-                (np.sum(v_plus4[bins_pixels]) - np.sum(v_minus4[bins_pixels]) / num_of_pixels_in_bin) * 10 + 30)
+            if num_of_pixels_in_bin == 0:
+                sum_intervals.append(offset)
+            else:
+                sum_intervals.append((np.sum(v_plus4[bins_pixels]) - np.sum(
+                    v_minus4[bins_pixels]) / num_of_pixels_in_bin) * scale + offset)
 
-        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'oc', markersize=2, label="init at~20%")
+        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'oc', markersize=2,
+                 label="init at~20%")
         plt.legend()
 
         elements_per_bin = []
@@ -603,7 +622,7 @@ class find_best_env:
         for j in range(len(bins) - 1):
             # bins_string.append(j)
             bins_string.append("{:.4f}".format(bins[j]) + '<' + "{:.4f}".format(bins[j + 1]))
-        #plt.bar(bins_string, elements_per_bin, color='dodgerblue', width=1)
+        # plt.bar(bins_string, elements_per_bin, color='dodgerblue', width=1)
         plt.title("normalized valid interval per bin for solution histogram")
         plt.xlabel('bin index')
         plt.ylabel('number of pixels per bin')
