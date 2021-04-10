@@ -522,9 +522,13 @@ class find_best_env:
 
         bins = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'bins.npy')
         print("bins_before" + str(ID) + "_ is ", bins)
+        tmp_bins=[]
         for i in range(len(bins)):
-            if (abs(bins[i]) < 1 / 255):
-                bins.delete(bins[i])
+            if (abs(bins[i]) > 1 / 255):
+                tmp_bins.append(bins[i])
+                
+        bins=np.asarray(tmp_bins)
+                
         print("bins_after" + str(ID) + "_ is ", bins)
 
         mean_adversarial_examples_results = np.load(
