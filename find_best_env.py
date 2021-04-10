@@ -526,7 +526,7 @@ class find_best_env:
         for i in range(len(bins)):
             if (abs(bins[i]) > 1 / 255):
                 tmp_bins.append(bins[i])
-                
+
         bins=np.asarray(tmp_bins)
 
         print("bins_after" + str(ID) + "_ is ", bins)
@@ -622,7 +622,7 @@ class find_best_env:
             counter = 0
             for j in range(self.image_size[0] * self.image_size[1]):
 
-                if bins[i] <= mean_adversarial_examples_results[:, j] <= [i + 1]:
+                if bins[i] <= mean_adversarial_examples_results[:, j] <= bins[i + 1]:
                     counter += 1
 
             elements_per_bin.append(counter)
