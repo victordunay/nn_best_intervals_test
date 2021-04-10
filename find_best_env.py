@@ -524,7 +524,7 @@ class find_best_env:
         print("bins_before" + str(ID) + "_ is ", bins)
         for i in range(len(bins)):
             if (abs(bins[i]) < 1 / 255):
-                bins.remove(bins[i])
+                bins.delete(bins[i])
         print("bins_after" + str(ID) + "_ is ", bins)
 
         mean_adversarial_examples_results = np.load(
