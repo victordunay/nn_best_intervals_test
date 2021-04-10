@@ -481,12 +481,12 @@ class find_best_env:
 
         if not os.path.exists(self.intervals_results_path):
             os.makedirs(self.intervals_results_path)
-        start_low_list = [np.amin(mean_adversarial_examples_results) + (
-                np.amin(mean_adversarial_examples_results) / self.num_of_tests_per_img) * i * self.pixel_res for i
+        start_low_list = [np.amin(mean_adversarial_examples_results) - (
+                np.amin(mean_adversarial_examples_results) / self.num_of_tests_per_img) * i  for i
                           in
                           range(self.num_of_tests_per_img)]
         start_high_list = [np.amax(mean_adversarial_examples_results) - (
-                np.amax(mean_adversarial_examples_results) / self.num_of_tests_per_img) * i * self.pixel_res for i
+                np.amax(mean_adversarial_examples_results) / self.num_of_tests_per_img) * i  for i
                            in
                            range(self.num_of_tests_per_img)]
         test_idx = 0
