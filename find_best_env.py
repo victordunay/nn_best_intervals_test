@@ -545,8 +545,7 @@ class find_best_env:
         plt.savefig('offset_intervals_' + str(ID) + '.png')
 
         fig = plt.figure(figsize=(10, 5))
-        print("<<<<<<<<<<<<test print is ",len(sum_intervals))
-        plt.plot(np.linspace(1, 409, 409), sum_intervals, 'or', markersize=8, label="init at~100%")
+        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'or', markersize=8, label="init at~100%")
 
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
@@ -560,7 +559,7 @@ class find_best_env:
             sum_intervals.append(
                 (np.sum(v_plus2[bins_pixels]) - np.sum(v_minus2[bins_pixels]) / num_of_pixels_in_bin) * 10 + 30)
 
-        plt.plot(np.linspace(1, 409, 409), sum_intervals, 'og', markersize=6, label="init at~60%")
+        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'og', markersize=6, label="init at~60%")
 
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
@@ -574,7 +573,7 @@ class find_best_env:
             sum_intervals.append(
                 (np.sum(v_plus3[bins_pixels]) - np.sum(v_minus3[bins_pixels]) / num_of_pixels_in_bin) * 10 + 30)
 
-        plt.plot(np.linspace(1, 409, 409), sum_intervals, 'ob', markersize=4, label="init at~40%")
+        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'ob', markersize=4, label="init at~40%")
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
 
@@ -587,7 +586,7 @@ class find_best_env:
             sum_intervals.append(
                 (np.sum(v_plus4[bins_pixels]) - np.sum(v_minus4[bins_pixels]) / num_of_pixels_in_bin) * 10 + 30)
 
-        plt.plot(np.linspace(1, 409, 409), sum_intervals, 'oc', markersize=2, label="init at~20%")
+        plt.plot(np.linspace(1, len(sum_intervals), len(sum_intervals)), sum_intervals, 'oc', markersize=2, label="init at~20%")
         plt.legend()
 
         elements_per_bin = []
