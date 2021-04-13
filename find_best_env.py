@@ -915,7 +915,7 @@ class find_best_env:
         else:
             return (high + low) / 2
 
-    def calculate_epsilon_inf(self, results_path_: str, ID: int, mnist_features, mnist_labels):
+    def calculate_epsilon_inf(self,ID: int, mnist_features, mnist_labels):
         print("Analyzing sample number " + str(ID))
         upper_bound = 1
         lower_bound = 0
