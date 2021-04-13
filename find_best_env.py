@@ -275,6 +275,7 @@ class find_best_env:
         print("verified=", verified, "\n")
 
         if verified:
+            print("current was "+"polarity = "polarity+ "side = " side)
             if polarity == "up":
                 polarity = "down"
             elif polarity == "down":
