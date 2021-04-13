@@ -284,7 +284,7 @@ class find_best_env:
                 side = "right"
             elif side == "right":
                 side = "left"
-            
+
             prev_plus, prev_minus = self.expand_attempt(low, high, bins, eps_plus, eps_minus, side, polarity, bot2top,
                                                         mean_adversarial_examples_results, orig, ID)
         else:
@@ -336,8 +336,8 @@ class find_best_env:
                 sides = ["right", "left"]
             for side in sides:
                 for polarity in self.polarities:
-                    # print("side=", side, "\n")
-                    # print("polarity=", polarity, "\n")
+                    print("side=", side, "\n")
+                    print("polarity=", polarity, "\n")
 
                     curr_best_eps_plus, curr_best_eps_minus = self.expand_attempt(low, high, bins, eps_plus,
                                                                                   eps_minus, side, polarity,
