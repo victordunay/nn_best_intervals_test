@@ -82,9 +82,9 @@ if __name__ == "__main__":
     # ================================================================
     interval_solver = find_best_env.find_best_env(parameters.search_params)
     for ID in parameters.image_ids:
-        interval_solver.find_max_intervals(results_path, ID, mnist_features, mnist_labels)
-        #interval_solver.show_intervals(ID,results_path, mnist_features, mnist_labels)
-        #interval_solver.show_hist_final(ID,results_path)
+        #interval_solver.find_max_intervals(results_path, ID, mnist_features, mnist_labels)
+        interval_solver.show_intervals(ID,results_path, mnist_features, mnist_labels)
+        interval_solver.show_hist_final(ID,results_path)
         #interval_solver.calculate_epsilon_inf(ID, mnist_features, mnist_labels)
 
 
