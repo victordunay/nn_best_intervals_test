@@ -30,13 +30,13 @@ class find_best_env:
         self.only_left = ["left"]
         self.polarities = ["up", "down"]
 
-    def run_eran(self, inf_test:bool,epsilon_inf):
+    def run_eran(self, inf_test: bool, epsilon_inf):
 
         """
         run_eran function calls ERAN analyzer using expanded intervals
         """
         if inf_test:
-            dummy_epsilon=epsilon_inf
+            dummy_epsilon = epsilon_inf
         else:
             dummy_epsilon = 0.001
         os.system("python3 . --netname " + self.model_path + " --epsilon " + str(
@@ -271,11 +271,20 @@ class find_best_env:
                                                                           mean_adversarial_examples_results, orig)
         if empty_bin:
             return prev_plus, prev_minus
-        verified = self.run_eran(False,0.001)
+        verified = self.run_eran(False, 0.001)
         print("verified=", verified, "\n")
 
         if verified:
+            if polarity == "up":
+                polarity = "down"
+            elif polarity == "down":
+                polarity = "up"
 
+            if side == "left":
+                side = "right"
+            elif side == "right":
+                side = "left"
+            
             prev_plus, prev_minus = self.expand_attempt(low, high, bins, eps_plus, eps_minus, side, polarity, bot2top,
                                                         mean_adversarial_examples_results, orig, ID)
         else:
@@ -312,7 +321,8 @@ class find_best_env:
         high = round(start_high / self.pixel_res) * self.pixel_res
         termination = bool(low > -1 * self.pixel_res) and bool(high < 1 * self.pixel_res)
         iter_ = 0
-        print("start test idx "+str(test_idx)+"st_low   ="+str(low)+"   st_high   ="+str(high)+"     $$$$$$$$$$$$$$$$$$$$$$$$$4")
+        print("start test idx " + str(test_idx) + "st_low   =" + str(low) + "   st_high   =" + str(
+            high) + "     $$$$$$$$$$$$$$$$$$$$$$$$$4")
         while not termination:
             print("iter=", iter_)
             print("low=", low, "\n")
@@ -326,8 +336,8 @@ class find_best_env:
                 sides = ["right", "left"]
             for side in sides:
                 for polarity in self.polarities:
-                    #print("side=", side, "\n")
-                    #print("polarity=", polarity, "\n")
+                    # print("side=", side, "\n")
+                    # print("polarity=", polarity, "\n")
 
                     curr_best_eps_plus, curr_best_eps_minus = self.expand_attempt(low, high, bins, eps_plus,
                                                                                   eps_minus, side, polarity,
@@ -485,11 +495,11 @@ class find_best_env:
         if not os.path.exists(self.intervals_results_path):
             os.makedirs(self.intervals_results_path)
         start_low_list = [np.amin(mean_adversarial_examples_results) - (
-                np.amin(mean_adversarial_examples_results) / self.num_of_tests_per_img) * i  for i
+                np.amin(mean_adversarial_examples_results) / self.num_of_tests_per_img) * i for i
                           in
                           range(self.num_of_tests_per_img)]
         start_high_list = [np.amax(mean_adversarial_examples_results) - (
-                np.amax(mean_adversarial_examples_results) / self.num_of_tests_per_img) * i  for i
+                np.amax(mean_adversarial_examples_results) / self.num_of_tests_per_img) * i for i
                            in
                            range(self.num_of_tests_per_img)]
         test_idx = 0
@@ -526,21 +536,19 @@ class find_best_env:
         v_minus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4minus.npy')
 
         bins = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'bins.npy')
-        tmp_bins=[]
+        tmp_bins = []
         for i in range(len(bins)):
             if (abs(bins[i]) > 1 / 255):
                 tmp_bins.append(bins[i])
 
-        bins=np.asarray(tmp_bins)
+        bins = np.asarray(tmp_bins)
 
-
-        tmp_bins=np.asarray(tmp_bins)
+        tmp_bins = np.asarray(tmp_bins)
         bin_neg = tmp_bins[tmp_bins < 0]
 
-
-        vline_h=np.argmax(bin_neg)
-        vline_l=vline_h+1
-        vline_mean=(vline_h+vline_l)/2
+        vline_h = np.argmax(bin_neg)
+        vline_l = vline_h + 1
+        vline_mean = (vline_h + vline_l) / 2
         mean_adversarial_examples_results = np.load(
             '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
@@ -645,7 +653,7 @@ class find_best_env:
         plt.title("normalized valid interval per bin for solution histogram")
         plt.xlabel('bin index')
         plt.ylabel('number of pixels per bin')
-        plt.vlines(x=vline_mean,ymin=0,ymax=max(elements_per_bin),colors='purple')
+        plt.vlines(x=vline_mean, ymin=0, ymax=max(elements_per_bin), colors='purple')
         plt.show()
         plt.savefig('../../nn_best_intervals_test/intervals_results/test_assumption_' + str(ID) + '.png')
 
@@ -663,23 +671,21 @@ class find_best_env:
         v_plus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4plus.npy')
         v_minus4 = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'init_at_4minus.npy')
 
+        print("<<<<<<<<<<<<<<<<<<<IDX" + str(ID) + ">>>>>>>>>>>>>> test for compare ")
 
-        print("<<<<<<<<<<<<<<<<<<<IDX"+str(ID)+">>>>>>>>>>>>>> test for compare ")
-
-
-        print("diff12=",v_plus-v_plus2)
-        print("diff13=",v_plus-v_plus3)
-        print("diff14=",v_plus-v_plus4)
-        print("diff23=",v_plus2-v_plus3)
-        print("diff24=",v_plus2-v_plus4)
-        print("diff34=",v_plus3-v_plus4)
+        print("diff12=", v_plus - v_plus2)
+        print("diff13=", v_plus - v_plus3)
+        print("diff14=", v_plus - v_plus4)
+        print("diff23=", v_plus2 - v_plus3)
+        print("diff24=", v_plus2 - v_plus4)
+        print("diff34=", v_plus3 - v_plus4)
         print("now min<<<<<<<<<<<<<<<<<<")
         print("diff12=", v_minus - v_minus2)
-        print("diff13=", v_minus -v_minus3)
+        print("diff13=", v_minus - v_minus3)
         print("diff14=", v_minus - v_minus4)
-        print("diff23=",v_minus2 - v_minus3)
-        print("diff24=", v_minus2 -v_minus4)
-        print("diff34=", v_minus3 -v_minus4)
+        print("diff23=", v_minus2 - v_minus3)
+        print("diff24=", v_minus2 - v_minus4)
+        print("diff34=", v_minus3 - v_minus4)
 
         self.load_image(ID, mnist_features, mnist_labels)
         orig = self.read_sample(ID)
@@ -897,7 +903,6 @@ class find_best_env:
         np.save(self.intervals_path + '_pos.npy', epsilon_intervals_pos)
         np.save(self.intervals_path + '_neg.npy', epsilon_intervals_neg)
 
-
     def binary_search(self, low, high, ID):
         print("low= ", low)
         print("high= ", high)
@@ -918,7 +923,7 @@ class find_best_env:
         else:
             return (high + low) / 2
 
-    def calculate_epsilon_inf(self,ID: int, mnist_features, mnist_labels):
+    def calculate_epsilon_inf(self, ID: int, mnist_features, mnist_labels):
         print("Analyzing sample number " + str(ID))
         upper_bound = 0.1
         lower_bound = 0
@@ -926,8 +931,8 @@ class find_best_env:
         s = self.read_sample(ID)
         epsilon = self.binary_search(lower_bound, upper_bound, ID)
 
-        epsilon=round(epsilon / self.pixel_res) * self.pixel_res
-        print("<<<<<<<<epsres is ",epsilon)
+        epsilon = round(epsilon / self.pixel_res) * self.pixel_res
+        print("<<<<<<<<epsres is ", epsilon)
         v_plus = []
         v_minus = []
         for i in range(self.image_size[0] * self.image_size[1]):
