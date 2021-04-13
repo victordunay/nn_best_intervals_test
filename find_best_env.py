@@ -276,16 +276,14 @@ class find_best_env:
 
         if verified:
             print("current was polarity = " ,polarity  ,"side = " ,side)
-            if polarity == "up":
+            if polarity == "up" and side == "right":
                 polarity = "down"
-            elif polarity == "down":
-                polarity = "up"
-
-            if side == "left":
-                side = "right"
-            elif side == "right":
+            elif polarity == "down" and side == "right":
                 side = "left"
-
+            elif polarity == "down" and side == "left":
+                polarity = "up"
+            elif polarity == "up" and side == "left":
+                side = "right"
             prev_plus, prev_minus = self.expand_attempt(low, high, bins, eps_plus, eps_minus, side, polarity, bot2top,
                                                         mean_adversarial_examples_results, orig, ID)
         else:
