@@ -902,7 +902,7 @@ class find_best_env:
         print("low= ", low)
         print("high= ", high)
         # Check base case
-        if high >= low + 1 / 255:
+        if high >= low + 1 / 10000:
 
             mid = (high + low) / 2
             print("mid=", mid)
@@ -925,6 +925,8 @@ class find_best_env:
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
         epsilon = self.binary_search(lower_bound, upper_bound, ID)
+
+        epsilon=round(epsilon / self.pixel_res) * self.pixel_res
         v_plus = []
         v_minus = []
         for i in range(self.image_size[0] * self.image_size[1]):
@@ -934,7 +936,7 @@ class find_best_env:
         np.save(self.intervals_results_path + 'eps_inf_ID_' + str(ID) + '_neg.npy', v_minus)
 
         v_minus = [i * (-1) for i in v_minus]
-        size_test_plus = v_plus.copy()
+        size_test_plus = np.asarray(v_plus).copy()
         size_test_minus = np.asarray(v_minus).copy()
         size_test_plus = size_test_plus / self.pixel_res + 1
         size_test_minus = size_test_minus / self.pixel_res + 1
