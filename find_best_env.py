@@ -893,3 +893,65 @@ class find_best_env:
 
         np.save(self.intervals_path + '_pos.npy', epsilon_intervals_pos)
         np.save(self.intervals_path + '_neg.npy', epsilon_intervals_neg)
+
+
+    def binary_search(self, low, high, ID):
+        print("low= ", low)
+        print("high= ", high)
+        # Check base case
+        if high >= low + 1 / 255:
+
+            mid = (high + low) / 2
+            print("mid=", mid)
+            is_verified = self.run_eran(ID, True, mid)
+            print("is_verified=", is_verified)
+            if is_verified:
+                return self.binary_search(mid, high, ID)
+
+            else:
+                return self.binary_search(low, mid, ID)
+
+
+        else:
+            return (high + low) / 2
+
+    def calculate_epsilon_inf(self, results_path_: str, ID: int, mnist_features, mnist_labels):
+        print("Analyzing sample number " + str(ID))
+        upper_bound = 1
+        lower_bound = 0
+        self.load_image(ID, mnist_features, mnist_labels)
+        s = self.read_sample(ID)
+        epsilon = self.binary_search(lower_bound, upper_bound, ID)
+        v_plus = []
+        v_minus = []
+        for i in range(self.image_size[0] * self.image_size[1]):
+            v_plus.append(epsilon)
+            v_minus.append(-epsilon)
+        np.save(self.intervals_results_path + 'eps_inf_ID_' + str(ID) + '_pos.npy', v_plus)
+        np.save(self.intervals_results_path + 'eps_inf_ID_' + str(ID) + '_neg.npy', v_minus)
+
+        v_minus = [i * (-1) for i in v_minus]
+        size_test_plus = v_plus.copy()
+        size_test_minus = np.asarray(v_minus).copy()
+        size_test_plus = size_test_plus / self.pixel_res + 1
+        size_test_minus = size_test_minus / self.pixel_res + 1
+
+        size_1 = size_test_plus + size_test_minus
+        size1 = decimal.Decimal(1)
+        for i in range(self.image_size[0] * self.image_size[1]):
+            size1 *= decimal.Decimal(size_1[i])
+
+        fig = plt.figure(figsize=(10, 5))
+        plt.errorbar(
+            np.linspace(1, self.image_size[0] * self.image_size[1], num=self.image_size[0] * self.image_size[1]),
+            np.zeros(self.image_size[0] * self.image_size[1]), xerr=None,
+            yerr=[[i / self.pixel_res for i in v_minus], [i / self.pixel_res for i in v_plus]], fmt='none',
+            color='b',
+            label="epsilon_inf size is" + str(size1), elinewidth=8)
+
+        plt.xlabel('pixel index')
+        plt.ylabel('valid pixel environment')
+        plt.legend()
+        plt.text(0.5, 0.5, "size is")
+        plt.show()
+        plt.savefig('../../nn_best_intervals_test/intervals_results/epsilon_inf_intervals_' + str(ID) + '.png')
