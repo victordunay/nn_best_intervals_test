@@ -30,12 +30,15 @@ class find_best_env:
         self.only_left = ["left"]
         self.polarities = ["up", "down"]
 
-    def run_eran(self, ID: int):
+    def run_eran(self, inf_test:bool,epsilon_inf):
 
         """
         run_eran function calls ERAN analyzer using expanded intervals
         """
-        dummy_epsilon = 0.001
+        if inf_test:
+            dummy_epsilon=epsilon_inf
+        else:
+            dummy_epsilon = 0.001
         os.system("python3 . --netname " + self.model_path + " --epsilon " + str(
             dummy_epsilon) + " --domain " + self.eran_domain + "  --dataset mnist  > ./out 2>./error")
         res = open("./out", "r").read()
@@ -268,7 +271,7 @@ class find_best_env:
                                                                           mean_adversarial_examples_results, orig)
         if empty_bin:
             return prev_plus, prev_minus
-        verified = self.run_eran(ID)
+        verified = self.run_eran(ID,False,0.001)
         print("verified=", verified, "\n")
 
         if verified:
