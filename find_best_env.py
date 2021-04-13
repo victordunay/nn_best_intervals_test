@@ -920,13 +920,14 @@ class find_best_env:
 
     def calculate_epsilon_inf(self,ID: int, mnist_features, mnist_labels):
         print("Analyzing sample number " + str(ID))
-        upper_bound = 1
+        upper_bound = 0.1
         lower_bound = 0
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
         epsilon = self.binary_search(lower_bound, upper_bound, ID)
 
         epsilon=round(epsilon / self.pixel_res) * self.pixel_res
+        print("<<<<<<<<epsres is ",epsilon)
         v_plus = []
         v_minus = []
         for i in range(self.image_size[0] * self.image_size[1]):
