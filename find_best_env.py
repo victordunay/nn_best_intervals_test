@@ -271,7 +271,7 @@ class find_best_env:
                                                                           mean_adversarial_examples_results, orig)
         if empty_bin:
             return prev_plus, prev_minus
-        verified = self.run_eran(ID,False,0.001)
+        verified = self.run_eran(False,0.001)
         print("verified=", verified, "\n")
 
         if verified:
