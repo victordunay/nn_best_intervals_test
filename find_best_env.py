@@ -906,7 +906,7 @@ class find_best_env:
 
             mid = (high + low) / 2
             print("mid=", mid)
-            is_verified = self.run_eran(ID, True, mid)
+            is_verified = self.run_eran(True, mid)
             print("is_verified=", is_verified)
             if is_verified:
                 return self.binary_search(mid, high, ID)
