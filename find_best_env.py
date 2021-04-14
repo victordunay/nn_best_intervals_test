@@ -981,14 +981,14 @@ class find_best_env:
 
         most_modified_pixels = []
         for j in range(len(bins)):
-            for i in range (self.image_size[0] * self.image_size[1]):
+            for i in range (len(ind)):
                 if ind[i]==np.amax(ind) or  ind[i]==np.amin(ind) :
                     most_modified_pixels.append(i)
+                    np.delete(ind, i)
             print(" modified pixels=", most_modified_pixels)
             if len(most_modified_pixels) >= max_num_of_modified_pixels:
                 break
-            np.delete(ind,np.argmin(ind))
-            np.delete(ind,np.argmax(ind))
+       
 
 
 
