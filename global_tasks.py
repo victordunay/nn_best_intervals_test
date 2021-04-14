@@ -40,7 +40,7 @@ def view_adversarial_results(ID_: int, results_path_: str, mnist_features):
         plt.colorbar()
     plt.tight_layout()
     plt.show()
-    plt.savefig('result_ID_'+str(ID_)+'.png')
+    plt.savefig('result_ID_' + str(ID_) + '.png')
     print("2")
 
 
@@ -84,7 +84,7 @@ def calculate_mean(results_path_: str, ID_: int, image_size: list):
      :param image_size: tested image width and height
      :param ID_: MNIST input ID for best environment test
      """
-    jsma_adversarial_examples = np.load('./'+results_path_ + '/jsma_mean_vector_ID_' + str(ID_) + '_.npy')
+    jsma_adversarial_examples = np.load('./' + results_path_ + '/jsma_mean_vector_ID_' + str(ID_) + '_.npy')
     pgd_adversarial_examples = np.load(results_path_ + '/pgd_mean_vector_ID_' + str(ID_) + '_.npy')
     carlini_wagner_adversarial_examples = np.load(
         results_path_ + '/carlini_wagner_mean_vector_ID_' + str(ID_) + '_.npy')
@@ -129,7 +129,12 @@ def generate_adversarial_examples_set(model_, results_path_: str, ID_: int, mnis
     # generate adversarial examples using all methods
     # ================================================================
 
-    print("do pgd")
+    print("do jsma")
+    adversarial_generator_.generate_jsma_adversarial_examples_set(model_, ID_, mnist_features_, mnist_labels_,
+                                                                  results_path_)
+    """
+
+    #print("do pgd")
     adversarial_generator_.generate_projected_gradient_descent_adversarial_examples_set(model_, ID_, mnist_features_,
                                                                                         mnist_labels_, results_path_)
     print("done ID=",ID_)
@@ -155,3 +160,4 @@ def generate_adversarial_examples_set(model_, results_path_: str, ID_: int, mnis
     print("do jsma")
     adversarial_generator_.generate_jsma_adversarial_examples_set(model_, ID_, mnist_features_, mnist_labels_,
                                                                   results_path_)
+"""
