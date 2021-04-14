@@ -985,7 +985,7 @@ class find_best_env:
                 if ind[i] == np.amax(ind) or ind[i] == np.amin(ind):
                     print("idx i =", i, "ind [i]=", ind[i])
                     most_modified_pixels.append(i)
-                    ind[i] = None
+                    ind[i] = (np.amax(ind)+np.amin(ind))/2
             print(" modified pixels=", most_modified_pixels)
             if len(most_modified_pixels) >= max_num_of_modified_pixels:
                 break
