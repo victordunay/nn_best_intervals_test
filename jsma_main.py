@@ -82,7 +82,8 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
     input_features = torch.autograd.Variable(input_tensor.clone(), requires_grad=True)
     num_features = input_features.size(1)
     count = 0
-
+    modified_pixels = []
+    max_num_of_modified_pixels = 5
     # a mask whose values are one for feature dimensions in search space
     search_space = torch.ones(num_features).byte()
     if input_features.is_cuda:
@@ -111,7 +112,17 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
 
         # if increasing_saliency_value[0] > decreasing_saliency_value[0]:
         if increasing_saliency_value.item() > decreasing_saliency_value.item():
+            if increasing_feature_index not in modified_pixels:
+                modified_pixels.append(increasing_feature_index)
+            num_of_modified_pixels = len(modified_pixels)
+            if num_of_modified_pixels == max_num_of_modified_pixels + 1:
+                modified_pixels.remove(increasing_feature_index)
+                print("modified pixels fo target", target_class, " is ", modified_pixels)
+                break
             input_features.data[0][increasing_feature_index] += lr
+            print("curr changed pix=", increasing_feature_index, " its val is ",
+                  input_features.data[0][increasing_feature_index])
+
             diff = abs(input_features.data[0][increasing_feature_index] - input_tensor[0][
                 increasing_feature_index]) > max_distortion
             if input_features.data[0][increasing_feature_index] > 1 - lr or diff:
@@ -119,6 +130,8 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
 
         else:
             input_features.data[0][decreasing_feature_index] -= lr
+            print("curr changed pix=", decreasing_feature_index, " its val is ",
+                  input_features.data[0][decreasing_feature_index])
             diff = abs(input_features.data[0][decreasing_feature_index] - input_tensor[0][
                 decreasing_feature_index]) > max_distortion
 
