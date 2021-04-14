@@ -117,6 +117,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
             num_of_modified_pixels = len(modified_pixels)
             if num_of_modified_pixels == max_num_of_modified_pixels + 1:
                 modified_pixels.remove(increasing_feature_index)
+                modified_pixels.sort()
                 print("modified pixels fo target", target_class, " is ", modified_pixels)
                 break
             input_features.data[0][increasing_feature_index] += lr
@@ -134,6 +135,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
             num_of_modified_pixels = len(modified_pixels)
             if num_of_modified_pixels == max_num_of_modified_pixels + 1:
                 modified_pixels.remove(decreasing_feature_index)
+                modified_pixels.sort()
                 print("modified pixels fo target", target_class, " is ", modified_pixels)
                 break
             input_features.data[0][decreasing_feature_index] -= lr
