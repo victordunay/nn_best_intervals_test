@@ -275,7 +275,7 @@ class find_best_env:
         print("verified=", verified, "\n")
 
         if verified:
-            print("current was polarity = " ,polarity  ,"side = " ,side)
+            print("current was polarity = ", polarity, "side = ", side)
             if polarity == "up" and side == "right":
                 polarity = "down"
             elif polarity == "down" and side == "right":
@@ -965,3 +965,22 @@ class find_best_env:
         plt.text(0.5, 0.5, "size is")
         plt.show()
         plt.savefig('../../nn_best_intervals_test/intervals_results/epsilon_inf_intervals_' + str(ID) + '.png')
+
+    def view_most_modified_pixels(self, results_path, ID: int):
+        mean_adversarial_examples_results = np.load(
+            '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+
+        mean_adversarial_examples_results = mean_adversarial_examples_results.reshape(-1, self.image_size[0] *
+                                                                                      self.image_size[1])
+        bins = np.load(self.intervals_results_path + '/ID_' + str(ID) + 'bins.npy')
+
+        ind = np.digitize(mean_adversarial_examples_results, bins)
+        ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
+        most_modified_pixels = []
+        most_modified_pixels = most_modified_pixels.append([ind == 0])
+        most_modified_pixels = most_modified_pixels.append([ind == -1])
+        print("most modified pixels = ", most_modified_pixels)
+
+
+
+
