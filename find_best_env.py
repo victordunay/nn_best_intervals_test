@@ -978,7 +978,7 @@ class find_best_env:
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
         most_modified_pixels = []
         most_modified_pixels = most_modified_pixels.append([ind == 0])
-        most_modified_pixels = most_modified_pixels.append([ind == -1])
+        most_modified_pixels = most_modified_pixels.append([ind == self.image_size[0] * self.image_size[1]-1])
         print("most modified pixels = ", most_modified_pixels)
 
 
