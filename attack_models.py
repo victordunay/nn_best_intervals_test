@@ -62,9 +62,10 @@ class attacks:
                     Y_predicted = net(adv_example)
                     if predicted == adversarial_goal:
                         adv_example.requires_grad = False
-                        print("predicted is  =", adversarial_goal,"iter end =",i)
+                        print("predicted is  =", adversarial_goal, "iter end =", i)
 
-                        examples = [manual_tens.reshape(28,28), adv_example.reshape(28,28), np.subtract(manual_tens, adv_example).reshape(28,28)]
+                        examples = [manual_tens.reshape(28, 28), adv_example.reshape(28, 28),
+                                    np.subtract(manual_tens, adv_example).reshape(28, 28)]
                         tit = ["ORIGINAL IMAGE", "ADVERSARIAL EXAMPLE", "DIFFERENCE"]
 
                         plt.figure(figsize=(12, 12))
@@ -269,7 +270,6 @@ class attacks:
     def generate_jsma_adversarial_examples_set(self, net, dataset_img_idx, x_test_tensor, y_test_tensor, results_path):
 
         targeted_labels = self.targeted_labels
-
         intervals_list = []
 
         manual_should_be = y_test_tensor[dataset_img_idx]
@@ -289,7 +289,7 @@ class attacks:
 
                 manual_prediction = net(jsma_adv.clone().detach())
                 _, predicted = torch.max(manual_prediction.data, 1)
-
+                print("target class should be ", target_class, "  actual is ", predicted)
                 chosen_pic = chosen_pic.numpy()
                 jsma_adv = jsma_adv.reshape(-1, self.image_size[0], self.image_size[1])
 
@@ -297,7 +297,6 @@ class attacks:
                 jsma_adv = np.squeeze(jsma_adv, axis=0)
                 current_list = chosen_pic - jsma_adv
                 intervals_list.append(current_list)
-                print("done ID",dataset_img_idx,"targ=",target_class)
 
         intervals_list = np.asarray(intervals_list)
 
