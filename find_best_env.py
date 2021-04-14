@@ -967,7 +967,7 @@ class find_best_env:
         plt.savefig('../../nn_best_intervals_test/intervals_results/epsilon_inf_intervals_' + str(ID) + '.png')
 
     def view_most_modified_pixels(self, results_path, ID: int):
-        max_num_of_modified_pixels = 5
+        max_num_of_modified_pixels = 20
         mean_adversarial_examples_results = np.load(
             '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
@@ -988,4 +988,6 @@ class find_best_env:
                     ind[i] = (np.amax(ind)+np.amin(ind))/2
             print(" modified pixels=", most_modified_pixels)
             if len(most_modified_pixels) >= max_num_of_modified_pixels:
+                most_modified_pixels.sort()
+                
                 break
