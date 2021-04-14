@@ -11,20 +11,20 @@ targeted_labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 # ================================================================
 #  MNIST images IDs for test
 # ================================================================
-image_ids = list(range(1,20))
+image_ids = list(range(1, 20))
 
 # ================================================================
 #  gradient descent & regularization based attack hyper-parameters
 # ================================================================
 gd_reg_list = [0, 1, 10, 100]
 gd_lr = 0.001
-gd_max_iter =  5000
+gd_max_iter = 5000
 
 # ================================================================
 #  projected gradient descent attack hyper-parameters
 # ================================================================
 pgd_lr = 0.001
-pgd_max_iter = 10000 # Todo was 150000
+pgd_max_iter = 10000  # Todo was 150000
 pgd_examples_per_random_val = 10
 pgd_rand_vector_size = 4
 
@@ -40,9 +40,9 @@ cw_max_iter = 1000
 # ================================================================
 #  jsma attack hyper-parameters
 # ================================================================
-jsma_max_dist = [1,0.8]  # Todo was[1, 0.8]
+jsma_max_dist = 1  # Todo was[1, 0.8]
 jsma_max_iter = 20000  # Todo was 50000
-jsma_lr = 0.3 / 255
+jsma_lr = 1 / 255  # Todo was  0.3 / 255
 
 # ================================================================
 #  save all attacks hyper-parameters in attack_params dict
@@ -63,8 +63,8 @@ attack_params = dict(targeted_labels=targeted_labels, jsma_lr=jsma_lr, jsma_max_
 neural_network = 'relu_3_100_mnist'
 eran_domain = 'deepzono'
 model_path = './models/' + neural_network + '.tf'
-#intervals_path = '/home/eran/Desktop/epsilon_intervals'
-intervals_path =  'epsilon_intervals'
+# intervals_path = '/home/eran/Desktop/epsilon_intervals'
+intervals_path = 'epsilon_intervals'
 intervals_results_path = '../../nn_best_intervals_test/intervals_results'
 
 num_of_tests_per_img = 4
@@ -75,4 +75,4 @@ increment_factor = 40
 # ================================================================
 search_params = dict(increment_factor=increment_factor, num_of_tests_per_img=num_of_tests_per_img,
                      eran_domain=eran_domain, pixel_res=pixel_res, model_path=model_path, image_size=image_size,
-                     intervals_path=intervals_path,intervals_results_path=intervals_results_path)
+                     intervals_path=intervals_path, intervals_results_path=intervals_results_path)
