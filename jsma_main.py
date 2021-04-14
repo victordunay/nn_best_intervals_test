@@ -117,11 +117,11 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
             num_of_modified_pixels = len(modified_pixels)
             if num_of_modified_pixels == max_num_of_modified_pixels + 1:
                 modified_pixels.remove(increasing_feature_index)
-                print("modified pixels fo target", target_class, " is ", modified_pixels)
+                #print("modified pixels fo target", target_class, " is ", modified_pixels)
                 break
             input_features.data[0][increasing_feature_index] += lr
-            print("curr changed pix=", increasing_feature_index, " its val is ",
-                  input_features.data[0][increasing_feature_index])
+            #print("curr changed pix=", increasing_feature_index, " its val is ",
+                  #input_features.data[0][increasing_feature_index])
 
             diff = abs(input_features.data[0][increasing_feature_index] - input_tensor[0][
                 increasing_feature_index]) > max_distortion
@@ -130,8 +130,8 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
 
         else:
             input_features.data[0][decreasing_feature_index] -= lr
-            print("curr changed pix=", decreasing_feature_index, " its val is ",
-                  input_features.data[0][decreasing_feature_index])
+            #print("curr changed pix=", decreasing_feature_index, " its val is ",
+                  #input_features.data[0][decreasing_feature_index])
             diff = abs(input_features.data[0][decreasing_feature_index] - input_tensor[0][
                 decreasing_feature_index]) > max_distortion
 
