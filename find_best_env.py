@@ -987,8 +987,8 @@ class find_best_env:
             print(" modified pixels=", most_modified_pixels)
             if len(most_modified_pixels) >= max_num_of_modified_pixels:
                 break
-            np.delete(ind,np.amax(ind))
-            np.delete(ind,np.amin(ind))
+            np.delete(ind,np.argmin(ind))
+            np.delete(ind,np.argmax(ind))
 
 
 
