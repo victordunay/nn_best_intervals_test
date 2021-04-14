@@ -977,10 +977,10 @@ class find_best_env:
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
 
-        print("max=",np.amax(ind),"min=",np.amin(ind))
+        print("max=",np.amax(ind),"min=",np.amin(ind),"ind shape=",ind.shape)
         most_modified_pixels = []
         for i in range (self.image_size[0] * self.image_size[1]):
-            print("ind[i]=",ind[:][i])
+            print("ind[i]=",ind[-1][i])
             if ind[i]==np.amax(ind) or  ind[i]==np.amin(ind) :
                 most_modified_pixels.append(i)
 
