@@ -11,7 +11,7 @@ targeted_labels = [3]
 # ================================================================
 #  MNIST images IDs for test
 # ================================================================
-image_ids = list(range(9,256))
+image_ids = list(range(1,2))
 
 # ================================================================
 #  gradient descent & regularization based attack hyper-parameters
