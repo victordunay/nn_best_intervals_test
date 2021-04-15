@@ -1,78 +1,159 @@
-"""
-this file defines all the parameters to configure the attack models and the search for maximum environment algorithm
-"""
+import math
+import torch
+from torch.autograd.gradcheck import zero_gradients
+import numpy as np
 
-# ================================================================
-#  general test parameters
-# ================================================================
-image_size = [28, 28]
-pixel_res = 1 / 255.0
-targeted_labels = [3,6]
-# ================================================================
-#  MNIST images IDs for test
-# ================================================================
-image_ids = list(range(1, 2))
 
-# ================================================================
-#  gradient descent & regularization based attack hyper-parameters
-# ================================================================
-gd_reg_list = [0, 1, 10, 100]
-gd_lr = 0.001
-gd_max_iter = 5000
+def compute_jacobian(inputs, output):
+    """
+	:param inputs: Batch X Size (e.g. Depth X Width X Height)
+	:param output: Batch X Classes
+	:return: jacobian: Batch X Classes X Size
+	"""
+    assert inputs.requires_grad
 
-# ================================================================
-#  projected gradient descent attack hyper-parameters
-# ================================================================
-pgd_lr = 0.001
-pgd_max_iter = 10000  # Todo was 150000
-pgd_examples_per_random_val = 10
-pgd_rand_vector_size = 4
+    num_classes = output.size()[1]
 
-# ================================================================
-#  carlini wagner attack hyper-parameters
-# ================================================================
-cw_rand_vector_size = 2
-cw_lr = [5e-4, 1e-3, 5e-3]
-cw_search_steps = 10
-cw_c_range = (1e-3, 1e10)
-cw_max_iter = 1000
+    jacobian = torch.zeros(num_classes, *inputs.size())
+    grad_output = torch.zeros(*output.size())
+    if inputs.is_cuda:
+        grad_output = grad_output.cuda()
+        jacobian = jacobian.cuda()
 
-# ================================================================
-#  jsma attack hyper-parameters
-# ================================================================
-jsma_max_dist =[1]  # Todo was[1, 0.8]
-jsma_max_iter = 50000  # Todo was 50000
-jsma_lr = 1 / 255  # Todo was  0.3 / 255
+    for i in range(num_classes):
+        zero_gradients(inputs)
+        grad_output.zero_()
+        grad_output[:, i] = 1
+        output.backward(grad_output, retain_graph=True)
+        jacobian[i] = inputs.grad.data
 
-# ================================================================
-#  save all attacks hyper-parameters in attack_params dict
-# ================================================================
-attack_params = dict(targeted_labels=targeted_labels, jsma_lr=jsma_lr, jsma_max_iter=jsma_max_iter,
-                     jsma_max_dist=jsma_max_dist,
-                     cw_max_iter=cw_max_iter, cw_c_range=cw_c_range,
-                     cw_search_steps=cw_search_steps, cw_lr=cw_lr, cw_rand_vector_size=cw_rand_vector_size,
-                     pgd_rand_vector_size=pgd_rand_vector_size,
-                     pgd_examples_per_random_val=pgd_examples_per_random_val, pgd_max_iter=pgd_max_iter,
-                     pgd_lr=pgd_lr, gd_reg_list=gd_reg_list, gd_lr=gd_lr, gd_max_iter=gd_max_iter,
-                     image_size=image_size, pixel_res=pixel_res)
+    return torch.transpose(jacobian, dim0=0, dim1=1)
 
-# ================================================================
-#  search algorithm hyper-parameters
-# ================================================================
 
-neural_network = 'relu_3_100_mnist'
-eran_domain = 'deepzono'
-model_path = './models/' + neural_network + '.tf'
-# intervals_path = '/home/eran/Desktop/epsilon_intervals'
-intervals_path = 'epsilon_intervals'
-intervals_results_path = '../../nn_best_intervals_test/intervals_results'
+def fgsm(inputs, targets, model, criterion, eps):
+    """
+	:param inputs: Clean samples (Batch X Size)
+	:param targets: True labels
+	:param model: Model
+	:param criterion: Loss function
+	:param gamma:
+	:return:
+	"""
 
-num_of_tests_per_img = 4
-increment_factor = 40
+    crafting_input = torch.autograd.Variable(inputs.clone(), requires_grad=True)
+    crafting_target = torch.autograd.Variable(targets.clone())
+    output = model(crafting_input)
+    loss = criterion(output, crafting_target)
+    if crafting_input.grad is not None:
+        crafting_input.grad.data.zero_()
+    loss.backward()
+    crafting_output = crafting_input.data + eps * torch.sign(crafting_input.grad.data)
 
-# ================================================================
-#  save all search algorithm hyper-parameters in search_params dict
-# ================================================================
-search_params = dict(increment_factor=increment_factor, num_of_tests_per_img=num_of_tests_per_img,
-                     eran_domain=eran_domain, pixel_res=pixel_res, model_path=model_path, image_size=image_size,
-                     intervals_path=intervals_path, intervals_results_path=intervals_results_path)
+    return crafting_output
+
+
+def saliency_map(jacobian, search_space, target_index, increasing=True):
+    all_sum = torch.sum(jacobian, 1).squeeze()
+
+    alpha = jacobian[0, target_index, :].squeeze()
+    beta = all_sum - alpha
+
+    if increasing:
+        mask1 = torch.ge(alpha, 0.0)
+        mask2 = torch.le(beta, 0.0)
+    else:
+        mask1 = torch.le(alpha, 0.0)
+        mask2 = torch.ge(beta, 0.0)
+
+    mask = torch.mul(torch.mul(mask1, mask2), search_space)
+
+    if increasing:
+        saliency_map = torch.mul(torch.mul(alpha, torch.abs(beta)), mask.float())
+    else:
+        saliency_map = torch.mul(torch.mul(torch.abs(alpha), beta), mask.float())
+
+    max_value, max_idx = torch.max(saliency_map, dim=0)
+
+    return max_value, max_idx
+
+
+def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
+    # Make a clone since we will alter the values
+    input_features = torch.autograd.Variable(input_tensor.clone(), requires_grad=True)
+    num_features = input_features.size(1)
+    count = 0
+    modified_pixels = []
+    max_num_of_modified_pixels = 26
+    # a mask whose values are one for feature dimensions in search space
+    search_space = torch.ones(num_features).byte()
+    if input_features.is_cuda:
+        search_space = search_space.cuda()
+
+    output = model(input_features)
+    _, source_class = torch.max(output.data, 1)
+    min_pixel_dist_val = 0
+    max_pixel_dist_val = 1
+
+    while (count < max_iter) and (source_class[0] != target_class) and (search_space.sum() != 0):
+        # Calculate Jacobian
+        jacobian = compute_jacobian(input_features, output)
+
+        increasing_saliency_value, increasing_feature_index = saliency_map(jacobian, search_space, target_class,
+                                                                           increasing=True)
+
+        mask_zero = torch.gt(input_features.data.squeeze(), 0.0)
+        search_space_decreasing = torch.mul(mask_zero, search_space)
+        decreasing_saliency_value, decreasing_feature_index = saliency_map(jacobian, search_space_decreasing,
+                                                                           target_class, increasing=False)
+
+        # if increasing_saliency_value[0] == 0.0 and decreasing_saliency_value[0] == 0.0:
+        if increasing_saliency_value.item() == 0.00000000 and decreasing_saliency_value.item() == 0.0000000:
+            print("i went out from here")
+            break
+
+        # if increasing_saliency_value[0] > decreasing_saliency_value[0]:
+        if increasing_saliency_value.item() > decreasing_saliency_value.item():
+            if increasing_feature_index not in modified_pixels:
+                modified_pixels.append(int(increasing_feature_index))
+            num_of_modified_pixels = len(modified_pixels)
+            if num_of_modified_pixels == max_num_of_modified_pixels + 1:
+                modified_pixels.remove(increasing_feature_index)
+                modified_pixels.sort()
+                print("modified pixels fo target", target_class, " is ", modified_pixels)
+                break
+            input_features.data[0][increasing_feature_index] += lr
+            #print("curr changed pix=", increasing_feature_index, " its val is ",
+                  #input_features.data[0][increasing_feature_index])
+
+            diff = abs(input_features.data[0][increasing_feature_index] - input_tensor[0][
+                increasing_feature_index]) > max_distortion
+            if input_features.data[0][increasing_feature_index] > 1 - lr or diff:
+                search_space[increasing_feature_index] = 0
+
+        else:
+            if decreasing_feature_index not in modified_pixels:
+                modified_pixels.append(int(decreasing_feature_index))
+            num_of_modified_pixels = len(modified_pixels)
+            if num_of_modified_pixels == max_num_of_modified_pixels + 1:
+                modified_pixels.remove(decreasing_feature_index)
+                modified_pixels.sort()
+                print("modified pixels fo target", target_class, " is ", modified_pixels)
+                break
+            input_features.data[0][decreasing_feature_index] -= lr
+            #print("curr changed pix=", decreasing_feature_index, " its val is ",
+                  #input_features.data[0][decreasing_feature_index])
+            diff = abs(input_features.data[0][decreasing_feature_index] - input_tensor[0][
+                decreasing_feature_index]) > max_distortion
+
+            if input_features.data[0][decreasing_feature_index] < lr or diff:
+                search_space[decreasing_feature_index] = 0
+
+        output = model(input_features)
+        _, source_class = torch.max(output.data, 1)
+        print("adv=",source_class)
+
+        count += 1
+    print("i went out from fonoshing iteration")
+    print("modified pixels fo target", source_class, " is ", modified_pixels)
+
+    return input_features
