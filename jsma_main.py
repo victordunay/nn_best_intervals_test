@@ -154,6 +154,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
 
         count += 1
     print("i went out from fonoshing iteration")
+    modified_pixels.sort()
     print("modified pixels fo target", source_class, " is ", modified_pixels)
 
     return input_features
