@@ -27,7 +27,7 @@ def view_adversarial_results(ID_: int, results_path_: str, mnist_features):
     manual_tens = manual_tens * parameters.pixel_res
     manual_tens = np.squeeze(manual_tens, axis=0)
 
-    examples = [manual_tens,np.subtract(-manual_tens, adv_example), adv_example ]
+    examples = [manual_tens,np.subtract(manual_tens, -adv_example), adv_example ]
     tit = ["ORIGINAL IMAGE", "ADVERSARIAL EXAMPLE", "DIFFERENCE"]
 
     plt.figure(figsize=(12, 12))
