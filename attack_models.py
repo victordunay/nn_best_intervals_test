@@ -295,7 +295,8 @@ class attacks:
 
                 jsma_adv = jsma_adv.numpy()
                 jsma_adv = np.squeeze(jsma_adv, axis=0)
-                current_list = chosen_pic - jsma_adv
+                #current_list = chosen_pic - jsma_adv
+                current_list=jsma_adv
                 intervals_list.append(current_list)
 
         intervals_list = np.asarray(intervals_list)
