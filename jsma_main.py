@@ -83,7 +83,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
     num_features = input_features.size(1)
     count = 0
     modified_pixels = []
-    max_num_of_modified_pixels = 25
+    max_num_of_modified_pixels = 26
     # a mask whose values are one for feature dimensions in search space
     search_space = torch.ones(num_features).byte()
     if input_features.is_cuda:
@@ -108,6 +108,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
 
         # if increasing_saliency_value[0] == 0.0 and decreasing_saliency_value[0] == 0.0:
         if increasing_saliency_value.item() == 0.00000000 and decreasing_saliency_value.item() == 0.0000000:
+            print("i went out from here")
             break
 
         # if increasing_saliency_value[0] > decreasing_saliency_value[0]:
@@ -151,5 +152,6 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
         _, source_class = torch.max(output.data, 1)
 
         count += 1
+    print("i went out from fonoshing iteration")
 
     return input_features
