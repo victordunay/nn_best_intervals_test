@@ -83,7 +83,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
     num_features = input_features.size(1)
     count = 0
     modified_pixels = []
-    max_num_of_modified_pixels = 25
+    max_num_of_modified_pixels = 37
     # a mask whose values are one for feature dimensions in search space
     search_space = torch.ones(num_features).byte()
     if input_features.is_cuda:
