@@ -7,7 +7,7 @@ this file defines all the parameters to configure the attack models and the sear
 # ================================================================
 image_size = [28, 28]
 pixel_res = 1 / 255.0
-targeted_labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+targeted_labels = [3,6]
 # ================================================================
 #  MNIST images IDs for test
 # ================================================================
