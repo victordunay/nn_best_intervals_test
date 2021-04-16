@@ -977,39 +977,34 @@ class find_best_env:
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
         ind = np.squeeze(ind, axis=0)
-        ref=[96,99,120,122,123,125,147,148,151,174,175,180,182,200,201,266,430,431,442,484,486,487,499,522,591,652]
+        ref = [96, 99, 120, 122, 123, 125, 147, 148, 151, 174, 175, 180, 182, 200, 201, 266, 430, 431, 442, 484, 486,
+               487, 499, 522, 591, 652]
         most_modified_pixels = []
         max_num_of_modified_pixels = 26
-        valid=False
-        while not(valid):
+        valid = False
+        while not (valid):
 
-
-
-            max_num_of_modified_pixels+=1
-            print("max_num_of_modified_pixels=",max_num_of_modified_pixels)
+            max_num_of_modified_pixels += 1
+            print("max_num_of_modified_pixels=", max_num_of_modified_pixels)
             most_modified_pixels = []
             for j in range(len(bins)):
                 for i in range(len(ind)):
                     if ind[i] == np.amax(ind) or ind[i] == np.amin(ind):
-                        #print("idx i =", i, "ind [i]=", ind[i])
+                        # print("idx i =", i, "ind [i]=", ind[i])
                         most_modified_pixels.append(i)
-                        ind[i] = (np.amax(ind)+np.amin(ind))/2
+                        ind[i] = (np.amax(ind) + np.amin(ind)) / 2
                 if len(most_modified_pixels) >= max_num_of_modified_pixels:
                     most_modified_pixels.sort()
-                    #print(" modified pixels=", most_modified_pixels)
+                    # print(" modified pixels=", most_modified_pixels)
                     break
             valid_elements = [False for k in range(len(ref))]
             for i in range(len(most_modified_pixels)):
                 for j in range(len(ref)):
                     if most_modified_pixels[i] == ref[j]:
                         valid_elements[j] = True
+            valid=True
             for i in range(len(valid_elements)):
-                if not(valid_elements[i]):
-                    valid=False
-                elif i==len(valid_elements-1) and not(valid):
-                    valid=True
+                if not (valid_elements[i]):
+                    valid = False
 
-
-
-        print("N= ",len(most_modified_pixels),"modified pixels=", most_modified_pixels)
-
+        print("N= ", len(most_modified_pixels), "modified pixels=", most_modified_pixels)
