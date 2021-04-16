@@ -1004,7 +1004,7 @@ class find_best_env:
                     if most_modified_pixels[i] == ref[j]:
                         valid_elements[j] = True
             for i in range(len(valid_elements)):
-                if not(valid_elements[i])
+                if not(valid_elements[i]):
                     valid=False
                 elif i==len(valid_elements-1) and not(valid):
                     valid=True
