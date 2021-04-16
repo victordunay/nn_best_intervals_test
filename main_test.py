@@ -85,14 +85,14 @@ if __name__ == "__main__":
         # ================================================================
         #  generate adversarial examples
         # ================================================================
-        global_tasks.generate_adversarial_examples_set(model, results_path, ID, mnist_features, mnist_labels,adversarial_generator)
-        global_tasks.view_adversarial_results(ID, results_path, mnist_features)
+        #global_tasks.generate_adversarial_examples_set(model, results_path, ID, mnist_features, mnist_labels,adversarial_generator)
+        #global_tasks.view_adversarial_results(ID, results_path, mnist_features)
         #interval_solver.find_max_intervals(results_path, ID, mnist_features, mnist_labels)
         #interval_solver.show_intervals(ID,results_path, mnist_features, mnist_labels)
         #interval_solver.show_hist_final(ID,results_path)
         #interval_solver.calculate_epsilon_inf(ID, mnist_features, mnist_labels)
 
-        #interval_solver.view_most_modified_pixels(results_path, ID)
+        interval_solver.view_most_modified_pixels(results_path, ID)
 
 """ 
     processes = [mp.Process(target=parallel_process, args=(
