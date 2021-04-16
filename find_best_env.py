@@ -967,7 +967,6 @@ class find_best_env:
         plt.savefig('../../nn_best_intervals_test/intervals_results/epsilon_inf_intervals_' + str(ID) + '.png')
 
     def view_most_modified_pixels(self, results_path, ID: int):
-        max_num_of_modified_pixels = 50
         mean_adversarial_examples_results = np.load(
             '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
@@ -978,15 +977,24 @@ class find_best_env:
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
         ind = np.squeeze(ind, axis=0)
-
+        ref=[96,99,120,122,123,125,147,148,151,174,175,180,182,200,201,266,430,431,442,484,486,487,499,522,591,652]
         most_modified_pixels = []
-        for j in range(len(bins)):
-            for i in range(len(ind)):
-                if ind[i] == np.amax(ind) or ind[i] == np.amin(ind):
-                    print("idx i =", i, "ind [i]=", ind[i])
-                    most_modified_pixels.append(i)
-                    ind[i] = (np.amax(ind)+np.amin(ind))/2
-            if len(most_modified_pixels) >= max_num_of_modified_pixels:
-                most_modified_pixels.sort()
-                print(" modified pixels=", most_modified_pixels)
-                break
+        max_num_of_modified_pixels = 26
+
+        while ref not in most_modified_pixels:
+            max_num_of_modified_pixels+=1
+            print("max_num_of_modified_pixels=",max_num_of_modified_pixels)
+            most_modified_pixels = []
+            for j in range(len(bins)):
+                for i in range(len(ind)):
+                    if ind[i] == np.amax(ind) or ind[i] == np.amin(ind):
+                        #print("idx i =", i, "ind [i]=", ind[i])
+                        most_modified_pixels.append(i)
+                        ind[i] = (np.amax(ind)+np.amin(ind))/2
+                if len(most_modified_pixels) >= max_num_of_modified_pixels:
+                    most_modified_pixels.sort()
+                    #print(" modified pixels=", most_modified_pixels)
+                    break
+
+        print("N= ",len(most_modified_pixels),"modified pixels=", most_modified_pixels)
+
