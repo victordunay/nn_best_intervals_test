@@ -980,8 +980,11 @@ class find_best_env:
         ref=[96,99,120,122,123,125,147,148,151,174,175,180,182,200,201,266,430,431,442,484,486,487,499,522,591,652]
         most_modified_pixels = []
         max_num_of_modified_pixels = 26
-
-        while ref not in most_modified_pixels:
+        valid=False
+        while not(valid):
+      
+            
+                    
             max_num_of_modified_pixels+=1
             print("max_num_of_modified_pixels=",max_num_of_modified_pixels)
             most_modified_pixels = []
@@ -995,6 +998,18 @@ class find_best_env:
                     most_modified_pixels.sort()
                     #print(" modified pixels=", most_modified_pixels)
                     break
+            valid_elements = [False for k in range(len(ref))]
+            for i in range(len(most_modified_pixels)):
+                for j in range(len(ref)):
+                    if most_modified_pixels[i] == ref[j]:
+                        valid_elements[j] = True
+            for i in range(len(valid_elements)):
+                if(valid_elements[i]==False)
+                    valid=False
+                elif i==len(valid_elements-1) and not(valid):
+                    valid=True
+                    
+                
 
         print("N= ",len(most_modified_pixels),"modified pixels=", most_modified_pixels)
 
