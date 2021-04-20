@@ -1075,7 +1075,7 @@ class find_best_env:
             else:
                 #print("<<<bin is empty !")
                 result.append(7)
-            print("results=", result)
+            print("test process=", len(result)/len(bins))
 
         print("DONE!")
         result=np.asarray(result)
