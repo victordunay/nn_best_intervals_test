@@ -924,8 +924,8 @@ class find_best_env:
             return (high + low) / 2
 
     def binary_search_l0(self, low, high, ID,idx:int):
-        print("low= ", low)
-        print("high= ", high)
+        #print("low= ", low)
+        #print("high= ", high)
         # Check base case
         if high >= low + 0.02:
 
@@ -940,9 +940,9 @@ class find_best_env:
 
             np.save(self.intervals_path + '_pos.npy', v_plus)
             np.save(self.intervals_path + '_neg.npy', v_minus)
-            print("mid=", mid)
+            #print("mid=", mid)
             is_verified = self.run_eran(False, mid)
-            print("is_verified=", is_verified)
+            #print("is_verified=", is_verified)
             if is_verified:
                 return self.binary_search(mid, high, ID)
 
@@ -1060,21 +1060,23 @@ class find_best_env:
         ind = np.squeeze(ind, axis=0)
         result=[]
         for j in range(len(bins)):
-            print("tested bin is ",str(j))
+            #print("tested bin is ",str(j))
             pixels_inside_bin = []
             for i in range(len(ind)):
                 if ind[i] == j:
                     pixels_inside_bin.append(i)
             if len(pixels_inside_bin) != 0:
-                print("bin is NOT empty :)")
-                print("pixels_inside_bin=",pixels_inside_bin)
+                #print("bin is NOT empty :)")
+                #print("pixels_inside_bin=",pixels_inside_bin)
                 tested_idx = random.choice(pixels_inside_bin)
-                print("tested_idx=",tested_idx)
+                #print("tested_idx=",tested_idx)
                 epsilon=self.binary_search_l0( lower_bound, upper_bound, ID,tested_idx)
                 result.append(epsilon)
             else:
-                print("<<<bin is empty !")
+                #print("<<<bin is empty !")
                 result.append(7)
+            print("results=", result)
+
         print("DONE!")
         result=np.asarray(result)
         print("results=",result)
