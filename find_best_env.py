@@ -927,7 +927,7 @@ class find_best_env:
         print("low= ", low)
         print("high= ", high)
         # Check base case
-        if high >= low + 1 / 10000:
+        if high >= low + 0.02:
 
             mid = (high + low) / 2
             v_plus = []
@@ -1043,8 +1043,8 @@ class find_best_env:
 
     def test_single_pix_l0(self, results_path, ID: int, mnist_features, mnist_labels):
 
-        upper_bound = 0.1
-        lower_bound = 0
+        upper_bound = 1
+        lower_bound = 0.98
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
 
@@ -1080,5 +1080,5 @@ class find_best_env:
         print("results=",result)
         np.save(self.intervals_path + '_lo_test_result.npy', result)
 
-                
-               
+
+
