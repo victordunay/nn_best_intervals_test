@@ -1077,10 +1077,10 @@ class find_best_env:
                 result.append(7)
             print("test process=", len(result)/len(bins))
 
-        print("DONE!")
+        print("DONE!!!!!!!!!!!!!!!")
         result=np.asarray(result)
-        print("results=",result)
-        np.save(self.intervals_path + '_lo_test_result.npy', result)
+        #print("results=",result)
+        np.save(self.intervals_path + '_lo_test_result_ID'+str(ID)+'.npy', result)
 
 
 
