@@ -944,10 +944,10 @@ class find_best_env:
             is_verified = self.run_eran(False, mid)
             #print("is_verified=", is_verified)
             if is_verified:
-                return self.binary_search(mid, high, ID)
+                return self.binary_search_l0(mid, high, ID)
 
             else:
-                return self.binary_search(low, mid, ID)
+                return self.binary_search_l0(low, mid, ID)
 
 
         else:
