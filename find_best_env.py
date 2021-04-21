@@ -1085,6 +1085,9 @@ class find_best_env:
     def view_results_single_pix_l0(self, ID: int):
 
         results = np.load(self.intervals_path + '_lo_test_result_ID' + str(ID) + '.npy')
+        print("results.shape[0]=",results.shape[0])
+        print("results.shape[1]=",results.shape[1])
+
         plt.figure(figsize=(10, 5))
         plt.errorbar(
             np.linspace(1, results.shape[0] * results.shape[1], num=results.shape[0] * results.shape[1]),
