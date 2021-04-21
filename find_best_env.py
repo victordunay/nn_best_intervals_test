@@ -1085,12 +1085,17 @@ class find_best_env:
     def view_results_single_pix_l0(self, ID: int):
 
         results = np.load(self.intervals_path + '_lo_test_result_ID' + str(ID) + '.npy')
-        
+
         print("results.shape[0]=", results.shape[0])
-        
+
         plt.figure(figsize=(10, 5))
+        
         plt.errorbar(np.linspace(1, results.shape[0], num=results.shape[0]), np.zeros(results.shape[0]), xerr=None,
-                     yerr=[[i for i in results], [i for i in results]], fmt='none', color='b',
+                     yerr=[[i for i in results], [i for i in results]], fmt='none', color='g',
+                     label="valid intervals for ID " + str(ID), elinewidth=8)
+        results=results[results>7]
+        plt.errorbar(np.linspace(1, results.shape[0], num=results.shape[0]), np.zeros(results.shape[0]), xerr=None,
+                     yerr=[[i for i in results], [i for i in results]], fmt='none', color='r',
                      label="valid intervals for ID " + str(ID), elinewidth=8)
         plt.title("intervals comparison")
         plt.xlabel('bin index')
