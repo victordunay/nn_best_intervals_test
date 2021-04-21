@@ -1096,7 +1096,7 @@ class find_best_env:
         red_x=[]
         for i in range(results.shape[0]):
             if results[i]>6:
-                red_x.append(results[i])
+                red_x.append(i)
         results=results[results>6]
         print("red_x=",red_x)
         plt.errorbar(red_x, np.zeros(len(red_x)), xerr=None,
