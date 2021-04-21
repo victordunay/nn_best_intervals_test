@@ -1094,9 +1094,9 @@ class find_best_env:
         for i in range(results.shape[0]):
             if results[i] <6:
                 red_x.append(i)
-        results = results[results < 6]
+        subresults = results[results < 6]
         plt.errorbar(red_x, np.zeros(len(red_x)), xerr=None,
-                     yerr=[[i for i in results], [i for i in results]], fmt='none', color='g',
+                     yerr=[[i for i in subresults], [i for i in subresults]], fmt='none', color='g',
                      label="valid intervals for ID " + str(ID), elinewidth=1)
         red_x=[]
         for i in range(results.shape[0]):
