@@ -1108,7 +1108,7 @@ class find_best_env:
         plt.errorbar(red_x, np.zeros(len(red_x)), xerr=None,
                      yerr=[[i for i in results], [i for i in results]], fmt='none', color='r',
                      label="empty bins" + str(ID), elinewidth=1)
-        plt.title("intervals comparison")
+        plt.title("valid pixel interval per bin ")
         plt.xlabel('bin index')
         plt.ylabel('valid pixel environment')
         plt.legend()
