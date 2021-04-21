@@ -923,9 +923,9 @@ class find_best_env:
         else:
             return (high + low) / 2
 
-    def binary_search_l0(self, low, high, ID,idx:int):
-        #print("low= ", low)
-        #print("high= ", high)
+    def binary_search_l0(self, low, high, ID, idx: int):
+        # print("low= ", low)
+        # print("high= ", high)
         # Check base case
         if high >= low + 0.02:
 
@@ -935,19 +935,19 @@ class find_best_env:
             for idx in range(self.image_size[0] * self.image_size[1]):
                 v_plus.append(0)
                 v_minus.append(0)
-            v_plus[idx]=mid
-            v_minus[idx]=-mid
+            v_plus[idx] = mid
+            v_minus[idx] = -mid
 
             np.save(self.intervals_path + '_pos.npy', v_plus)
             np.save(self.intervals_path + '_neg.npy', v_minus)
-            #print("mid=", mid)
+            # print("mid=", mid)
             is_verified = self.run_eran(False, mid)
-            #print("is_verified=", is_verified)
+            # print("is_verified=", is_verified)
             if is_verified:
-                return self.binary_search_l0(mid, high, ID,idx)
+                return self.binary_search_l0(mid, high, ID, idx)
 
             else:
-                return self.binary_search_l0(low, mid, ID,idx)
+                return self.binary_search_l0(low, mid, ID, idx)
 
 
         else:
@@ -1058,29 +1058,43 @@ class find_best_env:
         ind = np.digitize(mean_adversarial_examples_results, bins)
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
         ind = np.squeeze(ind, axis=0)
-        result=[]
+        result = []
         for j in range(len(bins)):
-            #print("tested bin is ",str(j))
+            # print("tested bin is ",str(j))
             pixels_inside_bin = []
             for i in range(len(ind)):
                 if ind[i] == j:
                     pixels_inside_bin.append(i)
             if len(pixels_inside_bin) != 0:
-                #print("bin is NOT empty :)")
-                #print("pixels_inside_bin=",pixels_inside_bin)
+                # print("bin is NOT empty :)")
+                # print("pixels_inside_bin=",pixels_inside_bin)
                 tested_idx = random.choice(pixels_inside_bin)
-                #print("tested_idx=",tested_idx)
-                epsilon=self.binary_search_l0( lower_bound, upper_bound, ID,tested_idx)
+                # print("tested_idx=",tested_idx)
+                epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
                 result.append(epsilon)
             else:
-                #print("<<<bin is empty !")
+                # print("<<<bin is empty !")
                 result.append(7)
-            print("test process=", len(result)/len(bins))
+            print("test process=", len(result) / len(bins))
 
         print("DONE!!!!!!!!!!!!!!!")
-        result=np.asarray(result)
-        #print("results=",result)
-        np.save(self.intervals_path + '_lo_test_result_ID'+str(ID)+'.npy', result)
+        result = np.asarray(result)
+        # print("results=",result)
+        np.save(self.intervals_path + '_lo_test_result_ID' + str(ID) + '.npy', result)
 
+    def view_results_single_pix_l0(self, ID: int):
 
-
+        results = np.load(self.intervals_path + '_lo_test_result_ID' + str(ID) + '.npy')
+        plt.figure(figsize=(10, 5))
+        plt.errorbar(
+            np.linspace(1, results.shape[0] * results.shape[1], num=results.shape[0] * results.shape[1]),
+            np.zeros(results.shape[0] * results.shape[1]), xerr=None,
+            yerr=[[i for i in results], [-i for i in results]], fmt='none',
+            color='b',
+            label="valid intervals for ID " + str(ID), elinewidth=8)
+        plt.title("intervals comparison")
+        plt.xlabel('bin index')
+        plt.ylabel('valid pixel environment')
+        plt.legend()
+        plt.show()
+        plt.savefig('../../nn_best_intervals_test/intervals_results/single_pixel_test_results_ID_' + str(ID) + '.png')
