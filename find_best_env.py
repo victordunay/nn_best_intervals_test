@@ -1092,7 +1092,7 @@ class find_best_env:
 
         plt.errorbar(np.linspace(1, results.shape[0], num=results.shape[0]), np.zeros(results.shape[0]), xerr=None,
                      yerr=[[i for i in results], [i for i in results]], fmt='none', color='g',
-                     label="valid intervals for ID " + str(ID), elinewidth=1)
+                     label="valid intervals for ID " + str(ID), elinewidth=0.2)
         red_x=[]
         for i in range(results.shape[0]):
             if results[i]>6:
@@ -1101,7 +1101,7 @@ class find_best_env:
         print("red_x=",red_x)
         plt.errorbar(red_x, np.zeros(len(red_x)), xerr=None,
                      yerr=[[i for i in results], [i for i in results]], fmt='none', color='r',
-                     label="valid intervals for ID " + str(ID), elinewidth=1)
+                     label="valid intervals for ID " + str(ID), elinewidth=0.2)
         plt.title("intervals comparison")
         plt.xlabel('bin index')
         plt.ylabel('valid pixel environment')
