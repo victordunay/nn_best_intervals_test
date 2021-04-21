@@ -1086,7 +1086,6 @@ class find_best_env:
 
         results = np.load(self.intervals_path + '_lo_test_result_ID' + str(ID) + '.npy')
         print("results.shape[0]=",results.shape[0])
-        print("results.shape[1]=",results.shape[1])
 
         plt.figure(figsize=(10, 5))
         plt.errorbar(
