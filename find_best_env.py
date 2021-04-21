@@ -1090,8 +1090,8 @@ class find_best_env:
 
         plt.figure(figsize=(10, 5))
         plt.errorbar(
-            np.linspace(1, results.shape[0] * results.shape[1], num=results.shape[0] * results.shape[1]),
-            np.zeros(results.shape[0] * results.shape[1]), xerr=None,
+            np.linspace(1, results.shape[0], num=results.shape[0]),
+            np.zeros(results.shape[0] ), xerr=None,
             yerr=[[i for i in results], [-i for i in results]], fmt='none',
             color='b',
             label="valid intervals for ID " + str(ID), elinewidth=8)
