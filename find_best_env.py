@@ -940,9 +940,9 @@ class find_best_env:
 
             np.save(self.intervals_path + '_pos.npy', v_plus)
             np.save(self.intervals_path + '_neg.npy', v_minus)
-            # print("mid=", mid)
+            print("mid=", mid)
             is_verified = self.run_eran(False, mid)
-            # print("is_verified=", is_verified)
+            print("is_verified=", is_verified)
             if is_verified:
                 return self.binary_search_l0(mid, high, ID, idx)
 
@@ -1070,17 +1070,21 @@ class find_best_env:
             if len(pixels_inside_bin) != 0:
                 if len(pixels_inside_bin)>4:
                     for pix in range(num_of_tested_pixels_per_bin):
-                        # print("bin is NOT empty :)")
-                        # print("pixels_inside_bin=",pixels_inside_bin)
+                        print("bin ",j," is NOT empty :")
+                        print("pixels_inside_bin=",pixels_inside_bin)
                         tested_idx = random.choice(pixels_inside_bin)
+                        print("tested_idx=",tested_idx)
                         pixels_inside_bin.remove(tested_idx)
+                        print("after removal =",pixels_inside_bin)
                         # print("tested_idx=",tested_idx)
                         epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
                         epsilon_array.append(epsilon)
+                    print("epsilon_Array=",epsilon_array)
                     result.append(sum(epsilon_array)/len(epsilon_array))
+                    print("result=",result)
                 else:
                     for pix in range(len(pixels_inside_bin)):
-                        # print("bin is NOT empty :)")
+                        print("bin ",j,"is NOT empty :)")
                         # print("pixels_inside_bin=",pixels_inside_bin)
                         tested_idx = random.choice(pixels_inside_bin)
                         pixels_inside_bin.remove(tested_idx)
@@ -1089,9 +1093,10 @@ class find_best_env:
                         epsilon_array.append(epsilon)
                     result.append(sum(epsilon_array)/len(epsilon_array))
             else:
-                # print("<<<bin is empty !")
+                print("<<<bin " ,j,"is empty !")
                 result.append(7)
-            print("test process=", len(result) / len(bins))
+            if (j%10==0):
+                print("test process=", len(result) / len(bins))
 
         print("DONE!!!!!!!!!!!!!!!")
         result = np.asarray(result)
