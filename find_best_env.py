@@ -1059,19 +1059,35 @@ class find_best_env:
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
         ind = np.squeeze(ind, axis=0)
         result = []
+        num_of_tested_pixels_per_bin=5
         for j in range(len(bins)):
             # print("tested bin is ",str(j))
             pixels_inside_bin = []
             for i in range(len(ind)):
                 if ind[i] == j:
                     pixels_inside_bin.append(i)
+            epsilon_array=[]
             if len(pixels_inside_bin) != 0:
-                # print("bin is NOT empty :)")
-                # print("pixels_inside_bin=",pixels_inside_bin)
-                tested_idx = random.choice(pixels_inside_bin)
-                # print("tested_idx=",tested_idx)
-                epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
-                result.append(epsilon)
+                if len(pixels_inside_bin)>4:
+                    for pix in range(num_of_tested_pixels_per_bin):
+                        # print("bin is NOT empty :)")
+                        # print("pixels_inside_bin=",pixels_inside_bin)
+                        tested_idx = random.choice(pixels_inside_bin)
+                        pixels_inside_bin.remove(tested_idx)
+                        # print("tested_idx=",tested_idx)
+                        epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
+                        epsilon_array.append(epsilon)
+                    result.append(sum(epsilon_array)/len(epsilon_array))
+                else:
+                    for pix in range(pixels_inside_bin):
+                        # print("bin is NOT empty :)")
+                        # print("pixels_inside_bin=",pixels_inside_bin)
+                        tested_idx = random.choice(pixels_inside_bin)
+                        pixels_inside_bin.remove(tested_idx)
+                        # print("tested_idx=",tested_idx)
+                        epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
+                        epsilon_array.append(epsilon)
+                    result.append(sum(epsilon_array)/len(epsilon_array))
             else:
                 # print("<<<bin is empty !")
                 result.append(7)
@@ -1080,7 +1096,7 @@ class find_best_env:
         print("DONE!!!!!!!!!!!!!!!")
         result = np.asarray(result)
         # print("results=",result)
-        np.save(self.intervals_path + '_lo_test_result_ID' + str(ID) + '.npy', result)
+        np.save(self.intervals_path + '_lo_modified_test_result_ID' + str(ID) + '.npy', result)
 
     def view_results_single_pix_l0(self, ID: int):
 
