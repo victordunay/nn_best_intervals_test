@@ -1079,7 +1079,7 @@ class find_best_env:
                         epsilon_array.append(epsilon)
                     result.append(sum(epsilon_array)/len(epsilon_array))
                 else:
-                    for pix in range(pixels_inside_bin):
+                    for pix in range(len(pixels_inside_bin)):
                         # print("bin is NOT empty :)")
                         # print("pixels_inside_bin=",pixels_inside_bin)
                         tested_idx = random.choice(pixels_inside_bin)
