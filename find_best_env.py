@@ -940,9 +940,9 @@ class find_best_env:
 
             np.save(self.intervals_path + '_pos.npy', v_plus)
             np.save(self.intervals_path + '_neg.npy', v_minus)
-            print("mid=", mid)
+            #print("mid=", mid)
             is_verified = self.run_eran(False, mid)
-            print("is_verified=", is_verified)
+            #print("is_verified=", is_verified)
             if is_verified:
                 return self.binary_search_l0(mid, high, ID, idx)
 
