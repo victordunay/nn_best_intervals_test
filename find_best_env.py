@@ -1085,13 +1085,18 @@ class find_best_env:
                 else:
                     for pix in range(len(pixels_inside_bin)):
                         print("bin ",j,"is NOT empty :)")
-                        # print("pixels_inside_bin=",pixels_inside_bin)
+                        print("pixels_inside_bin=",pixels_inside_bin)
                         tested_idx = random.choice(pixels_inside_bin)
+                        print("tested_idx=",tested_idx)
+
                         pixels_inside_bin.remove(tested_idx)
-                        # print("tested_idx=",tested_idx)
+                        print("after removal =",pixels_inside_bin)
                         epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
                         epsilon_array.append(epsilon)
+                        print("epsilon_Array=", epsilon_array)
                     result.append(sum(epsilon_array)/len(epsilon_array))
+                    print("result=",result)
+
             else:
                 print("<<<bin " ,j,"is empty !")
                 result.append(7)
