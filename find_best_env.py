@@ -1044,7 +1044,7 @@ class find_best_env:
     def test_single_pix_l0(self, results_path, ID: int, mnist_features, mnist_labels):
 
         upper_bound = 1
-        lower_bound = 0.98
+        lower_bound = 0
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
 
