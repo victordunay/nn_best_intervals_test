@@ -1144,13 +1144,21 @@ class find_best_env:
     def view_results_single_pix_l0_line_graph(self, ID: int):
 
         results = np.load(self.intervals_path + '_lo_modified_test_result_ID' + str(ID) + '.npy')
-
-        x = [i for i in range(results.shape[0])]
+        x=[]
+        x_emp=[]
+        for i in range(results.shape[0]):
+            if results[i]<6:
+                x.append(i)
+            else:
+                results[i]=-1
+                x_emp.append(i)
         plt.title("valid pixel interval per bin ")
         plt.xlabel('bin index')
         plt.ylabel('valid pixel environment')
         plt.legend()
-        plt.plot(x, results, color="red")
+        plt.plot(x_emp, results[x_emp], color="red")
+        plt.plot(x, results[x], color="green")
+
         plt.show()
         plt.savefig(
             '../../nn_best_intervals_test/intervals_results/modified_single_pixel_test_results_ID_' + str(ID) + '.png')
