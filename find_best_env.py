@@ -1156,9 +1156,9 @@ class find_best_env:
         plt.title("valid pixel interval per bin ")
         plt.xlabel('bin index')
         plt.ylabel('valid pixel environment')
-        plt.plot(x_emp, results[x_emp], color="red",marker='D',mfc='red',linewidth=0.1,markersize=0.3)
-        plt.plot(x, results[x], color="green",marker='D',mfc='green',linewidth=0.1,markersize=0.3)
-        plt.legend(["empty bins","valid vins"])
+        plt.plot(x_emp, results[x_emp], color="red",marker='D',mfc='red',linewidth=0.3,markersize=0.6)
+        plt.plot(x, results[x], color="green",marker='D',mfc='green',linewidth=0.3,markersize=0.6)
+        plt.legend(["empty bins","valid bins"])
 
         plt.show()
         plt.savefig(
