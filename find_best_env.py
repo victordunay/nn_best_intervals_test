@@ -940,9 +940,9 @@ class find_best_env:
 
             np.save(self.intervals_path + '_pos.npy', v_plus)
             np.save(self.intervals_path + '_neg.npy', v_minus)
-            #print("mid=", mid)
+            # print("mid=", mid)
             is_verified = self.run_eran(False, mid)
-            #print("is_verified=", is_verified)
+            # print("is_verified=", is_verified)
             if is_verified:
                 return self.binary_search_l0(mid, high, ID, idx)
 
@@ -1059,48 +1059,48 @@ class find_best_env:
         ind = ind.reshape(-1, self.image_size[0] * self.image_size[1])
         ind = np.squeeze(ind, axis=0)
         result = []
-        num_of_tested_pixels_per_bin=5
+        num_of_tested_pixels_per_bin = 5
         for j in range(len(bins)):
             # print("tested bin is ",str(j))
             pixels_inside_bin = []
             for i in range(len(ind)):
                 if ind[i] == j:
                     pixels_inside_bin.append(i)
-            epsilon_array=[]
+            epsilon_array = []
             if len(pixels_inside_bin) != 0:
-                if len(pixels_inside_bin)>4:
+                if len(pixels_inside_bin) > 4:
                     for pix in range(num_of_tested_pixels_per_bin):
-                        print("bin ",j," is NOT empty :")
-                        print("pixels_inside_bin=",pixels_inside_bin)
+                        print("bin ", j, " is NOT empty :")
+                        print("pixels_inside_bin=", pixels_inside_bin)
                         tested_idx = random.choice(pixels_inside_bin)
-                        print("tested_idx=",tested_idx)
+                        print("tested_idx=", tested_idx)
                         pixels_inside_bin.remove(tested_idx)
-                        print("after removal =",pixels_inside_bin)
+                        print("after removal =", pixels_inside_bin)
                         # print("tested_idx=",tested_idx)
                         epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
                         epsilon_array.append(epsilon)
-                    print("epsilon_Array=",epsilon_array)
-                    result.append(sum(epsilon_array)/len(epsilon_array))
-                    print("result=",result)
+                    print("epsilon_Array=", epsilon_array)
+                    result.append(sum(epsilon_array) / len(epsilon_array))
+                    print("result=", result)
                 else:
                     for pix in range(len(pixels_inside_bin)):
-                        print("bin ",j,"is NOT empty :)")
-                        print("pixels_inside_bin=",pixels_inside_bin)
+                        print("bin ", j, "is NOT empty :)")
+                        print("pixels_inside_bin=", pixels_inside_bin)
                         tested_idx = random.choice(pixels_inside_bin)
-                        print("tested_idx=",tested_idx)
+                        print("tested_idx=", tested_idx)
 
                         pixels_inside_bin.remove(tested_idx)
-                        print("after removal =",pixels_inside_bin)
+                        print("after removal =", pixels_inside_bin)
                         epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
                         epsilon_array.append(epsilon)
                         print("epsilon_Array=", epsilon_array)
-                    result.append(sum(epsilon_array)/len(epsilon_array))
-                    print("result=",result)
+                    result.append(sum(epsilon_array) / len(epsilon_array))
+                    print("result=", result)
 
             else:
-                print("<<<bin " ,j,"is empty !")
+                print("<<<bin ", j, "is empty !")
                 result.append(7)
-            if (j%10==0):
+            if (j % 10 == 0):
                 print("test process=", len(result) / len(bins))
 
         print("DONE!!!!!!!!!!!!!!!")
@@ -1118,19 +1118,19 @@ class find_best_env:
 
         red_x = []
         for i in range(results.shape[0]):
-            if results[i] <6:
+            if results[i] < 6:
                 red_x.append(i)
         subresults = results[results < 6]
         plt.errorbar(red_x, np.zeros(len(red_x)), xerr=None,
                      yerr=[[i for i in subresults], [i for i in subresults]], fmt='none', color='g',
                      label="valid intervals for ID " + str(ID), elinewidth=1)
-        red_x=[]
+        red_x = []
         for i in range(results.shape[0]):
-            if results[i]>6:
+            if results[i] > 6:
                 red_x.append(i)
-        results=results[results>6]
-        results=results-5
-        print("red_x=",red_x)
+        results = results[results > 6]
+        results = results - 5
+        print("red_x=", red_x)
         plt.errorbar(red_x, np.zeros(len(red_x)), xerr=None,
                      yerr=[[i for i in results], [i for i in results]], fmt='none', color='r',
                      label="empty bins" + str(ID), elinewidth=1)
@@ -1140,3 +1140,17 @@ class find_best_env:
         plt.legend()
         plt.show()
         plt.savefig('../../nn_best_intervals_test/intervals_results/single_pixel_test_results_ID_' + str(ID) + '.png')
+
+    def view_results_single_pix_l0_line_graph(self, ID: int):
+
+        results = np.load(self.intervals_path + '_lo_modified_test_result_ID' + str(ID) + '.npy')
+
+        x = [i for i in range(results.shape[0])]
+        plt.title("valid pixel interval per bin ")
+        plt.xlabel('bin index')
+        plt.ylabel('valid pixel environment')
+        plt.legend()
+        plt.plot(x, results, color="red")
+        plt.show()
+        plt.savefig(
+            '../../nn_best_intervals_test/intervals_results/modified_single_pixel_test_results_ID_' + str(ID) + '.png')
