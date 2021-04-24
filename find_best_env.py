@@ -1156,8 +1156,8 @@ class find_best_env:
         plt.xlabel('bin index')
         plt.ylabel('valid pixel environment')
         plt.legend()
-        plt.plot(x_emp, results[x_emp], color="red")
-        plt.plot(x, results[x], color="green")
+        plt.plot(x_emp, results[x_emp], color="red",marker='D',mfc='red')
+        plt.plot(x, results[x], color="green",marker='D',mfc='green')
 
         plt.show()
         plt.savefig(
