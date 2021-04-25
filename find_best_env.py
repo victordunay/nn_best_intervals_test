@@ -924,25 +924,24 @@ class find_best_env:
             return (high + low) / 2
 
     def binary_search_l0(self, low, high, ID, idx: int):
-        # print("low= ", low)
-        # print("high= ", high)
+        print("low= ", low)
+        print("high= ", high)
         # Check base case
         if high >= low + 0.02:
 
             mid = (high + low) / 2
-            v_plus = []
-            v_minus = []
-            for idx in range(self.image_size[0] * self.image_size[1]):
-                v_plus.append(0)
-                v_minus.append(0)
+
+            v_plus = list(np.load(self.intervals_path + '_pos.npy'))
+            v_minus = list(np.load(self.intervals_path + '_neg.npy'))
+
             v_plus[idx] = mid
             v_minus[idx] = -mid
 
             np.save(self.intervals_path + '_pos.npy', v_plus)
             np.save(self.intervals_path + '_neg.npy', v_minus)
-            # print("mid=", mid)
+            print("mid=", mid)
             is_verified = self.run_eran(False, mid)
-            # print("is_verified=", is_verified)
+            print("is_verified=", is_verified)
             if is_verified:
                 return self.binary_search_l0(mid, high, ID, idx)
 
@@ -1144,22 +1143,62 @@ class find_best_env:
     def view_results_single_pix_l0_line_graph(self, ID: int):
 
         results = np.load(self.intervals_path + '_lo_modified_test_result_ID' + str(ID) + '.npy')
-        x=[]
-        x_emp=[]
+        x = []
+        x_emp = []
         for i in range(results.shape[0]):
-            if results[i]<6:
+            if results[i] < 6:
                 x.append(i)
             else:
-                results[i]=-1
+                results[i] = -1
                 x_emp.append(i)
-        plt.figure(figsize=(10,10))
+        plt.figure(figsize=(10, 10))
         plt.title("valid pixel interval per bin ")
         plt.xlabel('bin index')
         plt.ylabel('valid pixel environment')
-        plt.plot(x_emp, results[x_emp], color="red",marker='D',mfc='red',linewidth=0.3,markersize=0.6)
-        plt.plot(x, results[x], color="green",marker='D',mfc='green',linewidth=0.3,markersize=0.6)
-        plt.legend(["empty bins","valid bins"])
+        plt.plot(x_emp, results[x_emp], color="red", marker='D', mfc='red', linewidth=0.3, markersize=0.6)
+        plt.plot(x, results[x], color="green", marker='D', mfc='green', linewidth=0.3, markersize=0.6)
+        plt.legend(["empty bins", "valid bins"])
 
         plt.show()
         plt.savefig(
             '../../nn_best_intervals_test/intervals_results/modified_single_pixel_test_results_ID_' + str(ID) + '.png')
+
+    def test_multiple_epsilon_inf(self, ID: int, mnist_features, mnist_labels):
+
+        self.load_image(ID, mnist_features, mnist_labels)
+        s = self.read_sample(ID)
+
+        num_of_tests = 20
+        result = []
+        num_of_tested_pixels = 5
+        for j in range(num_of_tests):
+            v_plus = []
+            v_minus = []
+            for idx in range(self.image_size[0] * self.image_size[1]):
+                v_plus.append(0)
+                v_minus.append(0)
+
+            np.save(self.intervals_path + '_pos.npy', v_plus)
+            np.save(self.intervals_path + '_neg.npy', v_minus)
+            print("test number is ", j)
+            pixels_array = [i for i in range(784)]
+            epsilon_array = []
+            idx_array = []
+            for pix in range(num_of_tested_pixels):
+                print("number of tested pixels so far are =",pix)
+                upper_bound = 1
+                lower_bound = 0.0
+                tested_idx = random.choice(pixels_array)
+                print(">>>>>>>>>>>>>>>>>>>>>>>>>>tested_idx=", tested_idx)
+                pixels_array.remove(tested_idx)
+                epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
+                epsilon_array.append(epsilon)
+                idx_array.append(tested_idx)
+            np.save(self.intervals_path + 'modified_pixels_for_multiple_l0_test_for_ID_'+str(ID) +'iter_' +str(j)+ '.npy', np.asarray(idx_array))
+            np.save(self.intervals_path + 'epsilons_for_multiple_l0_test_for_ID_' + str(ID) + 'iter_' +str(j)+ '.npy', np.asarray(epsilon_array))
+            print("epsilon_Array=", epsilon_array)
+
+
+        print("DONE!!!!!!!!!!!!!!!")
+
+
