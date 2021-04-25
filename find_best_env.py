@@ -1171,7 +1171,7 @@ class find_best_env:
 
         num_of_tests = 20
         result = []
-        num_of_tested_pixels = 22
+        num_of_tested_pixels = 20
         for j in range(num_of_tests):
             v_plus = []
             v_minus = []
