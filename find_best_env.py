@@ -1171,7 +1171,8 @@ class find_best_env:
 
         num_of_tests = 20
         result = []
-        num_of_tested_pixels = 20
+        num_of_tested_pixels = 25
+
         for j in range(num_of_tests):
             v_plus = []
             v_minus = []
@@ -1198,7 +1199,10 @@ class find_best_env:
             np.save(self.intervals_path + 'modified_pixels_for_multiple_l0_test_for_ID_'+str(ID) +'iter_' +str(j)+ '.npy', np.asarray(idx_array))
             np.save(self.intervals_path + 'epsilons_for_multiple_l0_test_for_ID_' + str(ID) + 'iter_' +str(j)+ '.npy', np.asarray(epsilon_array))
             print("epsilon_mean=", sum(epsilon_array) / len(epsilon_array))
+            result.append(sum(epsilon_array) / len(epsilon_array))
 
         print("DONE!!!!!!!!!!!!!!!")
+        np.save(self.intervals_path + 'mean_total_result' + str(ID)+'.npy',np.asarray(result))
+
 
 
