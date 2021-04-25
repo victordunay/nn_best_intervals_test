@@ -95,7 +95,8 @@ if __name__ == "__main__":
         #interval_solver.view_most_modified_pixels(results_path, ID)
         #interval_solver.test_single_pix_l0(results_path, ID,mnist_features, mnist_labels)
         #interval_solver.view_results_single_pix_l0(ID)
-        interval_solver.view_results_single_pix_l0_line_graph(ID)
+        #interval_solver.view_results_single_pix_l0_line_graph(ID)
+        interval_solver.test_multiple_epsilon_inf(ID, mnist_features, mnist_labels)
 
 """ 
     processes = [mp.Process(target=parallel_process, args=(
