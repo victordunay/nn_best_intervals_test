@@ -924,8 +924,8 @@ class find_best_env:
             return (high + low) / 2
 
     def binary_search_l0(self, low, high, ID, idx: int):
-        print("low= ", low)
-        print("high= ", high)
+        #print("low= ", low)
+        #print("high= ", high)
         # Check base case
         if high >= low + 0.04:
 
@@ -939,9 +939,9 @@ class find_best_env:
 
             np.save(self.intervals_path + '_pos.npy', v_plus)
             np.save(self.intervals_path + '_neg.npy', v_minus)
-            print("mid=", mid)
+            #print("mid=", mid)
             is_verified = self.run_eran(False, mid)
-            print("is_verified=", is_verified)
+            #print("is_verified=", is_verified)
             if is_verified:
                 return self.binary_search_l0(mid, high, ID, idx)
 
@@ -1171,7 +1171,7 @@ class find_best_env:
 
         num_of_tests = 20
         result = []
-        num_of_tested_pixels = 20
+        num_of_tested_pixels = 22
         for j in range(num_of_tests):
             v_plus = []
             v_minus = []
@@ -1186,19 +1186,18 @@ class find_best_env:
             epsilon_array = []
             idx_array = []
             for pix in range(num_of_tested_pixels):
-                print("number of tested pixels so far are =",pix)
+                #print("number of tested pixels so far are =",pix)
                 upper_bound = 1
                 lower_bound = 0.0
                 tested_idx = random.choice(pixels_array)
-                print(">>>>>>>>>>>>>>>>>>>>>>>>>>tested_idx=", tested_idx)
+                #print(">>>>>>>>>>>>>>>>>>>>>>>>>>tested_idx=", tested_idx)
                 pixels_array.remove(tested_idx)
                 epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
                 epsilon_array.append(epsilon)
                 idx_array.append(tested_idx)
             np.save(self.intervals_path + 'modified_pixels_for_multiple_l0_test_for_ID_'+str(ID) +'iter_' +str(j)+ '.npy', np.asarray(idx_array))
             np.save(self.intervals_path + 'epsilons_for_multiple_l0_test_for_ID_' + str(ID) + 'iter_' +str(j)+ '.npy', np.asarray(epsilon_array))
-            print("epsilon_Array=", epsilon_array)
-
+            print("epsilon_mean=", sum(epsilon_array) / len(epsilon_array))
 
         print("DONE!!!!!!!!!!!!!!!")
 
