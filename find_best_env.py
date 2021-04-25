@@ -946,6 +946,7 @@ class find_best_env:
                 return self.binary_search_l0(mid, high, ID, idx)
 
             else:
+                print("FALSE !!!!!!!%%%%%%%%%%$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
                 return self.binary_search_l0(low, mid, ID, idx)
 
 
@@ -1170,7 +1171,7 @@ class find_best_env:
 
         num_of_tests = 20
         result = []
-        num_of_tested_pixels = 5
+        num_of_tested_pixels = 60
         for j in range(num_of_tests):
             v_plus = []
             v_minus = []
