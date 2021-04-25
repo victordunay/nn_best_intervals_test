@@ -1187,7 +1187,7 @@ class find_best_env:
             for pix in range(num_of_tested_pixels):
                 print("number of tested pixels so far are =",pix)
                 upper_bound = 1
-                lower_bound = 0.0
+                lower_bound = 0.8
                 tested_idx = random.choice(pixels_array)
                 print(">>>>>>>>>>>>>>>>>>>>>>>>>>tested_idx=", tested_idx)
                 pixels_array.remove(tested_idx)
