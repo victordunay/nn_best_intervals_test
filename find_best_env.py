@@ -927,7 +927,7 @@ class find_best_env:
         print("low= ", low)
         print("high= ", high)
         # Check base case
-        if high >= low + 0.02:
+        if high >= low + 0.04:
 
             mid = (high + low) / 2
 
