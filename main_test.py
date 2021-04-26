@@ -227,7 +227,7 @@ if __name__ == "__main__":
         #interval_solver.test_single_pix_l0(results_path, ID,mnist_features, mnist_labels)
         #interval_solver.view_results_single_pix_l0(ID)
         #interval_solver.view_results_single_pix_l0_line_graph(ID)
-        print("results=",np.sum(np.load('epsilon_intervals'+ 'mean_total_result' + str(ID)+'.npy'))/np.sum(np.load('epsilon_intervals'+ 'mean_total_result' + str(ID)+'.npy')).shape)
+        print("results=",np.mean(np.load('epsilon_intervals'+ 'mean_total_result' + str(ID)+'.npy')))
 
 
 """ 
