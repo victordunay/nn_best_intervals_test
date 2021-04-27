@@ -18,6 +18,7 @@ import find_best_env
 import attack_models
 import parameters
 import global_tasks
+import load
 
 
 def parallel_process(model_, results_path_: str, ID_: int, mnist_features_, mnist_labels_, adversarial_generator_,
@@ -69,7 +70,8 @@ if __name__ == "__main__":
     # ================================================================
     #  nn model instantiation
     # ================================================================
-    model = neural_network_models.ConvNet()
+    # model = neural_network_models.ConvNet()
+    model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
     # ================================================================
     #  load pre-trained model parameters into model
     # ================================================================
