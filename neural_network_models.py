@@ -61,16 +61,17 @@ class ConvNet(nn.Module):
         self.relu2 = nn.ReLU()
 
         self.fc1 = nn.Linear(weights3.shape[1], weights3.shape[0])
+        print("weights3.shape[1]=",weights3.shape[1],"weights3.shape[0],=",weights3.shape[0])
         with torch.no_grad():
             self.fc1.weight.copy_(weights3)
-            self.fc1.bias.copy_(torch.zeros(800))
+            self.fc1.bias.copy_(torch.zeros(100))
 
         self.relu3 = nn.ReLU()
 
         self.fc2 = nn.Linear(weights4.shape[1], weights4.shape[0])
         with torch.no_grad():
             self.fc2.weight.copy_(weights4)
-            self.fc2.bias.copy_(torch.zeros(100))
+            self.fc2.bias.copy_(torch.zeros(10))
 
     def forward(self, x):
         out = self.layer1(x)
