@@ -70,7 +70,7 @@ class ConvNet(nn.Module):
         self.fc2 = nn.Linear(weights4.shape[1], weights4.shape[0])
         with torch.no_grad():
             self.fc2.weight.copy_(weights4)
-            self.fc2.bias.copy_(torch.zeros(10))
+            self.fc2.bias.copy_(torch.zeros(100))
 
     def forward(self, x):
         out = self.layer1(x)
