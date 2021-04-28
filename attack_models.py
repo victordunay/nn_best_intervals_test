@@ -135,7 +135,7 @@ class attacks:
             print("y=",y)
             print("X +delta.shape=",(X+delta).shape)
             sum=X+delta
-            inter_result=model(sum)
+            inter_result=model(X)
             print("inter_result=",inter_result)
             loss = nn.CrossEntropyLoss()(model(X + delta), y)
             print("1")
