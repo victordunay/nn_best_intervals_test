@@ -131,6 +131,7 @@ class attacks:
         delta.requires_grad = True
 
         for t in range(num_iter):
+            print("iter=",t)
             loss = nn.CrossEntropyLoss()(model((X + delta).reshape(1,1,28,28)), y)
             loss.backward()
             delta.data = (delta + X.shape[0] * alpha * delta.grad.data)
