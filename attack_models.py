@@ -159,6 +159,23 @@ class attacks:
 
     def generate_projected_gradient_descent_adversarial_examples_set(self, net, dataset_img_idx, x_test_tensor,
                                                                      y_test_tensor, results_path):
+
+        tested_idx = 216
+        manual_should_be = y_test_tensor[tested_idx]
+        print("manual_should_be =", manual_should_be)
+        manual_tens = x_test_tensor[tested_idx, :, ].reshape(1, 1, 28, 28)
+        manual_tens = manual_tens / 255.0
+        x_test_tensor = x_test_tensor.reshape(10000, 1, 28, 28)
+        x_test_tensor = x_test_tensor / 255.0
+
+        with torch.no_grad():
+            
+            print("manual_tens.shape=", manual_tens.shape)
+
+            manual_prediction = net(manual_tens)
+            _, predicted = torch.max(manual_prediction.data, 1)
+            print("manual_prediction is ", predicted)
+
         orig_label = torch.tensor([y_test_tensor[dataset_img_idx]])
 
         pgd_intervals_list = []
