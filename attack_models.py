@@ -133,8 +133,7 @@ class attacks:
         for t in range(num_iter):
             print("iter=",t)
             print("y=",y)
-            print("X+delta=",X+delta)
-            print("X+delta.shape=",(X+delta).shape)
+            print("X +delta.shape=",(X+delta).shape)
             sum=X+delta
             inter_result=model(sum)
             print("inter_result=",inter_result)
