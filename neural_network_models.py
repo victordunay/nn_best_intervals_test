@@ -82,5 +82,4 @@ class ConvNet(nn.Module):
         out = self.fc1(out)
         out = self.relu3(out)
         out = self.fc2(out)
-
-        return out
+        return torch.log_softmax(out, dim=-1)
