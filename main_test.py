@@ -75,7 +75,8 @@ if __name__ == "__main__":
     # ================================================================
     #  load pre-trained model parameters into model
     # ================================================================
-    model.load_state_dict(torch.load(neural_network_path))
+    #model.load_state_dict(torch.load(neural_network_path))
+    print("without")
     # ================================================================
     #  adversarial_generator instantiation
     # ================================================================
