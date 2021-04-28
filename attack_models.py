@@ -150,6 +150,7 @@ class attacks:
         random_bound_list = [(2 * i) * self.pixel_res for i in range(self.pgd_rand_vector_size)]
         for rand_bound in random_bound_list:
             for l in range(self.pgd_examples_per_random_val):
+                print("rand_bound=",rand_bound,"ex=",l)
                 adv_example = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
                 initial_bias = np.random.uniform(-rand_bound, rand_bound, self.image_size[0] * self.image_size[1])
