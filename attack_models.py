@@ -132,7 +132,9 @@ class attacks:
         delta=delta.reshape(1,1,28,28)
         for t in range(num_iter):
             print("iter=",t)
-            print("model_res=",model(X+delta),"y=",y)
+            print("y=",y)
+            print("X+delta=",X+delta)
+            print("X+delta.shape=",(X+delta).shape)
             loss = nn.CrossEntropyLoss()(model(X + delta), y)
             print("1")
             loss.backward()
