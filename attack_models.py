@@ -135,7 +135,7 @@ class attacks:
             loss.backward()
             delta.data = (delta + X.shape[0] * alpha * delta.grad.data)
             delta.grad.zero_()
-            fsm_prediction = model(X + delta)
+            fsm_prediction = model((X + delta).reshape(1,1,28,28))
             _, predicted = torch.max(fsm_prediction.data, 1)
 
             if predicted != y:
@@ -159,7 +159,7 @@ class attacks:
                 delta = self.pgd(net, adv_example, orig_label, self.pgd_lr, self.pgd_max_iter, initial_bias)
                 delta = delta.reshape(self.image_size[0], self.image_size[1])
 
-                fsm_prediction = net(adv_example)
+                fsm_prediction = net(adv_example.reshape(1,1,28,28))
                 _, predicted = torch.max(fsm_prediction.data, 1)
                 manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(self.image_size[0],
                                                                           self.image_size[1]) * self.pixel_res
