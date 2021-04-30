@@ -85,8 +85,8 @@ if __name__ == "__main__":
     _, predicted = torch.max(manual_prediction.data, 1)
     print("manual_prediction is ", predicted)
     # ================================================================
-    
-    
+
+
     # ================================================================
     #  load pre-trained model parameters into model
     # ================================================================
@@ -100,6 +100,15 @@ if __name__ == "__main__":
     # ================================================================
     interval_solver = find_best_env.find_best_env(parameters.search_params)
 
+    for ID in parameters.image_ids:
+        print("start process with ID =", ID)
+        # ================================================================
+        #  generate adversarial examples
+        # ================================================================
+        global_tasks.generate_adversarial_examples_set(model, results_path, ID, mnist_features, mnist_labels,
+                                                       adversarial_generator)
+
+    """
     processes = [mp.Process(target=parallel_process, args=(
         model, results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
                  parameters.image_ids]
@@ -107,7 +116,7 @@ if __name__ == "__main__":
         p.start()
     for p in processes:
         p.join()
-
+    """
     #    for ID in parameters.image_ids:
     # ================================================================
     #         #  generate adversarial examples
