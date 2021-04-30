@@ -202,11 +202,14 @@ class attacks:
                 out = self.relu3(out)
                 out = self.fc2(out)
                 return torch.log_softmax(out, dim=-1)
-
+        print("11")
         model = ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
+        print("12")
 
         tested_idx = 216
         manual_should_be = y_test_tensor[tested_idx]
+        print("13")
+
         print("manual_should_be =", manual_should_be)
         manual_tens = x_test_tensor[tested_idx, :, ].reshape(1, 1, 28, 28)
         manual_tens = manual_tens / 255.0
