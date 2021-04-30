@@ -160,69 +160,7 @@ class attacks:
     def generate_projected_gradient_descent_adversarial_examples_set(self, net, dataset_img_idx, x_test_tensor,
                                                                      y_test_tensor, results_path):
 
-        class ConvNet(nn.Module):
-            def __init__(self, weights1=torch.ones(16, 1, 4, 4), weights2=torch.ones(32, 16, 4, 4),
-                         weights3=torch.ones(800, 100), weights4=torch.ones(100, 10)):
-                super(ConvNet, self).__init__()
 
-                self.layer1 = nn.Conv2d(1, 16, kernel_size=4, stride=2, padding=0)
-                with torch.no_grad():
-                    self.layer1.weight.copy_(weights1)
-                    self.layer1.bias.copy_(torch.zeros(16))
-
-                self.relu1 = nn.ReLU()
-
-                self.layer2 = nn.Conv2d(16, 32, kernel_size=4, stride=2, padding=0)
-                with torch.no_grad():
-                    self.layer2.weight.copy_(weights2)
-                    self.layer2.bias.copy_(torch.zeros(32))
-
-                self.relu2 = nn.ReLU()
-
-                self.fc1 = nn.Linear(weights3.shape[1], weights3.shape[0])
-                print("weights3.shape[1]=", weights3.shape[1], "weights3.shape[0],=", weights3.shape[0])
-                with torch.no_grad():
-                    self.fc1.weight.copy_(weights3)
-                    self.fc1.bias.copy_(torch.zeros(100))
-
-                self.relu3 = nn.ReLU()
-
-                self.fc2 = nn.Linear(weights4.shape[1], weights4.shape[0])
-                with torch.no_grad():
-                    self.fc2.weight.copy_(weights4)
-                    self.fc2.bias.copy_(torch.zeros(10))
-
-            def forward(self, x):
-                out = self.layer1(x)
-                out = self.relu1(out)
-                out = self.layer2(out)
-                out = self.relu2(out)
-                out = out.reshape(out.size(0), -1)
-                out = self.fc1(out)
-                out = self.relu3(out)
-                out = self.fc2(out)
-                return torch.log_softmax(out, dim=-1)
-        print("11")
-        model = ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
-        print("12")
-
-        tested_idx = 216
-        manual_should_be = y_test_tensor[tested_idx]
-        print("13")
-
-        print("manual_should_be =", manual_should_be)
-        manual_tens = x_test_tensor[tested_idx, :, ].reshape(1, 1, 28, 28)
-        manual_tens = manual_tens / 255.0
-        x_test_tensor = x_test_tensor.reshape(10000, 1, 28, 28)
-        x_test_tensor = x_test_tensor / 255.0
-
-        with torch.no_grad():
-
-            print("manual_tens.shape=", manual_tens.shape)
-
-            manual_prediction = model(manual_tens)
-            _, predicted = torch.max(manual_prediction.data, 1)
-            print("manual_prediction is ", predicted)
 
         orig_label = torch.tensor([y_test_tensor[dataset_img_idx]])
 
