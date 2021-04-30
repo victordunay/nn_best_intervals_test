@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import load
 import neural_network_models
 
+
 class attacks:
 
     def __init__(self, attack_params: dict):
@@ -38,21 +39,7 @@ class attacks:
 
     def generate_gradient_descent_adversarial_examples_set(self, net, dataset_img_idx, x_test_tensor, y_test_tensor,
                                                            results_path):
-        model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
 
-        # just a sanity check of a sample
-        # ================================================================
-        manual_test = x_test_tensor.reshape(-1, 28, 28)
-        chosen_pic = manual_test[214, :, :] / 255.0
-        manual_test = chosen_pic.reshape(1, 1, 28, 28)
-        # check sample prediction from sanity check
-        # ================================================================
-        manual_prediction = model(manual_test)
-        print("model done !!! :D :D :D ")
-        _, predicted = torch.max(manual_prediction.data, 1)
-        print("manual_prediction is ", predicted)
-        
-        
         goals_list = self.targeted_labels
         loss_fn = nn.NLLLoss()
         loss_fn_for_input = nn.MSELoss()
@@ -63,6 +50,8 @@ class attacks:
         intervals_list = []
         for reg_factor in self.gd_reg_list:
             for t in goals_list:
+                print("goal list =",t)
+                print("reg_fator=",reg_factor)
                 manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
 
@@ -70,12 +59,12 @@ class attacks:
                 adversarial_goal = torch.tensor([t])
                 lam = torch.tensor([reg_factor])
                 for i in range(self.gd_max_iter):
-                    manual_prediction = net(adv_example.reshape(1,1,28,28))
+                    manual_prediction = net(adv_example.reshape(1, 1, 28, 28))
 
                     _, predicted = torch.max(manual_prediction.data, 1)
 
                     adv_example.requires_grad = True
-                    Y_predicted = net(adv_example)
+                    Y_predicted = net(adv_example.reshape(1, 1, 28, 28))
                     if predicted == adversarial_goal:
                         adv_example.requires_grad = False
                         print("predicted is  =", adversarial_goal, "iter end =", i)
@@ -145,14 +134,14 @@ class attacks:
 
         delta = initial_bias
         delta.requires_grad = True
-        delta=delta.reshape(1,1,28,28)
+        delta = delta.reshape(1, 1, 28, 28)
         for t in range(num_iter):
-            print("iter=",t)
-            print("y=",y)
-            print("BEFORE=",(X+delta).shape)
+            print("iter=", t)
+            print("y=", y)
+            print("BEFORE=", (X + delta).shape)
             ##sum=X+delta
-            inter_result=model(X)
-            print("inter_result=",inter_result)
+            inter_result = model(X)
+            print("inter_result=", inter_result)
             loss = nn.CrossEntropyLoss()(model(X + delta), y)
             print("1")
             loss.backward()
@@ -164,7 +153,7 @@ class attacks:
             delta.grad.zero_()
             print("4")
 
-            fsm_prediction = model((X + delta).reshape(1,1,28,28))
+            fsm_prediction = model((X + delta).reshape(1, 1, 28, 28))
             print("5")
 
             _, predicted = torch.max(fsm_prediction.data, 1)
@@ -176,18 +165,16 @@ class attacks:
     def generate_projected_gradient_descent_adversarial_examples_set(self, net, dataset_img_idx, x_test_tensor,
                                                                      y_test_tensor, results_path):
 
-
-
         orig_label = torch.tensor([y_test_tensor[dataset_img_idx]])
 
         pgd_intervals_list = []
         random_bound_list = [(2 * i) * self.pixel_res for i in range(self.pgd_rand_vector_size)]
         for rand_bound in random_bound_list:
             for l in range(self.pgd_examples_per_random_val):
-                print("rand_bound=",rand_bound,"ex=",l)
+                print("rand_bound=", rand_bound, "ex=", l)
                 adv_example = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
-                adv_example=adv_example.reshape(1,1,28,28)
+                adv_example = adv_example.reshape(1, 1, 28, 28)
                 initial_bias = np.random.uniform(-rand_bound, rand_bound, self.image_size[0] * self.image_size[1])
                 initial_bias = np.expand_dims(initial_bias, axis=0)
                 initial_bias = torch.tensor(initial_bias, dtype=torch.float)
@@ -195,7 +182,7 @@ class attacks:
                 delta = self.pgd(net, adv_example, orig_label, self.pgd_lr, self.pgd_max_iter, initial_bias)
                 delta = delta.reshape(self.image_size[0], self.image_size[1])
 
-                fsm_prediction = net(adv_example.reshape(1,1,28,28))
+                fsm_prediction = net(adv_example.reshape(1, 1, 28, 28))
                 _, predicted = torch.max(fsm_prediction.data, 1)
                 manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(self.image_size[0],
                                                                           self.image_size[1]) * self.pixel_res
@@ -331,8 +318,8 @@ class attacks:
 
                 jsma_adv = jsma_adv.numpy()
                 jsma_adv = np.squeeze(jsma_adv, axis=0)
-                #current_list = chosen_pic - jsma_adv
-                current_list=jsma_adv
+                # current_list = chosen_pic - jsma_adv
+                current_list = jsma_adv
                 intervals_list.append(current_list)
 
         intervals_list = np.asarray(intervals_list)
