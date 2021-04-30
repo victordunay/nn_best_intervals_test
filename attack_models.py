@@ -11,8 +11,8 @@ import cw
 import torchvision.transforms as transforms
 import jsma_main
 import matplotlib.pyplot as plt
-import warnings
 import load
+import neural_network_models
 
 class attacks:
 
@@ -38,6 +38,21 @@ class attacks:
 
     def generate_gradient_descent_adversarial_examples_set(self, net, dataset_img_idx, x_test_tensor, y_test_tensor,
                                                            results_path):
+        model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
+
+        # just a sanity check of a sample
+        # ================================================================
+        manual_test = x_test_tensor.reshape(-1, 28, 28)
+        chosen_pic = manual_test[214, :, :] / 255.0
+        manual_test = chosen_pic.reshape(1, 1, 28, 28)
+        # check sample prediction from sanity check
+        # ================================================================
+        manual_prediction = model(manual_test)
+        print("model done !!! :D :D :D ")
+        _, predicted = torch.max(manual_prediction.data, 1)
+        print("manual_prediction is ", predicted)
+        
+        
         goals_list = self.targeted_labels
         loss_fn = nn.NLLLoss()
         loss_fn_for_input = nn.MSELoss()
