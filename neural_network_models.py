@@ -75,6 +75,8 @@ class ConvNet(nn.Module):
 
     def forward(self, x):
         print("i am here 1")
+        print("type(x)=",type(x))
+        print("x.shape=",x.shape)
         out = self.layer1(x)
         print("i am here 2")
         out = self.relu1(out)
