@@ -17,7 +17,7 @@ image_ids = [1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17]
 #  gradient descent & regularization based attack hyper-parameters
 # ================================================================
 gd_reg_list = [0, 1, 10, 100]
-gd_lr = 0.005 #Todo was 0.001
+gd_lr = 0.003 #Todo was 0.001
 gd_max_iter = 1000 #Todo was 5000
 
 # ================================================================
