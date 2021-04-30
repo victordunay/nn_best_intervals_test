@@ -58,7 +58,7 @@ class attacks:
                 adv_example = manual_tens
                 adversarial_goal = torch.tensor([t])
                 lam = torch.tensor([reg_factor])
-                for i in range(self.gd_max_iter)
+                for i in range(self.gd_max_iter):
                     print("iter=",i)
                     manual_prediction = net(adv_example.reshape(1, 1, 28, 28))
 
