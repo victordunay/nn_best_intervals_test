@@ -74,18 +74,13 @@ class ConvNet(nn.Module):
             self.fc2.bias.copy_(torch.zeros(10))
 
     def forward(self, x):
-        print("i am here 1")
-        print("type(x)=",type(x))
-        print("x.shape=",x.shape)
+
         out = self.layer1(x)
-        print("i am here 2")
         out = self.relu1(out)
-        print("i am here 3")
         out = self.layer2(out)
-        print("i am here 4")
 
         out = self.relu2(out)
-        print("i am here 5")
+  
 
         out = out.reshape(out.size(0), -1)
         out = self.fc1(out)
