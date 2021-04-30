@@ -59,7 +59,6 @@ class attacks:
                 adversarial_goal = torch.tensor([t])
                 lam = torch.tensor([reg_factor])
                 for i in range(self.gd_max_iter):
-                    print("iter=",i)
                     manual_prediction = net(adv_example.reshape(1, 1, 28, 28))
 
                     _, predicted = torch.max(manual_prediction.data, 1)
@@ -68,8 +67,8 @@ class attacks:
                     Y_predicted = net(adv_example.reshape(1, 1, 28, 28))
                     if predicted == adversarial_goal:
                         adv_example.requires_grad = False
-                        print("predicted is  =", adversarial_goal, "iter end =", i)
-
+                        print("iter end =", i)
+                        """
                         examples = [manual_tens.reshape(28, 28), adv_example.reshape(28, 28),
                                     np.subtract(manual_tens, adv_example).reshape(28, 28)]
                         tit = ["ORIGINAL IMAGE", "ADVERSARIAL EXAMPLE", "DIFFERENCE"]
@@ -85,7 +84,7 @@ class attacks:
                             plt.colorbar()
                         plt.tight_layout()
                         plt.show()
-
+                        """
                         break
 
                     loss_adversarial = loss_fn(Y_predicted, adversarial_goal) + lam * loss_fn_for_input(adv_example,
