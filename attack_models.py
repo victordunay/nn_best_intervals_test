@@ -134,9 +134,7 @@ class attacks:
         delta = initial_bias
         delta.requires_grad = True
         for t in range(num_iter):
-            print("iter=", t)
             debug=model((X+delta).reshape(1, 1, 28, 28))
-
             loss = nn.CrossEntropyLoss()(debug, y)
             loss.backward()
             delta.data = (delta + X.shape[0] * alpha * delta.grad.data)
@@ -144,6 +142,7 @@ class attacks:
             fsm_prediction = model((X + delta).reshape(1, 1, 28, 28))
             _, predicted = torch.max(fsm_prediction.data, 1)
             if predicted != y:
+                print("final iter=",t)
                 break
         return delta.detach()
 
