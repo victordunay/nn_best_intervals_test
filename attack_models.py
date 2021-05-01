@@ -136,7 +136,7 @@ class attacks:
         for t in range(num_iter):
             print("iter=", t)
 
-            loss = nn.CrossEntropyLoss()(model(X + delta), y)
+            loss = nn.CrossEntropyLoss()(model(X + delta).reshape(1, 1, 28, 28), y)
             print("1")
             loss.backward()
             print("2")
