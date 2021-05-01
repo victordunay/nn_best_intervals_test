@@ -136,24 +136,13 @@ class attacks:
         for t in range(num_iter):
             print("iter=", t)
             debug=model((X+delta).reshape(1, 1, 28, 28))
-            print("debug.shape=",debug.shape)
-            print("y.shape=",y.shape)
+
             loss = nn.CrossEntropyLoss()(debug, y)
-            print("1")
             loss.backward()
-            print("2")
-
             delta.data = (delta + X.shape[0] * alpha * delta.grad.data)
-            print("3")
-
             delta.grad.zero_()
-            print("4")
-
             fsm_prediction = model((X + delta).reshape(1, 1, 28, 28))
-            print("5")
-
             _, predicted = torch.max(fsm_prediction.data, 1)
-
             if predicted != y:
                 break
         return delta.detach()
