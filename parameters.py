@@ -35,7 +35,7 @@ cw_rand_vector_size = 2
 cw_lr = [5e-4, 1e-3, 5e-3]
 cw_search_steps = 2  #Todo was 10
 cw_c_range = (1e-3, 1e10)
-cw_max_iter = 23 # Todo was 1000
+cw_max_iter = 230 # Todo was 1000
 
 # ================================================================
 #  jsma attack hyper-parameters
