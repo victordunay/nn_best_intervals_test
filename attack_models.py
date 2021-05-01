@@ -252,7 +252,7 @@ class attacks:
 
                             current_list = chosen_pic - res
                             intervals_list.append(current_list)
-                            manual_prediction = net(torch.tensor(res))
+                            manual_prediction = net(torch.tensor(res).reshape(1,1,28,28))
                             _, predicted = torch.max(manual_prediction.data, 1)
                             chosen_pic = torch.tensor(chosen_pic)
                             chosen_pic = torch.unsqueeze(chosen_pic, 0)
