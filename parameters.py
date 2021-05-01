@@ -23,9 +23,9 @@ gd_max_iter = 1000 #Todo was 5000
 # ================================================================
 #  projected gradient descent attack hyper-parameters
 # ================================================================
-pgd_lr = 0.001
-pgd_max_iter = 10000  # Todo was 150000
-pgd_examples_per_random_val = 10
+pgd_lr = 0.005
+pgd_max_iter = 1000  # Todo was 150000
+pgd_examples_per_random_val = 2
 pgd_rand_vector_size = 4
 
 # ================================================================
