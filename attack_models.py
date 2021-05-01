@@ -135,7 +135,7 @@ class attacks:
         delta.requires_grad = True
         for t in range(num_iter):
             print("iter=", t)
-            debug=model(X.reshape(1, 1, 28, 28))
+            debug=model((X+delta).reshape(1, 1, 28, 28))
             print("debug.shape=",debug.shape)
             loss = nn.CrossEntropyLoss()(model(X + delta), y)
             print("1")
