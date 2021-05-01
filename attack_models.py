@@ -133,14 +133,9 @@ class attacks:
 
         delta = initial_bias
         delta.requires_grad = True
-        delta = delta.reshape(1, 1, 28, 28)
         for t in range(num_iter):
             print("iter=", t)
-            print("y=", y)
-            print("BEFORE=", (X + delta).shape)
-            ##sum=X+delta
-            inter_result = model(X)
-            print("inter_result=", inter_result)
+
             loss = nn.CrossEntropyLoss()(model(X + delta), y)
             print("1")
             loss.backward()
@@ -173,7 +168,6 @@ class attacks:
                 print("rand_bound=", rand_bound, "ex=", l)
                 adv_example = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
-                adv_example = adv_example.reshape(1, 1, 28, 28)
                 initial_bias = np.random.uniform(-rand_bound, rand_bound, self.image_size[0] * self.image_size[1])
                 initial_bias = np.expand_dims(initial_bias, axis=0)
                 initial_bias = torch.tensor(initial_bias, dtype=torch.float)
