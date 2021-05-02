@@ -70,8 +70,10 @@ if __name__ == "__main__":
     # ================================================================
     #  nn model instantiation
 
-    model = neural_network_models.ConvNet()
-    #model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
+    #model = neural_network_models.ConvNet()
+    model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
+    torch.save(model.state_dict(), neural_network_path)
+
     # ================================================================
     #  load pre-trained model parameters into model
     # ================================================================
