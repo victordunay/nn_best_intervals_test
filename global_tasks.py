@@ -131,6 +131,10 @@ def generate_adversarial_examples_set(model_, results_path_: str, ID_: int, mnis
     # ================================================================
 
 
+    print("do jsma")
+    adversarial_generator_.generate_jsma_adversarial_examples_set(model_, ID_, mnist_features_, mnist_labels_,
+                                                                  results_path_)
+    print("done jsma ID=",ID_)
 
     print("do cw")
 
@@ -155,7 +159,3 @@ def generate_adversarial_examples_set(model_, results_path_: str, ID_: int, mnis
 
 
 
-    print("do jsma")
-    adversarial_generator_.generate_jsma_adversarial_examples_set(model_, ID_, mnist_features_, mnist_labels_,
-                                                                  results_path_)
-    print("done jsma ID=",ID_)
