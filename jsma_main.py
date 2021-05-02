@@ -89,7 +89,6 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
     if input_features.is_cuda:
         search_space = search_space.cuda()
 
-    
     output = model(input_features.reshape(1, 1, 28, 28))
     _, source_class = torch.max(output.data, 1)
     min_pixel_dist_val = 0
@@ -149,7 +148,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
             if input_features.data[0][decreasing_feature_index] < lr or diff:
                 search_space[decreasing_feature_index] = 0
 
-        output = model(input_features)
+        output = model(input_features.reshape(1,1,28,28))
         _, source_class = torch.max(output.data, 1)
         print("adv=", source_class)
 
