@@ -69,7 +69,7 @@ if __name__ == "__main__":
     mnist_features, mnist_labels = global_tasks.load_dataset(dataset_path)
     # ================================================================
     #  nn model instantiation
-    
+
     model = neural_network_models.ConvNet()
     #model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
     # ================================================================
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     #  interval_solver instantiation
     # ================================================================
     interval_solver = find_best_env.find_best_env(parameters.search_params)
-    """
+
     for ID in parameters.image_ids:
         print("start process with ID =", ID)
         # ================================================================
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     for p in processes:
         p.join()
 
-
+    """
 
 
 
