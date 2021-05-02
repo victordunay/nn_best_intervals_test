@@ -41,7 +41,7 @@ cw_max_iter = 230 # Todo was 1000
 #  jsma attack hyper-parameters
 # ================================================================
 jsma_max_dist = [1]  # Todo was[1, 0.8]
-jsma_max_iter = 50000  # Todo was 50000
+jsma_max_iter = 10  # Todo was 50000
 jsma_lr = 1 / 255
 
 # ================================================================
