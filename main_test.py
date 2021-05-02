@@ -69,13 +69,13 @@ if __name__ == "__main__":
     mnist_features, mnist_labels = global_tasks.load_dataset(dataset_path)
     # ================================================================
     #  nn model instantiation
-    # ================================================================
-    # model = neural_network_models.ConvNet()
-    model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
+    
+    model = neural_network_models.ConvNet()
+    #model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
     # ================================================================
     #  load pre-trained model parameters into model
     # ================================================================
-    #model.load_state_dict(torch.load(neural_network_path))
+    model.load_state_dict(torch.load(neural_network_path))
     # ================================================================
     #  adversarial_generator instantiation
     # ================================================================
@@ -102,10 +102,10 @@ if __name__ == "__main__":
     for p in processes:
         p.join()
     """
-    
-    
-    
-    
+
+
+
+
     #    for ID in parameters.image_ids:
     # ================================================================
     #         #  generate adversarial examples
