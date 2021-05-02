@@ -88,9 +88,9 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
     search_space = torch.ones(num_features).byte()
     if input_features.is_cuda:
         search_space = search_space.cuda()
-        
-    input_features = input_features.reshape(1, 1, 28, 28)
-    output = model(input_features)
+
+    
+    output = model(input_features.reshape(1, 1, 28, 28))
     _, source_class = torch.max(output.data, 1)
     min_pixel_dist_val = 0
     max_pixel_dist_val = 1
@@ -123,8 +123,8 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
                 print("modified pixels fo target", target_class, " is ", modified_pixels)
                 break
             input_features.data[0][increasing_feature_index] += lr
-            #print("curr changed pix=", increasing_feature_index, " its val is ",
-                  #input_features.data[0][increasing_feature_index])
+            # print("curr changed pix=", increasing_feature_index, " its val is ",
+            # input_features.data[0][increasing_feature_index])
 
             diff = abs(input_features.data[0][increasing_feature_index] - input_tensor[0][
                 increasing_feature_index]) > max_distortion
@@ -141,8 +141,8 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
                 print("modified pixels fo target", target_class, " is ", modified_pixels)
                 break
             input_features.data[0][decreasing_feature_index] -= lr
-            #print("curr changed pix=", decreasing_feature_index, " its val is ",
-                  #input_features.data[0][decreasing_feature_index])
+            # print("curr changed pix=", decreasing_feature_index, " its val is ",
+            # input_features.data[0][decreasing_feature_index])
             diff = abs(input_features.data[0][decreasing_feature_index] - input_tensor[0][
                 decreasing_feature_index]) > max_distortion
 
@@ -151,7 +151,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
 
         output = model(input_features)
         _, source_class = torch.max(output.data, 1)
-        print("adv=",source_class)
+        print("adv=", source_class)
 
         count += 1
     print("i went out from fonoshing iteration")
