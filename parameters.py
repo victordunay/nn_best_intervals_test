@@ -11,7 +11,7 @@ targeted_labels = [0,1,2,3,4,5,6,7,8,9]
 # ================================================================
 #  MNIST images IDs for test
 # ================================================================
-image_ids = [1]
+image_ids = [1,2,3,4,5,6,7,9,10,11]
 
 # ================================================================
 #  gradient descent & regularization based attack hyper-parameters
@@ -33,15 +33,15 @@ pgd_rand_vector_size = 4
 # ================================================================
 cw_rand_vector_size = 2
 cw_lr = [5e-4, 1e-3, 5e-3]
-cw_search_steps = 2  #Todo was 10
+cw_search_steps = 5  #Todo was 10
 cw_c_range = (1e-3, 1e10)
-cw_max_iter = 230 # Todo was 1000
+cw_max_iter = 1000 # Todo was 1000
 
 # ================================================================
 #  jsma attack hyper-parameters
 # ================================================================
-jsma_max_dist = [1]  # Todo was[1, 0.8]
-jsma_max_iter = 10  # Todo was 50000
+jsma_max_dist = [1,0.8]  # Todo was[1, 0.8]
+jsma_max_iter = 5000  # Todo was 50000
 jsma_lr = 1 / 255
 
 # ================================================================
