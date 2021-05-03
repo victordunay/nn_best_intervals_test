@@ -21,13 +21,16 @@ import global_tasks
 import load
 
 
-def parallel_process(model_, results_path_: str, ID_: int, mnist_features_, mnist_labels_, adversarial_generator_,
+def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels_, adversarial_generator_,
                      image_size: list):
     print("start process with ID =", ID_)
     # ================================================================
     #  generate adversarial examples
     # ================================================================
-    global_tasks.generate_adversarial_examples_set(model_, results_path_, ID_, mnist_features_, mnist_labels_,
+    model = neural_network_models.ConvNet()
+    model.load_state_dict(torch.load(neural_network_path))
+
+    global_tasks.generate_adversarial_examples_set(model, results_path_, ID_, mnist_features_, mnist_labels_,
                                                    adversarial_generator_)
     # ================================================================
     # calculate mean vector between all adversarial attack methods
@@ -70,14 +73,14 @@ if __name__ == "__main__":
     # ================================================================
     #  nn model instantiation
 
-    model = neural_network_models.ConvNet()
+   # model = neural_network_models.ConvNet()
     #model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
     #torch.save(model.state_dict(), parameters.neural_network+'.pth' )
 
     # ================================================================
     #  load pre-trained model parameters into model
     # ================================================================
-    model.load_state_dict(torch.load(neural_network_path))
+    #model.load_state_dict(torch.load(neural_network_path))
     # ================================================================
     #  adversarial_generator instantiation
     # ================================================================
@@ -97,7 +100,7 @@ if __name__ == "__main__":
 
     """
     processes = [mp.Process(target=parallel_process, args=(
-        model, results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
+        results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
                  parameters.image_ids]
     for p in processes:
         p.start()
