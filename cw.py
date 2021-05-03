@@ -281,7 +281,7 @@ class L2Adversary(object):
         optimizer = optim.Adam([pert_tanh_var], lr=self.optimizer_lr)
 
         for sstep in range(self.binary_search_steps):
-            print("search_step=", sstep)
+            #print("search_step=", sstep)
 
             if self.repeat and sstep == self.binary_search_steps - 1:
                 scale_consts_np = upper_bounds_np
@@ -298,7 +298,7 @@ class L2Adversary(object):
             # previous (summed) batch loss, to be used in early stopping policy
             prev_batch_loss = np.inf  # type: float
             for optim_step in range(self.max_steps):
-                print("ite=",optim_step)
+               # print("ite=",optim_step)
                 batch_loss, pert_norms_np, pert_outputs_np, advxs_np = \
                     self._optimize(model, optimizer, inputs_tanh_var,
                                    pert_tanh_var, targets_oh_var,
