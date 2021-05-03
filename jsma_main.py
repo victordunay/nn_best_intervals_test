@@ -88,7 +88,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
     search_space = torch.ones(num_features).byte()
     if input_features.is_cuda:
         search_space = search_space.cuda()
-
+    print("i am here :)")
     output = model(input_features.reshape(1, 1, 28, 28))
     _, source_class = torch.max(output.data, 1)
     min_pixel_dist_val = 0
