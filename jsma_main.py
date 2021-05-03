@@ -88,7 +88,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
     search_space = torch.ones(num_features).byte()
     if input_features.is_cuda:
         search_space = search_space.cuda()
-    print("i am here :)")
+    #print("i am here :)")
     output = model(input_features.reshape(1, 1, 28, 28))
     _, source_class = torch.max(output.data, 1)
     min_pixel_dist_val = 0
@@ -108,7 +108,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
 
         # if increasing_saliency_value[0] == 0.0 and decreasing_saliency_value[0] == 0.0:
         if increasing_saliency_value.item() == 0.00000000 and decreasing_saliency_value.item() == 0.0000000:
-            print("i went out from here")
+           # print("i went out from here")
             break
 
         # if increasing_saliency_value[0] > decreasing_saliency_value[0]:
@@ -119,7 +119,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
             if num_of_modified_pixels == max_num_of_modified_pixels + 1:
                 modified_pixels.remove(increasing_feature_index)
                 modified_pixels.sort()
-                print("modified pixels fo target", target_class, " is ", modified_pixels)
+               # print("modified pixels fo target", target_class, " is ", modified_pixels)
                 break
             input_features.data[0][increasing_feature_index] += lr
             # print("curr changed pix=", increasing_feature_index, " its val is ",
@@ -137,7 +137,7 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
             if num_of_modified_pixels == max_num_of_modified_pixels + 1:
                 modified_pixels.remove(decreasing_feature_index)
                 modified_pixels.sort()
-                print("modified pixels fo target", target_class, " is ", modified_pixels)
+               # print("modified pixels fo target", target_class, " is ", modified_pixels)
                 break
             input_features.data[0][decreasing_feature_index] -= lr
             # print("curr changed pix=", decreasing_feature_index, " its val is ",
@@ -150,11 +150,11 @@ def jsma(model, input_tensor, target_class, max_distortion, max_iter, lr):
 
         output = model(input_features.reshape(1,1,28,28))
         _, source_class = torch.max(output.data, 1)
-        print("adv=", source_class)
+       # print("adv=", source_class)
 
         count += 1
-    print("i went out from fonoshing iteration")
+   # print("i went out from fonoshing iteration")
     modified_pixels.sort()
-    print("modified pixels fo target", source_class, " is ", modified_pixels)
+  #  print("modified pixels fo target", source_class, " is ", modified_pixels)
 
     return input_features
