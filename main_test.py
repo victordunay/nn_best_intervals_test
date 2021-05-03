@@ -31,13 +31,10 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
     #  generate adversarial examples
     # ================================================================
 
-    print("i hm here212 !!!!")
-    import neural_network_models
-    import load
 
-    print("i hm here333 !!!!")
 
-    model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
+
+    model = neural_network_models.ConvNet()
     print("i hm here !!!!")
     neural_network_path = '../../nn_best_intervals_test/nn_models/' + parameters.neural_network + '.pth'
     print("neural_network_path=", neural_network_path)
