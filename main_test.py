@@ -23,51 +23,18 @@ import global_tasks
 import load
 
 
-def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels_, adversarial_generator_,
+def parallel_process(model,results_path_: str, ID_: int, mnist_features_, mnist_labels_, adversarial_generator_,
                      image_size: list):
     print("start process with ID =", ID_)
 
-    class ConvNet(nn.Module):
-        def __init__(self):
-            super(ConvNet, self).__init__()
 
-            self.layer1 = nn.Conv2d(1, 16, kernel_size=4, stride=2, padding=0, bias=False)
-
-
-            self.relu1 = nn.ReLU()
-
-            self.layer2 = nn.Conv2d(16, 32, kernel_size=4, stride=2, padding=0, bias=False)
-
-
-            self.relu2 = nn.ReLU()
-
-            self.fc1 = nn.Linear(100,800,bias=False)
-
-
-            self.relu3 = nn.ReLU()
-
-            self.fc2 = nn.Linear(10, 100, bias=False)
-
-
-        def forward(self, x):
-            print("reached before ")
-            out = self.layer1(x)
-            print("reached after")
-            out = self.relu1(out)
-            out = self.layer2(out)
-            out = self.relu2(out)
-            out = out.reshape(out.size(0), -1)
-            out = self.fc1(out)
-            out = self.relu3(out)
-            out = self.fc2(out)
-            return torch.log_softmax(out, dim=-1)
 
     # ================================================================
     #  generate adversarial examples
     # ================================================================
 
     print("i am here !!#!P#K!P#!")
-    model=ConvNet()
+    model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
     print("ASDAJSDAJDJSD")
 
     
@@ -124,8 +91,7 @@ if __name__ == "__main__":
     # ================================================================
     #  nn model instantiation
 
-    # model = neural_network_models.ConvNet()
-    # model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
+    model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
     # torch.save(model.state_dict(), parameters.neural_network+'.pth' )
 
     # ================================================================
@@ -151,7 +117,7 @@ if __name__ == "__main__":
                                                        adversarial_generator)
 
     """
-    processes = [mp.spawn(target=parallel_process, args=(
+    processes = [mp.Process(target=parallel_process, args=( model,
     results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
                  parameters.image_ids]
     for p in processes:
