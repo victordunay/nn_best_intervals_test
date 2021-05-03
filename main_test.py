@@ -42,7 +42,7 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
             self.relu2 = nn.ReLU()
 
             self.fc1 = nn.Linear(bias=False)
-       
+
 
             self.relu3 = nn.ReLU()
 
@@ -65,10 +65,13 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
     # ================================================================
     #  generate adversarial examples
     # ================================================================
-
+    
     print("i am here !!#!P#K!P#!")
 
-    global_tasks.generate_adversarial_examples_set(model_, results_path_, ID_, mnist_features_, mnist_labels_,
+    model=ConvNet()
+    print("i am here !!#!P#KEWEWEWEWEE!P#!")
+
+    global_tasks.generate_adversarial_examples_set(model, results_path_, ID_, mnist_features_, mnist_labels_,
                                                    adversarial_generator_)
     # ================================================================
     # calculate mean vector between all adversarial attack methods
