@@ -50,7 +50,7 @@ class attacks:
         intervals_list = []
         for reg_factor in self.gd_reg_list:
             for t in goals_list:
-                print("goal list =", t, "reg_fator=", reg_factor)
+                #("goal list =", t, "reg_fator=", reg_factor)
                 manual_tens = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
 
@@ -66,7 +66,7 @@ class attacks:
                     Y_predicted = net(adv_example.reshape(1, 1, 28, 28))
                     if predicted == adversarial_goal:
                         adv_example.requires_grad = False
-                        print("iter end =", i)
+                        #print("iter end =", i)
                         """
                         examples = [manual_tens.reshape(28, 28), adv_example.reshape(28, 28),
                                     np.subtract(manual_tens, adv_example).reshape(28, 28)]
@@ -142,7 +142,7 @@ class attacks:
             fsm_prediction = model((X + delta).reshape(1, 1, 28, 28))
             _, predicted = torch.max(fsm_prediction.data, 1)
             if predicted != y:
-                print("final iter=",t)
+                #print("final iter=",t)
                 break
         return delta.detach()
 
@@ -155,7 +155,7 @@ class attacks:
         random_bound_list = [(2 * i) * self.pixel_res for i in range(self.pgd_rand_vector_size)]
         for rand_bound in random_bound_list:
             for l in range(self.pgd_examples_per_random_val):
-                print("rand_bound=", rand_bound, "ex=", l)
+                #print("rand_bound=", rand_bound, "ex=", l)
                 adv_example = x_test_tensor[dataset_img_idx, :, ].reshape(-1, self.image_size[0] * self.image_size[
                     1]) * self.pixel_res
                 initial_bias = np.random.uniform(-rand_bound, rand_bound, self.image_size[0] * self.image_size[1])
@@ -295,7 +295,7 @@ class attacks:
 
                 manual_prediction = net(jsma_adv.clone().detach())
                 _, predicted = torch.max(manual_prediction.data, 1)
-                print("target class should be ", target_class, "  actual is ", predicted)
+                #print("target class should be ", target_class, "  actual is ", predicted)
                 chosen_pic = chosen_pic.numpy()
                 jsma_adv = jsma_adv.reshape(-1, self.image_size[0], self.image_size[1])
 
