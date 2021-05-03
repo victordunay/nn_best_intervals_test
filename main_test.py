@@ -32,6 +32,10 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
     # ================================================================
 
     print("i hm here212 !!!!")
+    import neural_network_models
+    import load
+
+    print("i hm here333 !!!!")
 
     model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
     print("i hm here !!!!")
