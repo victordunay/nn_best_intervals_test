@@ -28,6 +28,8 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
     #  generate adversarial examples
     # ================================================================
     model = neural_network_models.ConvNet()
+    neural_network_path = '../../nn_best_intervals_test/nn_models/' + parameters.neural_network + '.pth'
+    print("neural_network_path=",neural_network_path)
     model.load_state_dict(torch.load(neural_network_path))
 
     global_tasks.generate_adversarial_examples_set(model, results_path_, ID_, mnist_features_, mnist_labels_,
