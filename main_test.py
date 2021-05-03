@@ -7,6 +7,8 @@ Top file for executing search for maximum valid environment algorithm
 
 
 import torch
+import torch.nn as nn
+
 import os
 import multiprocessing as mp
 import numpy as np
