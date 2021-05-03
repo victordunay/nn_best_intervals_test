@@ -72,6 +72,7 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
             out = self.relu3(out)
             out = self.fc2(out)
             return torch.log_softmax(out, dim=-1)
+    print("i hm here212 !!!!")
 
     model = ConvNet()
     print("i hm here !!!!")
