@@ -42,7 +42,7 @@ class Net(nn.Module):
 
 
 class ConvNet(nn.Module):
-    def __init__(self,weights1=torch.ones(16,1,4,4), weights2=torch.ones(32,16,4,4),weights3=torch.ones(800,100),weights4=torch.ones(100,10)):
+    def __init__(self,weights1=torch.ones(16,1,4,4), weights2=torch.ones(32,16,4,4),weights3=torch.ones(100,800),weights4=torch.ones(10,100)):
 
         super(ConvNet,self).__init__()
 
