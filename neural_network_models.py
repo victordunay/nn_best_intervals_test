@@ -76,7 +76,9 @@ class ConvNet(nn.Module):
            # self.fc2.bias.copy_(torch.zeros(10))
 
     def forward(self,x):
+        print("reached before ")
         out=self.layer1(x)
+        print("reached after")
         out=self.relu1(out)
         out=self.layer2(out)
         out=self.relu2(out)
