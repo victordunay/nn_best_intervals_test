@@ -28,35 +28,26 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
     print("start process with ID =", ID_)
 
     class ConvNet(nn.Module):
-        def __init__(self, weights1=torch.ones(16, 1, 4, 4), weights2=torch.ones(32, 16, 4, 4),
-                     weights3=torch.ones(100, 800), weights4=torch.ones(10, 100)):
+        def __init__(self):
             super(ConvNet, self).__init__()
 
             self.layer1 = nn.Conv2d(1, 16, kernel_size=4, stride=2, padding=0, bias=False)
-            with torch.no_grad():
-                self.layer1.weight.copy_(weights1)
-                # self.layer1.bias.copy_(torch.zeros(16))
+
 
             self.relu1 = nn.ReLU()
 
             self.layer2 = nn.Conv2d(16, 32, kernel_size=4, stride=2, padding=0, bias=False)
-            with torch.no_grad():
-                self.layer2.weight.copy_(weights2)
-                # self.layer2.bias.copy_(torch.zeros(32))
+
 
             self.relu2 = nn.ReLU()
 
-            self.fc1 = nn.Linear(weights3.shape[1], weights3.shape[0], bias=False)
-            with torch.no_grad():
-                self.fc1.weight.copy_(weights3)
-                # self.fc1.bias.copy_(torch.zeros(100))
+            self.fc1 = nn.Linear(bias=False)
+       
 
             self.relu3 = nn.ReLU()
 
-            self.fc2 = nn.Linear(weights4.shape[1], weights4.shape[0], bias=False)
-            with torch.no_grad():
-                self.fc2.weight.copy_(weights4)
-            # self.fc2.bias.copy_(torch.zeros(10))
+            self.fc2 = nn.Linear(bias=False)
+
 
         def forward(self, x):
             print("reached before ")
@@ -137,7 +128,6 @@ if __name__ == "__main__":
     # ================================================================
     interval_solver = find_best_env.find_best_env(parameters.search_params)
 
-
     """
     for ID in parameters.image_ids:
         print("start process with ID =", ID)
@@ -149,7 +139,7 @@ if __name__ == "__main__":
 
     """
     processes = [mp.Process(target=parallel_process, args=(
-        results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
+    results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
                  parameters.image_ids]
     for p in processes:
         p.start()
