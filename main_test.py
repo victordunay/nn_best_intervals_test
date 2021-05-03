@@ -74,6 +74,7 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
             return torch.log_softmax(out, dim=-1)
 
     model = ConvNet()
+    print("i hm here !!!!")
     neural_network_path = '../../nn_best_intervals_test/nn_models/' + parameters.neural_network + '.pth'
     print("neural_network_path=",neural_network_path)
     model.load_state_dict(torch.load(neural_network_path))
