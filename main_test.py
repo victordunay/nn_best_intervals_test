@@ -86,7 +86,7 @@ if __name__ == "__main__":
     #  interval_solver instantiation
     # ================================================================
     interval_solver = find_best_env.find_best_env(parameters.search_params)
-
+    """
     for ID in parameters.image_ids:
         print("start process with ID =", ID)
         # ================================================================
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     for p in processes:
         p.join()
 
-    """
+
 
 
 
