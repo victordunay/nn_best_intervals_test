@@ -42,12 +42,12 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
             self.relu2 = nn.ReLU()
 
             self.fc1 = nn.Linear(100,800,bias=False)
-       
+
 
             self.relu3 = nn.ReLU()
 
             self.fc2 = nn.Linear(10, 100, bias=False)
-     
+
 
         def forward(self, x):
             print("reached before ")
@@ -69,6 +69,18 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
     print("i am here !!#!P#K!P#!")
     model=ConvNet()
     print("ASDAJSDAJDJSD")
+    
+    
+    tested_idx=216
+    manual_should_be = mnist_labels_[tested_idx]
+    print("manual_should_be =",manual_should_be)
+    manual_tens = mnist_features_[tested_idx , : ,].reshape(1,1, 28,28)
+    manual_tens=manual_tens/ 255.0
+    
+    manual_prediction = model(manual_tens)
+    _, predicted = torch.max(manual_prediction.data, 1)
+    print("manual_prediction is ", predicted)
+    
     global_tasks.generate_adversarial_examples_set(model, results_path_, ID_, mnist_features_, mnist_labels_,
                                                    adversarial_generator_)
     # ================================================================
