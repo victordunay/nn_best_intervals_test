@@ -23,7 +23,7 @@ import global_tasks
 import load
 
 
-def parallel_process(model_,results_path_: str, ID_: int, mnist_features_, mnist_labels_, adversarial_generator_,
+def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels_, adversarial_generator_,
                      image_size: list):
     print("start process with ID =", ID_)
 
