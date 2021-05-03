@@ -41,13 +41,13 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
 
             self.relu2 = nn.ReLU()
 
-            self.fc1 = nn.Linear(bias=False)
-
+            self.fc1 = nn.Linear(100,800,bias=False)
+       
 
             self.relu3 = nn.ReLU()
 
-            self.fc2 = nn.Linear(bias=False)
-
+            self.fc2 = nn.Linear(10, 100, bias=False)
+     
 
         def forward(self, x):
             print("reached before ")
@@ -65,12 +65,10 @@ def parallel_process(results_path_: str, ID_: int, mnist_features_, mnist_labels
     # ================================================================
     #  generate adversarial examples
     # ================================================================
-    
+
     print("i am here !!#!P#K!P#!")
-
     model=ConvNet()
-    print("i am here !!#!P#KEWEWEWEWEE!P#!")
-
+    print("ASDAJSDAJDJSD")
     global_tasks.generate_adversarial_examples_set(model, results_path_, ID_, mnist_features_, mnist_labels_,
                                                    adversarial_generator_)
     # ================================================================
