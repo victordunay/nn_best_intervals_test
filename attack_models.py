@@ -293,7 +293,7 @@ class attacks:
 
                 jsma_adv.requires_grad = False
 
-                manual_prediction = net(jsma_adv.clone().detach())
+                manual_prediction = net(jsma_adv.clone().detach().reshape(1,1,28,28))
                 _, predicted = torch.max(manual_prediction.data, 1)
                 #print("target class should be ", target_class, "  actual is ", predicted)
                 chosen_pic = chosen_pic.numpy()
