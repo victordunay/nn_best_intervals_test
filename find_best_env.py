@@ -487,7 +487,7 @@ class find_best_env:
 
         """
         mean_adversarial_examples_results = np.load(
-            '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+            results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
