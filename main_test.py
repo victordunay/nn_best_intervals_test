@@ -121,7 +121,7 @@ if __name__ == "__main__":
         # ================================================================
         # view adversarial process results
         # ================================================================
-        global_tasks.view_adversarial_results(ID_, results_path, mnist_features)
+        global_tasks.view_adversarial_results(ID, results_path, mnist_features)
     """
     processes = [mp.Process(target=parallel_process, args=( model,
     results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
