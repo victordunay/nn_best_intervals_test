@@ -37,7 +37,7 @@ def parallel_process(model,results_path_: str, ID_: int, mnist_features_, mnist_
     model = neural_network_models.ConvNet(load.layer_1, load.layer_2, load.layer_3, load.layer_4)
     print("ASDAJSDAJDJSD")
 
-    
+
     tested_idx=216
     manual_should_be = mnist_labels_[tested_idx]
     print("manual_should_be =",manual_should_be)
@@ -118,7 +118,10 @@ if __name__ == "__main__":
         # calculate mean vector between all adversarial attack methods
         # ================================================================
         adversarial_examples_set = global_tasks.calculate_mean(results_path, ID, parameters.image_size)
-
+        # ================================================================
+        # view adversarial process results
+        # ================================================================
+        global_tasks.view_adversarial_results(ID_, results_path, mnist_features)
     """
     processes = [mp.Process(target=parallel_process, args=( model,
     results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
