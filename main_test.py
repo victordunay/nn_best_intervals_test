@@ -108,12 +108,16 @@ if __name__ == "__main__":
     interval_solver = find_best_env.find_best_env(parameters.search_params)
 
     for ID in parameters.image_ids:
-        print("start process with ID =", ID)
+        ##print("start process with ID =", ID)
         # ================================================================
         #  generate adversarial examples
         # ================================================================
-        global_tasks.generate_adversarial_examples_set(model, results_path, ID, mnist_features, mnist_labels,
-                                                       adversarial_generator)
+        #global_tasks.generate_adversarial_examples_set(model, results_path, ID, mnist_features, mnist_labels,
+                                                      # adversarial_generator)
+        # ================================================================
+        # calculate mean vector between all adversarial attack methods
+        # ================================================================
+        adversarial_examples_set = global_tasks.calculate_mean(results_path, ID, parameters.image_size)
 
     """
     processes = [mp.Process(target=parallel_process, args=( model,
