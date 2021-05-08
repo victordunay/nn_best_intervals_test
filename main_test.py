@@ -117,11 +117,16 @@ if __name__ == "__main__":
         # ================================================================
         # calculate mean vector between all adversarial attack methods
         # ================================================================
-        adversarial_examples_set = global_tasks.calculate_mean(results_path, ID, parameters.image_size)
+        #adversarial_examples_set = global_tasks.calculate_mean(results_path, ID, parameters.image_size)
         # ================================================================
         # view adversarial process results
         # ================================================================
-        global_tasks.view_adversarial_results(ID, results_path, mnist_features)
+        #global_tasks.view_adversarial_results(ID, results_path, mnist_features)
+        # ================================================================
+        # find maximum environment
+        # ================================================================
+    
+        interval_solver.find_max_intervals(results_path, ID, mnist_features, mnist_labels)
     """
     processes = [mp.Process(target=parallel_process, args=( model,
     results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
