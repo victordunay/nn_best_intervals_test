@@ -62,7 +62,9 @@ attack_params = dict(targeted_labels=targeted_labels, jsma_lr=jsma_lr, jsma_max_
 
 neural_network = 'conv_small'  ## Todo 'relu_3_100_mnist'
 eran_domain = 'deepzono'
-model_path = './models/' + neural_network + '.tf'
+#model_path = './models/' + neural_network + '.tf'
+model_path = './models/' + 'convSmallRELU__Point.onnx'
+
 # intervals_path = '/home/eran/Desktop/epsilon_intervals'
 intervals_path = 'epsilon_intervals'
 intervals_results_path = '../../nn_best_intervals_test/intervals_results'
