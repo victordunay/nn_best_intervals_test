@@ -60,7 +60,7 @@ attack_params = dict(targeted_labels=targeted_labels, jsma_lr=jsma_lr, jsma_max_
 #  search algorithm hyper-parameters
 # ================================================================
 
-neural_network = 'mnist_conv_maxpool'  ## Todo 'relu_3_100_mnist'
+neural_network = 'relu_3_100_mnist'  ## Todo  'mnist_conv_maxpool'
 eran_domain = 'deepzono'
 model_path = './models/' + neural_network + '.tf'
 
