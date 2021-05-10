@@ -993,7 +993,7 @@ class find_best_env:
         plt.legend()
         plt.text(0.5, 0.5, "size is")
         plt.show()
-        plt.savefig('../../nn_best_intervals_test/intervals_results/epsilon_inf_intervals_' + str(ID) + '.png')
+        plt.savefig('intervals_results/epsilon_inf_intervals_' + str(ID) + '.png')
 
     def view_most_modified_pixels(self, results_path, ID: int):
         mean_adversarial_examples_results = np.load(
