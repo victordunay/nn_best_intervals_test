@@ -654,7 +654,7 @@ class find_best_env:
         plt.ylabel('number of pixels per bin')
         plt.vlines(x=vline_mean, ymin=0, ymax=max(elements_per_bin), colors='purple')
         plt.show()
-        plt.savefig('../../nn_best_intervals_test/intervals_results/test_assumption_' + str(ID) + '.png')
+        plt.savefig('intervals_results/test_assumption_' + str(ID) + '.png')
 
     def show_intervals(self, ID: int, results_path: str, mnist_features, mnist_labels):
 
