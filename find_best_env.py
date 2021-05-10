@@ -789,7 +789,7 @@ class find_best_env:
         plt.legend()
         plt.text(0.5, 0.5, "size is")
         plt.show()
-        plt.savefig('../../nn_best_intervals_test/intervals_results/no_offset_intervals_' + str(ID) + '.png')
+        plt.savefig('intervals_results/no_offset_intervals_' + str(ID) + '.png')
 
         # plt.show()
         plt.axis([0, self.image_size[0] * self.image_size[1], 0, 1])
@@ -879,7 +879,7 @@ class find_best_env:
         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
         plt.show()
-        plt.savefig('../../nn_best_intervals_test/intervals_results/offset_intervals_' + str(ID) + '.png')
+        plt.savefig('intervals_results/offset_intervals_' + str(ID) + '.png')
 
     def reset_intervals(self, adversarial_examples_set, ID: int):
         vector = adversarial_examples_set.reshape(-1, 784)
