@@ -60,13 +60,13 @@ attack_params = dict(targeted_labels=targeted_labels, jsma_lr=jsma_lr, jsma_max_
 #  search algorithm hyper-parameters
 # ================================================================
 
-neural_network =  'convSmallRELU__Point'  ## Todo  'mnist_conv_maxpool' 'relu_3_100_mnist' 
+neural_network =  'convSmallRELU__Point'  ## Todo  'mnist_conv_maxpool' 'relu_3_100_mnist'
 eran_domain = 'deepzono'
 model_path = './models/' + neural_network + '.pyt'
 
 # intervals_path = '/home/eran/Desktop/epsilon_intervals'
 intervals_path = 'epsilon_intervals'
-intervals_results_path = '../../nn_best_intervals_test/intervals_results'
+intervals_results_path = 'intervals_results'
 
 num_of_tests_per_img = 4
 increment_factor = 40
