@@ -125,8 +125,10 @@ if __name__ == "__main__":
         # ================================================================
         # find maximum environment
         # ================================================================
-    
-        interval_solver.find_max_intervals(results_path, ID, mnist_features, mnist_labels)
+
+        #interval_solver.find_max_intervals(results_path, ID, mnist_features, mnist_labels)
+        interval_solver.show_intervals(ID,results_path, mnist_features, mnist_labels)
+        interval_solver.show_hist_final(ID,results_path)
     """
     processes = [mp.Process(target=parallel_process, args=( model,
     results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
