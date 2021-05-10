@@ -549,8 +549,7 @@ class find_best_env:
         vline_h = np.argmax(bin_neg)
         vline_l = vline_h + 1
         vline_mean = (vline_h + vline_l) / 2
-        mean_adversarial_examples_results = np.load(
-            '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+        mean_adversarial_examples_results = np.load( results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         mean_adversarial_examples_results = mean_adversarial_examples_results.reshape(-1, self.image_size[0] *
                                                                                       self.image_size[1])
@@ -709,8 +708,7 @@ class find_best_env:
             if v_minus4[i] + orig[i] < 0:
                 v_minus4[i] = -orig[i]
 
-        adversarial_examples_set = np.load(
-            '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+        adversarial_examples_set = np.load( results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         adversarial_examples_set = adversarial_examples_set.reshape(-1, 784)
         adversarial_examples_set = np.squeeze(adversarial_examples_set, axis=0)
