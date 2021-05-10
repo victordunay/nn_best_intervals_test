@@ -922,8 +922,8 @@ class find_best_env:
             return (high + low) / 2
 
     def binary_search_l0(self, low, high, ID, idx: int):
-        #print("low= ", low)
-        #print("high= ", high)
+        print("low= ", low)
+        print("high= ", high)
         # Check base case
         if high >= low + 0.04:
 
@@ -937,9 +937,9 @@ class find_best_env:
 
             np.save(self.intervals_path + '_pos.npy', v_plus)
             np.save(self.intervals_path + '_neg.npy', v_minus)
-            #print("mid=", mid)
+            print("mid=", mid)
             is_verified = self.run_eran(False, mid)
-            #print("is_verified=", is_verified)
+            print("is_verified=", is_verified)
             if is_verified:
                 return self.binary_search_l0(mid, high, ID, idx)
 
@@ -1042,12 +1042,11 @@ class find_best_env:
     def test_single_pix_l0(self, results_path, ID: int, mnist_features, mnist_labels):
 
         upper_bound = 1
-        lower_bound = 0.7
+        lower_bound = 0
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
 
-        mean_adversarial_examples_results = np.load(
-            '../../nn_best_intervals_test/' + results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+        mean_adversarial_examples_results = np.load( results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         mean_adversarial_examples_results = mean_adversarial_examples_results.reshape(-1, self.image_size[0] *
                                                                                       self.image_size[1])
