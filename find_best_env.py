@@ -953,7 +953,7 @@ class find_best_env:
 
     def calculate_epsilon_inf(self, ID: int, mnist_features, mnist_labels):
         print("Analyzing sample number " + str(ID))
-        upper_bound = 0.1
+        upper_bound = 1
         lower_bound = 0
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
