@@ -71,6 +71,8 @@ def parallel_process(model,results_path_: str, ID_: int, mnist_features_, mnist_
 
 if __name__ == "__main__":
 
+    for i in range(1,8):
+        print("res"+str(i)+"=",np.load('epsilon_intervalsmean_total_results'+str(i)+'.npy'))
     # ================================================================
     # Init multiprocessing
     # ================================================================
