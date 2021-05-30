@@ -12,6 +12,9 @@ import os
 import shutil
 import pandas as pd
 import decimal
+import torch
+from torch.autograd.gradcheck import zero_gradients
+import time
 
 
 class find_best_env:
@@ -549,7 +552,7 @@ class find_best_env:
         vline_h = np.argmax(bin_neg)
         vline_l = vline_h + 1
         vline_mean = (vline_h + vline_l) / 2
-        mean_adversarial_examples_results = np.load( results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+        mean_adversarial_examples_results = np.load(results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         mean_adversarial_examples_results = mean_adversarial_examples_results.reshape(-1, self.image_size[0] *
                                                                                       self.image_size[1])
@@ -708,7 +711,7 @@ class find_best_env:
             if v_minus4[i] + orig[i] < 0:
                 v_minus4[i] = -orig[i]
 
-        adversarial_examples_set = np.load( results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+        adversarial_examples_set = np.load(results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         adversarial_examples_set = adversarial_examples_set.reshape(-1, 784)
         adversarial_examples_set = np.squeeze(adversarial_examples_set, axis=0)
@@ -1046,7 +1049,7 @@ class find_best_env:
         self.load_image(ID, mnist_features, mnist_labels)
         s = self.read_sample(ID)
 
-        mean_adversarial_examples_results = np.load( results_path + '/total_mean_ID_' + str(ID) + '_.npy')
+        mean_adversarial_examples_results = np.load(results_path + '/total_mean_ID_' + str(ID) + '_.npy')
 
         mean_adversarial_examples_results = mean_adversarial_examples_results.reshape(-1, self.image_size[0] *
                                                                                       self.image_size[1])
@@ -1184,22 +1187,127 @@ class find_best_env:
             epsilon_array = []
             idx_array = []
             for pix in range(num_of_tested_pixels):
-                #print("number of tested pixels so far are =",pix)
+                # print("number of tested pixels so far are =",pix)
                 upper_bound = 1
                 lower_bound = 0.0
                 tested_idx = random.choice(pixels_array)
-                #print(">>>>>>>>>>>>>>>>>>>>>>>>>>tested_idx=", tested_idx)
+                # print(">>>>>>>>>>>>>>>>>>>>>>>>>>tested_idx=", tested_idx)
                 pixels_array.remove(tested_idx)
                 epsilon = self.binary_search_l0(lower_bound, upper_bound, ID, tested_idx)
                 epsilon_array.append(epsilon)
                 idx_array.append(tested_idx)
-            np.save(self.intervals_path + 'modified_pixels_for_multiple_l0_test_for_ID_'+str(ID) +'iter_' +str(j)+ '.npy', np.asarray(idx_array))
-            np.save(self.intervals_path + 'epsilons_for_multiple_l0_test_for_ID_' + str(ID) + 'iter_' +str(j)+ '.npy', np.asarray(epsilon_array))
+            np.save(self.intervals_path + 'modified_pixels_for_multiple_l0_test_for_ID_' + str(ID) + 'iter_' + str(
+                j) + '.npy', np.asarray(idx_array))
+            np.save(self.intervals_path + 'epsilons_for_multiple_l0_test_for_ID_' + str(ID) + 'iter_' + str(j) + '.npy',
+                    np.asarray(epsilon_array))
             print("epsilon_mean=", sum(epsilon_array) / len(epsilon_array))
             result.append(sum(epsilon_array) / len(epsilon_array))
 
         print("DONE!!!!!!!!!!!!!!!")
-        np.save(self.intervals_path + 'mean_total_result' + str(ID)+'.npy',np.asarray(result))
+        np.save(self.intervals_path + 'mean_total_result' + str(ID) + '.npy', np.asarray(result))
 
+    def validate_two(self, net, ID: int, mnist_features, mnist_labels):
 
+        self.load_image(ID, mnist_features, mnist_labels)
+        s = self.read_sample(ID)
+        verified_results = []
+        M = []
+        test_time = []
+        manual_test = mnist_features.reshape(-1, self.image_size[0], self.image_size[1])
+        chosen_pic = manual_test[ID, :, :] * self.pixel_res
+        manual_should_be = mnist_labels[ID]
+        result = []
+        num_of_tested_pixels = 15  ##initial
 
+        for j in range(784):
+
+            search_space = torch.ones(784).byte()
+            valid_tested_idx = []
+            pixels_array = [i for i in range(784)]
+            while pixels_array:
+                tested_idx = [j]
+                lowest_sorted = self.generate_tested_pixels(net, manual_should_be, chosen_pic, num_of_tested_pixels,
+                                                            search_space)
+                print("lowest_stored=", lowest_sorted)
+                tested_idx.append(lowest_sorted)
+                print("tested_idx=", tested_idx)
+                v_plus = list(np.load(self.intervals_path + '_pos.npy'))
+                v_minus = list(np.load(self.intervals_path + '_neg.npy'))
+
+                v_plus[tested_idx] = 1
+                v_minus[tested_idx] = -1
+
+                np.save(self.intervals_path + '_pos.npy', v_plus)
+                np.save(self.intervals_path + '_neg.npy', v_minus)
+                start = time.time()
+                print("start=", start)
+
+                is_verified = self.run_eran(False, 0.1)
+
+                end = time.time()
+                print("end=", end)
+                print("is_verified=", is_verified)
+
+                test_time.append(end - start)
+                if is_verified:
+                    valid_tested_idx.append(tested_idx)
+                    pixels_array.remove(valid_tested_idx)
+                    search_space[valid_tested_idx] = 0
+                    verified_results.append(1)
+                    M.append(num_of_tested_pixels)
+                    num_of_tested_pixels += 1
+
+                else:
+                    print("found adv attack with M=", len(tested_idx))
+                    verified_results.append(0)
+                    M.append(num_of_tested_pixels)
+                    num_of_tested_pixels = round(0.9 * num_of_tested_pixels)
+
+        np.save(self.intervals_path + 'verified_results.npy', np.asarray(verified_results))
+        np.save(self.intervals_path + 'test_time.npy', np.asarray(test_time))
+        np.save(self.intervals_path + 'M.npy', np.asarray(M))
+
+    def generate_tested_pixels(self, net, manual_should_be, chosen_pic, num_of_tested_pixels, search_space):
+
+        targeted_labels = self.targeted_labels
+        if int(manual_should_be) in targeted_labels:
+            targeted_labels.remove(int(manual_should_be))
+        target_class = random.choice(targeted_labels)
+        return self.jsma_for_tested_pixels(net, chosen_pic.reshape(-1, self.image_size[0] * self.image_size[1]),
+                                           target_class, search_space, num_of_tested_pixels)
+
+    def jsma_for_tested_pixels(self, model, input_tensor, target_class, search_space, num_of_tested_pixels):
+
+        input_features = torch.autograd.Variable(input_tensor.clone(), requires_grad=True)
+        output = model(input_features.reshape(1, 1, 28, 28))
+        _, source_class = torch.max(output.data, 1)
+        jacobian = jsma_main.compute_jacobian(input_features, output)
+        sorted_array = self.saliency_map_for_tested_pixels(jacobian, search_space, target_class, increasing=True)
+        return sorted_array[0:num_of_tested_pixels]
+
+    @staticmethod
+    def saliency_map_for_tested_pixels(jacobian, search_space, target_index, increasing):
+
+        all_sum = torch.sum(jacobian, 1).squeeze()
+
+        alpha = jacobian[0, target_index, :].squeeze()
+        beta = all_sum - alpha
+
+        if increasing:
+            mask1 = torch.ge(alpha, 0.0)
+            mask2 = torch.le(beta, 0.0)
+        else:
+            mask1 = torch.le(alpha, 0.0)
+            mask2 = torch.ge(beta, 0.0)
+
+        mask = torch.mul(torch.mul(mask1, mask2), search_space)
+
+        if increasing:
+            saliency_map = torch.mul(torch.mul(alpha, torch.abs(beta)), mask.float())
+        else:
+            saliency_map = torch.mul(torch.mul(torch.abs(alpha), beta), mask.float())
+
+        print("saliency_map=", saliency_map)
+        print("list(torch.sort(saliency_map))=", list(torch.sort(saliency_map)))
+
+        return list(torch.sort(saliency_map))
