@@ -1227,10 +1227,11 @@ class find_best_env:
             pixels_array = [i for i in range(784)]
             while pixels_array:
                 tested_idx = [j]
-                lowest_sorted = self.generate_tested_pixels(net, manual_should_be, chosen_pic, num_of_tested_pixels,
+                lowest = self.generate_tested_pixels(net, manual_should_be, chosen_pic, num_of_tested_pixels,
                                                             search_space)
+                lowest_sorted=[i for i in lowest if i not in valid_tested_idx]
                 print("lowest_stored=", lowest_sorted)
-                tested_idx.extend(lowest_sorted)
+                tested_idx.extend(lowest_sorted[0:num_of_tested_pixels])
                 print("tested_idx=", tested_idx)
 
                 v_plus = []
@@ -1292,7 +1293,7 @@ class find_best_env:
         _, source_class = torch.max(output.data, 1)
         jacobian = jsma_main.compute_jacobian(input_features, output)
         sorted_array = self.saliency_map_for_tested_pixels(jacobian, search_space, target_class, increasing=True)
-        return sorted_array[0:num_of_tested_pixels]
+        return sorted_array
 
     @staticmethod
     def saliency_map_for_tested_pixels(jacobian, search_space, target_index, increasing):
@@ -1316,16 +1317,9 @@ class find_best_env:
         else:
             saliency_map = torch.mul(torch.mul(torch.abs(alpha), beta), mask.float())
 
-        tmp_sailency_map=[]
-        for i in range(784):
-            if(search_space[i]!=0):
-                tmp_sailency_map.append(saliency_map[i])
 
-        tmp_sailency_map=torch.as_tensor(tmp_sailency_map)
-        
-        print("tmp_Sailen.shape=",tmp_sailency_map.shape)
-        val,indices=torch.sort(tmp_sailency_map)
+        _,indices=torch.sort(saliency_map)
         indices=indices.tolist()
 
 
-        return list(indices)
+        return indices
