@@ -1214,13 +1214,15 @@ class find_best_env:
         verified_results = []
         M = []
         test_time = []
+        pixel_time=[]
         manual_test = mnist_features.reshape(-1, self.image_size[0], self.image_size[1])
         chosen_pic = manual_test[ID, :, :] * self.pixel_res
         manual_should_be = mnist_labels[ID]
         result = []
-        num_of_tested_pixels = 15  ##initial
 
         for j in range(784):
+            num_of_tested_pixels = 30  ##initial
+            pixel_start = time.time()
 
             search_space = torch.ones(784).byte()
             valid_tested_idx = []
@@ -1249,22 +1251,19 @@ class find_best_env:
 
                 end = time.time()
                 print("is_verified=", is_verified)
+                print("num_of_tested_pixels=", num_of_tested_pixels)
 
                 test_time.append(end - start)
-                print("test_time=", test_time)
 
                 if is_verified:
                     valid_tested_idx.extend(tested_idx)
-                    print("valid_tested_idx=",valid_tested_idx)
 
                     pixels_array=list(set(pixels_array)-set(valid_tested_idx))
-                    print("pixels_array=",pixels_array)
                     search_space[valid_tested_idx] = 0
 
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
-                    num_of_tested_pixels += 1
-                    print("num_of_tested_pixels=",num_of_tested_pixels)
+                    num_of_tested_pixels += 2
 
 
                 else:
@@ -1273,6 +1272,10 @@ class find_best_env:
                     M.append(num_of_tested_pixels)
                     num_of_tested_pixels = round(0.9 * num_of_tested_pixels)
 
+            pixel_end= time.time()
+            pixel_time.append(pixel_end-pixel_start)
+            
+        np.save(self.intervals_path + 'pixel_time.npy', np.asarray(pixel_time))
         np.save(self.intervals_path + 'verified_results.npy', np.asarray(verified_results))
         np.save(self.intervals_path + 'test_time.npy', np.asarray(test_time))
         np.save(self.intervals_path + 'M.npy', np.asarray(M))
