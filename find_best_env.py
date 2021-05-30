@@ -1256,13 +1256,16 @@ class find_best_env:
                 if is_verified:
                     valid_tested_idx.extend(tested_idx)
                     print("valid_tested_idx=",valid_tested_idx)
-                    print("pixels_array=",pixels_array)
 
                     pixels_array=list(set(pixels_array)-set(valid_tested_idx))
                     search_space[valid_tested_idx] = 0
+                    print("search_space=",search_space)
+
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
                     num_of_tested_pixels += 1
+                    print("num_of_tested_pixels=",num_of_tested_pixels)
+
 
                 else:
                     print("found adv attack with M=", len(tested_idx))
