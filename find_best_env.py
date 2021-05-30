@@ -1241,22 +1241,24 @@ class find_best_env:
                 for idx in tested_idx:
                     v_plus[idx] = 1
                     v_minus[idx] = -1
-                print("v_minus=", v_minus)
-
                 np.save(self.intervals_path + '_pos.npy', v_plus)
                 np.save(self.intervals_path + '_neg.npy', v_minus)
-                start = time.perf_counter()
-                print("start=", start)
+                start = time.clock()
 
                 is_verified = self.run_eran(False, 0.1)
 
-                end = time.perf_counter()
+                end = time.clock()
                 print("end=", end)
                 print("is_verified=", is_verified)
 
                 test_time.append(end - start)
+                print("test_time=", test_time)
+
                 if is_verified:
                     valid_tested_idx.extend(tested_idx)
+                    print("valid_tested_idx=",valid_tested_idx)
+                    print("pixels_array=",pixels_array)
+
                     pixels_array.remove(valid_tested_idx)
                     search_space[valid_tested_idx] = 0
                     verified_results.append(1)
