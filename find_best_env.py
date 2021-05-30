@@ -1239,8 +1239,8 @@ class find_best_env:
                     v_plus.append(0)
                     v_minus.append(0)
                 for idx in tested_idx:
-                    v_plus[tested_idx] = 1
-                    v_minus[tested_idx] = -1
+                    v_plus[idx] = 1
+                    v_minus[idx] = -1
                 print("v_minus=", v_minus)
 
                 np.save(self.intervals_path + '_pos.npy', v_plus)
@@ -1316,6 +1316,6 @@ class find_best_env:
 
         val,indices=torch.sort(saliency_map)
         indices=indices.tolist()
-     
+
 
         return list(indices)
