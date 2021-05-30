@@ -1309,9 +1309,9 @@ class find_best_env:
             saliency_map = torch.mul(torch.mul(torch.abs(alpha), beta), mask.float())
 
         print("saliency_map=", saliency_map.shape)
-        print("saliency_map1=", saliency_map[:,])
-        print("saliency_map2=", saliency_map[,:])
+        print("saliency_map1=", saliency_map[1])
+        print("saliency_map2=", saliency_map[2])
 
-        print("list(torch.sort(saliency_map))=", list(torch.sort(saliency_map[,:])))
+        print("list(torch.sort(saliency_map))=", list(torch.sort(saliency_map[2])))
 
         return list(torch.sort(saliency_map))
