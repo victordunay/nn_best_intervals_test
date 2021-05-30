@@ -71,8 +71,8 @@ def parallel_process(model,results_path_: str, ID_: int, mnist_features_, mnist_
 
 if __name__ == "__main__":
 
-    for i in range(1,8):
-        print("res"+str(i)+"=",np.load('epsilon_intervalsepsilons_for_multiple_l0_test_for_ID_6iter_'+str(i)+'.npy'))
+    #for i in range(1,8):
+    #    print("res"+str(i)+"=",np.load('epsilon_intervalsepsilons_for_multiple_l0_test_for_ID_6iter_'+str(i)+'.npy'))
     # ================================================================
     # Init multiprocessing
     # ================================================================
@@ -132,8 +132,8 @@ if __name__ == "__main__":
         #interval_solver.show_intervals(ID,results_path, mnist_features, mnist_labels)
         #interval_solver.show_hist_final(ID,results_path)
         #interval_solver.calculate_epsilon_inf(ID, mnist_features, mnist_labels)
-        interval_solver.test_multiple_epsilon_inf(ID, mnist_features, mnist_labels)
-
+        #interval_solver.test_multiple_epsilon_inf(ID, mnist_features, mnist_labels)
+        interval_solver.validate_two(model,ID, mnist_features, mnist_labels)
     """
     processes = [mp.Process(target=parallel_process, args=( model,
     results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
