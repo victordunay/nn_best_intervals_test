@@ -1316,7 +1316,13 @@ class find_best_env:
         else:
             saliency_map = torch.mul(torch.mul(torch.abs(alpha), beta), mask.float())
 
-        tmp_sailency_map=saliency_map[search_space]
+        tmp_sailency_map=[]
+        for i in range(784):
+            if(search_space[i]!=0):
+                tmp_sailency_map.append(saliency_map[i])
+
+        tmp_sailency_map=torch.as_tensor(tmp_sailency_map)
+        
         print("tmp_Sailen.shape=",tmp_sailency_map.shape)
         val,indices=torch.sort(tmp_sailency_map)
         indices=indices.tolist()
