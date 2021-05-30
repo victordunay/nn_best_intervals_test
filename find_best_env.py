@@ -1309,9 +1309,10 @@ class find_best_env:
             saliency_map = torch.mul(torch.mul(torch.abs(alpha), beta), mask.float())
 
 
-        _,indices=torch.sort(saliency_map)
+        val,indices=torch.sort(saliency_map)
         indices=indices.tolist()
-        print("list(torch.sort(saliency_map))=", indices)
+        print("indices=", indices)
+        print("val=",val)
         print("sailancy map 519 506 507",saliency_map[519],saliency_map[506],saliency_map[507])
         print("sailancy map 241 175 179",saliency_map[241],saliency_map[175],saliency_map[179])
 
