@@ -1230,7 +1230,7 @@ class find_best_env:
                 lowest_sorted = self.generate_tested_pixels(net, manual_should_be, chosen_pic, num_of_tested_pixels,
                                                             search_space)
                 print("lowest_stored=", lowest_sorted)
-                tested_idx.append(lowest_sorted)
+                tested_idx.extend(lowest_sorted)
                 print("tested_idx=", tested_idx)
                 v_plus = list(np.load(self.intervals_path + '_pos.npy'))
                 v_minus = list(np.load(self.intervals_path + '_neg.npy'))
@@ -1251,7 +1251,7 @@ class find_best_env:
 
                 test_time.append(end - start)
                 if is_verified:
-                    valid_tested_idx.append(tested_idx)
+                    valid_tested_idx.extend(tested_idx)
                     pixels_array.remove(valid_tested_idx)
                     search_space[valid_tested_idx] = 0
                     verified_results.append(1)
@@ -1312,5 +1312,7 @@ class find_best_env:
         _,indices=torch.sort(saliency_map)
         indices=indices.tolist()
         print("list(torch.sort(saliency_map))=", indices)
+        print("sailancy map 519 506 507",saliency_map[519],saliency_map[506],saliency_map[507])
+        print("sailancy map 241 175 179",saliency_map[241],saliency_map[175],saliency_map[179])
 
         return list(indices)
