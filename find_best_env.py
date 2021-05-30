@@ -1230,7 +1230,6 @@ class find_best_env:
                 lowest = self.generate_tested_pixels(net, manual_should_be, chosen_pic, num_of_tested_pixels,
                                                             search_space)
                 lowest_sorted=[i for i in lowest if i not in valid_tested_idx]
-                print("lowest_stored=", lowest_sorted)
                 tested_idx.extend(lowest_sorted[0:num_of_tested_pixels])
                 print("tested_idx=", tested_idx)
 
@@ -1259,6 +1258,7 @@ class find_best_env:
                     print("valid_tested_idx=",valid_tested_idx)
 
                     pixels_array=list(set(pixels_array)-set(valid_tested_idx))
+                    print("pixels_array=",pixels_array)
                     search_space[valid_tested_idx] = 0
 
                     verified_results.append(1)
