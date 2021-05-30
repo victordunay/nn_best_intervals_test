@@ -1221,9 +1221,9 @@ class find_best_env:
         result = []
 
         for j in range(784):
-            num_of_tested_pixels = 20  ##initial
+            num_of_tested_pixels = 30  ##initial
             pixel_start = time.time()
-
+            iter=0
             search_space = torch.ones(784).byte()
             valid_tested_idx = []
             pixels_array = [i for i in range(784)]
@@ -1256,6 +1256,7 @@ class find_best_env:
                 test_time.append(end - start)
 
                 if is_verified:
+                    
                     valid_tested_idx.extend(tested_idx)
 
                     pixels_array=list(set(pixels_array)-set(valid_tested_idx))
@@ -1263,17 +1264,21 @@ class find_best_env:
 
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
-                    num_of_tested_pixels += 1
-                    print("progress=",(784-len(pixels_array))/784)
+                    if iter<10:
+                        num_of_tested_pixels += 3
+                    else:
+                        num_of_tested_pixels += 1
 
+                    print("progress=",round(100*(784-len(pixels_array))/784),"%")
+                    iter+=1
                 else:
                     verified_results.append(0)
                     M.append(num_of_tested_pixels)
-                    num_of_tested_pixels = round(0.8* num_of_tested_pixels)
+                    num_of_tested_pixels = round(0.85* num_of_tested_pixels)
 
             pixel_end= time.time()
             pixel_time.append(pixel_end-pixel_start)
-            print("<<<<<<<<<<<<<pixel time=",pixel_time[-1])
+            print("<<<<<<<<<<<<<pixel time for idx=",str(j), " is ",pixel_time[-1])
         np.save(self.intervals_path + 'pixel_time.npy', np.asarray(pixel_time))
         np.save(self.intervals_path + 'verified_results.npy', np.asarray(verified_results))
         np.save(self.intervals_path + 'test_time.npy', np.asarray(test_time))
