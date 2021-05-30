@@ -1232,11 +1232,16 @@ class find_best_env:
                 print("lowest_stored=", lowest_sorted)
                 tested_idx.extend(lowest_sorted)
                 print("tested_idx=", tested_idx)
-                v_plus = list(np.load(self.intervals_path + '_pos.npy'))
-                v_minus = list(np.load(self.intervals_path + '_neg.npy'))
 
-                v_plus[tested_idx] = 1
-                v_minus[tested_idx] = -1
+                v_plus = []
+                v_minus = []
+                for idx in range(self.image_size[0] * self.image_size[1]):
+                    v_plus.append(0)
+                    v_minus.append(0)
+                for idx in tested_idx:
+                    v_plus[tested_idx] = 1
+                    v_minus[tested_idx] = -1
+                print("v_minus=", v_minus)
 
                 np.save(self.intervals_path + '_pos.npy', v_plus)
                 np.save(self.intervals_path + '_neg.npy', v_minus)
@@ -1311,9 +1316,6 @@ class find_best_env:
 
         val,indices=torch.sort(saliency_map)
         indices=indices.tolist()
-        print("indices=", indices)
-        print("val=",val)
-        print("sailancy map 519 506 507",saliency_map[519],saliency_map[506],saliency_map[507])
-        print("sailancy map 241 175 179",saliency_map[241],saliency_map[175],saliency_map[179])
+     
 
         return list(indices)
