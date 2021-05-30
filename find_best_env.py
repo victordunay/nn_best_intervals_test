@@ -1263,17 +1263,17 @@ class find_best_env:
 
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
-                    num_of_tested_pixels += 2
+                    num_of_tested_pixels += 1
                     print("progress=",(784-len(pixels_array))/784)
 
                 else:
                     verified_results.append(0)
                     M.append(num_of_tested_pixels)
-                    num_of_tested_pixels = round(0.9 * num_of_tested_pixels)
+                    num_of_tested_pixels = round(0.8* num_of_tested_pixels)
 
             pixel_end= time.time()
             pixel_time.append(pixel_end-pixel_start)
-            print("<<<<<<<<<<<<<pixel time=",pixel_time[end])
+            print("<<<<<<<<<<<<<pixel time=",pixel_time[-1])
         np.save(self.intervals_path + 'pixel_time.npy', np.asarray(pixel_time))
         np.save(self.intervals_path + 'verified_results.npy', np.asarray(verified_results))
         np.save(self.intervals_path + 'test_time.npy', np.asarray(test_time))
