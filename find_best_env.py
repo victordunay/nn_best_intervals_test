@@ -1269,7 +1269,7 @@ class find_best_env:
 
     def generate_tested_pixels(self, net, manual_should_be, chosen_pic, num_of_tested_pixels, search_space):
 
-        targeted_labels = self.targeted_labels
+        targeted_labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         if int(manual_should_be) in targeted_labels:
             targeted_labels.remove(int(manual_should_be))
         target_class = random.choice(targeted_labels)
