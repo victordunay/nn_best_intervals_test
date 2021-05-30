@@ -1221,7 +1221,7 @@ class find_best_env:
         result = []
 
         for j in range(784):
-            num_of_tested_pixels = 30  ##initial
+            num_of_tested_pixels = 20  ##initial
             pixel_start = time.time()
 
             search_space = torch.ones(784).byte()
@@ -1233,7 +1233,7 @@ class find_best_env:
                                                             search_space)
                 lowest_sorted=[i for i in lowest if i not in valid_tested_idx]
                 tested_idx.extend(lowest_sorted[0:num_of_tested_pixels])
-                print("tested_idx=", tested_idx)
+                #print("tested_idx=", tested_idx)
 
                 v_plus = []
                 v_minus = []
@@ -1264,17 +1264,16 @@ class find_best_env:
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
                     num_of_tested_pixels += 2
-
+                    print("progress=",(784-len(pixels_array))/784)
 
                 else:
-                    print("found adv attack with M=", len(tested_idx))
                     verified_results.append(0)
                     M.append(num_of_tested_pixels)
                     num_of_tested_pixels = round(0.9 * num_of_tested_pixels)
 
             pixel_end= time.time()
             pixel_time.append(pixel_end-pixel_start)
-            
+            print("<<<<<<<<<<<<<pixel time=",pixel_time[end])
         np.save(self.intervals_path + 'pixel_time.npy', np.asarray(pixel_time))
         np.save(self.intervals_path + 'verified_results.npy', np.asarray(verified_results))
         np.save(self.intervals_path + 'test_time.npy', np.asarray(test_time))
