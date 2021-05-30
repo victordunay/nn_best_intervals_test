@@ -1245,12 +1245,12 @@ class find_best_env:
 
                 np.save(self.intervals_path + '_pos.npy', v_plus)
                 np.save(self.intervals_path + '_neg.npy', v_minus)
-                start = time.time()
+                start = time.perf_counter()
                 print("start=", start)
 
                 is_verified = self.run_eran(False, 0.1)
 
-                end = time.time()
+                end = time.perf_counter()
                 print("end=", end)
                 print("is_verified=", is_verified)
 
