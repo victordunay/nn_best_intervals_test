@@ -1221,7 +1221,7 @@ class find_best_env:
         result = []
 
         for j in range(784):
-            num_of_tested_pixels = 30  ##initial
+            num_of_tested_pixels = 25  ##initial
             pixel_start = time.time()
             iter=0
             search_space = torch.ones(784).byte()
@@ -1250,13 +1250,13 @@ class find_best_env:
                 is_verified = self.run_eran(False, 0.1)
 
                 end = time.time()
-                print("is_verified=", is_verified)
-                print("num_of_tested_pixels=", num_of_tested_pixels)
+                #print("is_verified=", is_verified)
+                #print("num_of_tested_pixels=", num_of_tested_pixels)
 
                 test_time.append(end - start)
 
                 if is_verified:
-                    
+
                     valid_tested_idx.extend(tested_idx)
 
                     pixels_array=list(set(pixels_array)-set(valid_tested_idx))
@@ -1265,7 +1265,7 @@ class find_best_env:
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
                     if iter<10:
-                        num_of_tested_pixels += 3
+                        num_of_tested_pixels += 2
                     else:
                         num_of_tested_pixels += 1
 
