@@ -1259,7 +1259,6 @@ class find_best_env:
 
                     pixels_array=list(set(pixels_array)-set(valid_tested_idx))
                     search_space[valid_tested_idx] = 0
-                    print("search_space=",search_space)
 
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
@@ -1317,8 +1316,9 @@ class find_best_env:
         else:
             saliency_map = torch.mul(torch.mul(torch.abs(alpha), beta), mask.float())
 
-
-        val,indices=torch.sort(saliency_map[search_space])
+        tmp_sailency_map=saliency_map[search_space]
+        print("tmp_Sailen.shape=",tmp_sailency_map.shape)
+        val,indices=torch.sort(tmp_sailency_map)
         indices=indices.tolist()
 
 
