@@ -1221,6 +1221,7 @@ class find_best_env:
         result = []
 
         for j in range(781,784):
+            print("start pixel ",str(j))
             num_of_tested_pixels = 25  ##initial
             pixel_start = time.time()
             iter=0
