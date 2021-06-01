@@ -1220,7 +1220,7 @@ class find_best_env:
         manual_should_be = mnist_labels[ID]
         result = []
 
-        for j in range(781,784):
+        for j in range(782,784):
             print("start pixel ",str(j))
             num_of_tested_pixels = 25  ##initial
             pixel_start = time.time()
@@ -1284,10 +1284,10 @@ class find_best_env:
         results_path = 'two_pix_validation'
         if not os.path.exists(results_path):
             os.makedirs(results_path)
-        np.save(two_pix_validation + '/pixel_time.npy', np.asarray(pixel_time))
-        np.save(two_pix_validation + '/verified_results.npy', np.asarray(verified_results))
-        np.save(two_pix_validation + '/test_time.npy', np.asarray(test_time))
-        np.save(two_pix_validation + '/M.npy', np.asarray(M))
+        np.save(results_path + '/pixel_time.npy', np.asarray(pixel_time))
+        np.save(results_path + '/verified_results.npy', np.asarray(verified_results))
+        np.save(results_path + '/test_time.npy', np.asarray(test_time))
+        np.save(results_path + '/M.npy', np.asarray(M))
 
     def generate_tested_pixels(self, net, manual_should_be, chosen_pic, num_of_tested_pixels, search_space):
 
