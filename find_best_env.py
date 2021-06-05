@@ -1207,6 +1207,25 @@ class find_best_env:
         print("DONE!!!!!!!!!!!!!!!")
         np.save(self.intervals_path + 'mean_total_result' + str(ID) + '.npy', np.asarray(result))
 
+    def show_results_validate_two(self):
+
+        results_path = 'two_pix_validation'
+        pixel_time = np.load(results_path + '/pixel_time.npy')
+        verified_results = np.load(results_path + '/verified_results.npy')
+        test_time = np.load(results_path + '/test_time.npy')
+        M = np.load(results_path + '/M.npy')
+
+        print("pixel_time.shape=", pixel_time.shape)
+        print("verified_results.shape=", verified_results.shape)
+        print("test_time.shape=", test_time.shape)
+        print("M.shape=", M.shape)
+
+        plt.plot(pixel_time,linesytle='dotted')
+        plt.savefig(results_path + '/pixel_time.png')
+        print("pixel_time.mean=",pixel_time.mean())
+        print("pixel_time.var=",pixel_time.var())
+        print("test_time.mean=",test_time.mean())
+        print("test_time.var=",test_time.var())
     def validate_two(self, net, ID: int, mnist_features, mnist_labels):
 
         self.load_image(ID, mnist_features, mnist_labels)
@@ -1214,27 +1233,27 @@ class find_best_env:
         verified_results = []
         M = []
         test_time = []
-        pixel_time=[]
+        pixel_time = []
         manual_test = mnist_features.reshape(-1, self.image_size[0], self.image_size[1])
         chosen_pic = manual_test[ID, :, :] * self.pixel_res
         manual_should_be = mnist_labels[ID]
         result = []
 
         for j in range(784):
-            print("start pixel ",str(j))
+            print("start pixel ", str(j))
             num_of_tested_pixels = 25  ##initial
             pixel_start = time.time()
-            iter=0
+            iter = 0
             search_space = torch.ones(784).byte()
             valid_tested_idx = []
             pixels_array = [i for i in range(784)]
             while pixels_array:
                 tested_idx = [j]
                 lowest = self.generate_tested_pixels(net, manual_should_be, chosen_pic, num_of_tested_pixels,
-                                                            search_space)
-                lowest_sorted=[i for i in lowest if i not in valid_tested_idx]
+                                                     search_space)
+                lowest_sorted = [i for i in lowest if i not in valid_tested_idx]
                 tested_idx.extend(lowest_sorted[0:num_of_tested_pixels])
-                #print("tested_idx=", tested_idx)
+                # print("tested_idx=", tested_idx)
 
                 v_plus = []
                 v_minus = []
@@ -1251,8 +1270,8 @@ class find_best_env:
                 is_verified = self.run_eran(False, 0.1)
 
                 end = time.time()
-                #print("is_verified=", is_verified)
-                #print("num_of_tested_pixels=", num_of_tested_pixels)
+                # print("is_verified=", is_verified)
+                # print("num_of_tested_pixels=", num_of_tested_pixels)
 
                 test_time.append(end - start)
 
@@ -1260,26 +1279,26 @@ class find_best_env:
 
                     valid_tested_idx.extend(tested_idx)
 
-                    pixels_array=list(set(pixels_array)-set(valid_tested_idx))
+                    pixels_array = list(set(pixels_array) - set(valid_tested_idx))
                     search_space[valid_tested_idx] = 0
 
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
-                    if iter<10:
+                    if iter < 10:
                         num_of_tested_pixels += 2
                     else:
                         num_of_tested_pixels += 1
 
-                    print("progress=",round(100*(784-len(pixels_array))/784),"%")
-                    iter+=1
+                    print("progress=", round(100 * (784 - len(pixels_array)) / 784), "%")
+                    iter += 1
                 else:
                     verified_results.append(0)
                     M.append(num_of_tested_pixels)
-                    num_of_tested_pixels = round(0.85* num_of_tested_pixels)
+                    num_of_tested_pixels = round(0.85 * num_of_tested_pixels)
 
-            pixel_end= time.time()
-            pixel_time.append(pixel_end-pixel_start)
-            print("<<<<<<<<<<<<<pixel time for idx=",str(j), " is ",pixel_time[-1])
+            pixel_end = time.time()
+            pixel_time.append(pixel_end - pixel_start)
+            print("<<<<<<<<<<<<<pixel time for idx=", str(j), " is ", pixel_time[-1])
 
         results_path = 'two_pix_validation'
         if not os.path.exists(results_path):
@@ -1329,9 +1348,7 @@ class find_best_env:
         else:
             saliency_map = torch.mul(torch.mul(torch.abs(alpha), beta), mask.float())
 
-
-        _,indices=torch.sort(saliency_map)
-        indices=indices.tolist()
-
+        _, indices = torch.sort(saliency_map)
+        indices = indices.tolist()
 
         return indices
