@@ -1226,12 +1226,21 @@ class find_best_env:
         print("pixel_time.var=",pixel_time.std())
         print("test_time.mean=",test_time.mean())
         print("test_time.var=",test_time.std())
-        
-        
+
+
         good=M[verified_results==1]
         bad=M[verified_results==0]
         print("good.shape=", good.shape)
         print("bad.shape=", bad.shape)
+        print("good.mean=",good.mean())
+        print("good.var=",good.std())
+        print("bad.mean=", bad.mean())
+        print("bad.var=", bad.std())
+        
+        print("good.amin=", good.amin())
+        print("good.amax=", good.amax())
+        print("bad.amin=", bad.amin())
+        print("bad.amax=", bad.amax())
 
     def validate_two(self, net, ID: int, mnist_features, mnist_labels):
 
