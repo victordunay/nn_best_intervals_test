@@ -1226,6 +1226,13 @@ class find_best_env:
         print("pixel_time.var=",pixel_time.std())
         print("test_time.mean=",test_time.mean())
         print("test_time.var=",test_time.std())
+        
+        
+        good=M[verified_results==1]
+        bad=M[verified_results==0]
+        print("good.shape=", good.shape)
+        print("bad.shape=", bad.shape)
+
     def validate_two(self, net, ID: int, mnist_features, mnist_labels):
 
         self.load_image(ID, mnist_features, mnist_labels)
