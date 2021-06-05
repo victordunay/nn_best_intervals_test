@@ -1223,9 +1223,9 @@ class find_best_env:
         plt.plot(pixel_time)
         plt.savefig(results_path + '/pixel_time.png')
         print("pixel_time.mean=",pixel_time.mean())
-        print("pixel_time.var=",pixel_time.var())
+        print("pixel_time.var=",pixel_time.std())
         print("test_time.mean=",test_time.mean())
-        print("test_time.var=",test_time.var())
+        print("test_time.var=",test_time.std())
     def validate_two(self, net, ID: int, mnist_features, mnist_labels):
 
         self.load_image(ID, mnist_features, mnist_labels)
