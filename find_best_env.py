@@ -1236,11 +1236,11 @@ class find_best_env:
         print("good.var=",good.std())
         print("bad.mean=", bad.mean())
         print("bad.var=", bad.std())
-        
-        print("good.amin=", good.amin())
-        print("good.amax=", good.amax())
-        print("bad.amin=", bad.amin())
-        print("bad.amax=", bad.amax())
+
+        print("good.amin=", np.amin(good))
+        print("good.amax=", np.amax(good))
+        print("bad.amin=", np.amin(bad))
+        print("bad.amax=", np.amax(bad))
 
     def validate_two(self, net, ID: int, mnist_features, mnist_labels):
 
