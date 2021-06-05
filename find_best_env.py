@@ -1220,7 +1220,7 @@ class find_best_env:
         print("test_time.shape=", test_time.shape)
         print("M.shape=", M.shape)
 
-        plt.plot(pixel_time,linesytle='dotted')
+        plt.plot(pixel_time)
         plt.savefig(results_path + '/pixel_time.png')
         print("pixel_time.mean=",pixel_time.mean())
         print("pixel_time.var=",pixel_time.var())
