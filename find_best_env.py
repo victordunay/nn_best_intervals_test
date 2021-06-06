@@ -1222,6 +1222,8 @@ class find_best_env:
 
         plt.plot(pixel_time)
         plt.savefig(results_path + '/pixel_time.png')
+        plt.plot(M)
+        plt.savefig(results_path + '/pixel_time.png')
         print("pixel_time.mean=",pixel_time.mean())
         print("pixel_time.var=",pixel_time.std())
         print("test_time.mean=",test_time.mean())
@@ -1241,6 +1243,25 @@ class find_best_env:
         print("good.amax=", np.amax(good))
         print("bad.amin=", np.amin(bad))
         print("bad.amax=", np.amax(bad))
+
+
+        x valid= []
+        x_invalid = []
+        for i in range(M.shape[0]):
+            if M[i] ==1:
+                x_valid.append(i)
+            else:
+                x_invalid.append(i)
+        plt.figure(figsize=(10, 10))
+        plt.title("pixel test")
+        plt.xlabel('test idx')
+        plt.ylabel('pixel environment')
+        plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.3, markersize=0.6)
+        plt.plot(valid, M[valid], color="green", marker='D', mfc='green', linewidth=0.3, markersize=0.6)
+        plt.legend(["INVALD TEST", "VALID TEST"])
+
+        plt.show()
+        plt.savefig(results_path + '/env_result.png')
 
     def validate_two(self, net, ID: int, mnist_features, mnist_labels):
 
