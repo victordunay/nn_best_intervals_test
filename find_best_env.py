@@ -1247,7 +1247,7 @@ class find_best_env:
         print("bad.amin=", np.amin(bad))
         print("bad.amax=", np.amax(bad))
 
-        
+
         x_valid= []
         x_invalid = []
         for i in range(400):
