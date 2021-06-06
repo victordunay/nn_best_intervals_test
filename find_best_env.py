@@ -1245,7 +1245,7 @@ class find_best_env:
         print("bad.amax=", np.amax(bad))
 
 
-        x valid= []
+        x_valid= []
         x_invalid = []
         for i in range(M.shape[0]):
             if M[i] ==1:
@@ -1257,7 +1257,7 @@ class find_best_env:
         plt.xlabel('test idx')
         plt.ylabel('pixel environment')
         plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.3, markersize=0.6)
-        plt.plot(valid, M[valid], color="green", marker='D', mfc='green', linewidth=0.3, markersize=0.6)
+        plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.3, markersize=0.6)
         plt.legend(["INVALD TEST", "VALID TEST"])
 
         plt.show()
