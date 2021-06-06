@@ -1219,7 +1219,10 @@ class find_best_env:
         print("verified_results.shape=", verified_results.shape)
         print("test_time.shape=", test_time.shape)
         print("M.shape=", M.shape)
-
+        plt.figure(figsize=(10, 10))
+        plt.title("test time per pixel")
+        plt.xlabel('pixel index')
+        plt.ylabel('time[sec]')
         plt.plot(pixel_time)
         plt.savefig(results_path + '/pixel_time.png')
         plt.plot(M)
@@ -1247,7 +1250,7 @@ class find_best_env:
 
         x_valid= []
         x_invalid = []
-        for i in range(verified_results.shape[0]):
+        for i in range(300):
             if verified_results[i] ==1:
                 x_valid.append(i)
             else:
@@ -1256,8 +1259,8 @@ class find_best_env:
         plt.title("pixel test")
         plt.xlabel('test idx')
         plt.ylabel('environment size')
-        plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.001, markersize=0.8)
-        plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.001, markersize=0.5)
+        plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.5, markersize=5)
+        plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.5, markersize=5)
         plt.legend(["INVALD RESULT", "VALID RESULT"])
 
         plt.show()
