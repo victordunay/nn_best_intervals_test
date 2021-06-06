@@ -1256,7 +1256,7 @@ class find_best_env:
         plt.title("pixel test")
         plt.xlabel('test idx')
         plt.ylabel('pixel environment')
-        plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.05, markersize=0.05)
+        #plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.05, markersize=0.05)
         plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.5, markersize=0.5)
         plt.legend(["INVALD TEST", "VALID TEST"])
 
