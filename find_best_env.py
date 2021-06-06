@@ -1247,7 +1247,7 @@ class find_best_env:
         print("bad.amin=", np.amin(bad))
         print("bad.amax=", np.amax(bad))
 
-
+        
         x_valid= []
         x_invalid = []
         for i in range(400):
@@ -1255,16 +1255,16 @@ class find_best_env:
                 x_valid.append(i)
             else:
                 x_invalid.append(i)
-        plt.figure(figsize=(10, 10))
-        plt.title("pixel test")
-        plt.xlabel('test idx')
-        plt.ylabel('environment size')
-        plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.05, markersize=5)
-        plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.1, markersize=5)
-        plt.legend(["INVALD RESULT", "VALID RESULT"])
+        #plt.figure(figsize=(10, 10))
+        #plt.title("pixel test")
+        #plt.xlabel('test idx')
+        #plt.ylabel('environment size')
+        #plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.05, markersize=5)
+        #plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.1, markersize=5)
+        #plt.legend(["INVALD RESULT", "VALID RESULT"])
 
-        plt.show()
-        plt.savefig(results_path + '/env_result.png')
+        #plt.show()
+        #plt.savefig(results_path + '/env_result.png')
 
     def validate_two(self, net, ID: int, mnist_features, mnist_labels):
 
