@@ -1247,7 +1247,7 @@ class find_best_env:
 
         x_valid= []
         x_invalid = []
-        for i in range(verified_results.shape[0]):
+        for i in range(100):
             if verified_results[i] ==1:
                 x_valid.append(i)
             else:
