@@ -1256,9 +1256,9 @@ class find_best_env:
         plt.title("pixel test")
         plt.xlabel('test idx')
         plt.ylabel('environment size')
-        plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.01, markersize=0.5)
-        plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.01, markersize=0.3)
-        plt.legend(["VALD RESULT", "INVALID RESULT"])
+        plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.001, markersize=2)
+        plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.001, markersize=0.5)
+        plt.legend(["INVALD RESULT", "VALID RESULT"])
 
         plt.show()
         plt.savefig(results_path + '/env_result.png')
