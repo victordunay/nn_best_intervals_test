@@ -1247,7 +1247,7 @@ class find_best_env:
 
         x_valid= []
         x_invalid = []
-        for i in range(100):
+        for i in range(200):
             if verified_results[i] ==1:
                 x_valid.append(i)
             else:
@@ -1255,10 +1255,10 @@ class find_best_env:
         plt.figure(figsize=(10, 10))
         plt.title("pixel test")
         plt.xlabel('test idx')
-        plt.ylabel('pixel environment')
-        plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.5, markersize=1)
-        plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.5, markersize=1)
-        plt.legend(["VALD TEST", "INVALID TEST"])
+        plt.ylabel('environment size')
+        plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.1, markersize=4)
+        plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.1, markersize=1)
+        plt.legend(["VALD RESULT", "INVALID RESULT"])
 
         plt.show()
         plt.savefig(results_path + '/env_result.png')
