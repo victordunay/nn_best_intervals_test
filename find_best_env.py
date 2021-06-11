@@ -1277,8 +1277,7 @@ class find_best_env:
         manual_should_be = mnist_labels[ID]
         result = []
         memory = [[True]*784]*784
-        for i in range(784):
-            memory[i][i]=False
+  
 
         for j in range(784):
             print("start pixel ", str(j))
@@ -1326,7 +1325,8 @@ class find_best_env:
 
                     pixels_array = list(set(pixels_array) - set(valid_tested_idx))
                     search_space[valid_tested_idx] = 0
-                    memory[j][valid_tested_idx] = False
+                    for k in valid_tested_idx:
+                        memory[j][k] = False
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
                     if iter < 10:
