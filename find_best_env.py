@@ -1289,7 +1289,9 @@ class find_best_env:
             valid_tested_idx = []
             pixels_array = [i for i in range(784)]
             for i in range(784):
-                if not(memory[i][j]):
+                print("memory[i][j]=",memory[i][j])
+                if not memory[i][j]:
+                    print("found false!!!!!!!!!!!!!!1")
                     search_space[i]=0
                     pixels_array = list(set(pixels_array) - set([i]))
             print("memory[i][j]=",memory[:][j])
@@ -1324,15 +1326,18 @@ class find_best_env:
                 # print("num_of_tested_pixels=", num_of_tested_pixels)
 
                 test_time.append(end - start)
-
+                print("eran time=",end-start)
                 if is_verified:
 
                     valid_tested_idx.extend(tested_idx)
 
                     pixels_array = list(set(pixels_array) - set(valid_tested_idx))
                     search_space[valid_tested_idx] = 0
+                    mem_time_start=time.time()
                     for k in valid_tested_idx:
                         memory[k][j] = False
+                    mem_time_end=time.time()
+                    print("mem time=",mem_time_end-mem_time_start)
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
                     if iter < 10:
