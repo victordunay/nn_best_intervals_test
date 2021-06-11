@@ -1293,7 +1293,7 @@ class find_best_env:
             print("len(debug)=",len(debug))
             for i in range(len(debug)):
                 print("debug[i]=",debug[i])
-                if not memory[i][j]:
+                if not debug[i]:
                     print("found false!!!!!!!!!!!!!!1")
                     search_space[i]=0
                     pixels_array = list(set(pixels_array) - set([i]))
