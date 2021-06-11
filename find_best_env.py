@@ -1277,7 +1277,7 @@ class find_best_env:
         manual_should_be = mnist_labels[ID]
         result = []
         memory = [[True]*784]*784
-       
+
 
         for j in range(784):
             print("start pixel ", str(j))
@@ -1288,7 +1288,7 @@ class find_best_env:
             valid_tested_idx = []
             pixels_array = [i for i in range(784)]
             debug=memory[:][j]
-           
+
             for i in range(len(debug)):
                 if not debug[i]:
                     search_space[i]=0
