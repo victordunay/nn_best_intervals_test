@@ -1279,7 +1279,7 @@ class find_best_env:
         chosen_pic = manual_test[ID, :, :] * self.pixel_res
         manual_should_be = mnist_labels[ID]
         result = []
-        memory=[][]
+        memory=[[],[]]
         for i in range(784):
             for j in range(784):
                 if i==j:
