@@ -1278,9 +1278,7 @@ class find_best_env:
         result = []
         memory = [[True]*784]*784
         for i in range(784):
-            for j in range(784):
-                if i == j:
-                    memory[i][j]=False
+            memory[i][i]=False
 
         for j in range(784):
             print("start pixel ", str(j))
@@ -1293,8 +1291,8 @@ class find_best_env:
             print("memory=", memory)
             for i in range(784):
                 if not (memory[i][j]):
-                    pixels_array = list(set(pixels_array) - set([i]))
-                    search_space[i] = 0
+                    #pixels_array = list(set(pixels_array) - set([i]))
+                    #search_space[i] = 0
             print("search_space=", search_space)
             print("pixels_array=", pixels_array)
 
