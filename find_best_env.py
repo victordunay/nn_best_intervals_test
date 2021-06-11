@@ -1284,7 +1284,7 @@ class find_best_env:
             for j in range(784):
                 if i==j:
                     memory[i][j]=False
-                else
+                else:
                     memory[i][j]=True
         for j in range(784):
             print("start pixel ", str(j))
