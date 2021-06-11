@@ -108,15 +108,8 @@ if __name__ == "__main__":
     #  interval_solver instantiation
     # ================================================================
     interval_solver = find_best_env.find_best_env(parameters.search_params)
-    #interval_solver.validate_two(model, 1, mnist_features, mnist_labels)
+    interval_solver.validate_two(model, 1, mnist_features, mnist_labels)
     #interval_solver.show_results_validate_two()
-    processes = [mp.Process(target=interval_solver.validate_two, args=(model,1, mnist_features, mnist_labels)) for ID in
-                 parameters.image_ids]
-    for p in processes:
-        p.start()
-    for p in processes:
-        p.join()
-    """
     for ID in parameters.image_ids:
         print("start process with ID =", ID)
         # ================================================================
@@ -142,7 +135,7 @@ if __name__ == "__main__":
         #interval_solver.calculate_epsilon_inf(ID, mnist_features, mnist_labels)
         #interval_solver.test_multiple_epsilon_inf(ID, mnist_features, mnist_labels)
 
-   
+    """
     processes = [mp.Process(target=parallel_process, args=( model,
     results_path, ID, mnist_features, mnist_labels, adversarial_generator, parameters.image_size)) for ID in
                  parameters.image_ids]
