@@ -110,7 +110,7 @@ if __name__ == "__main__":
     interval_solver = find_best_env.find_best_env(parameters.search_params)
     #interval_solver.validate_two(model, 1, mnist_features, mnist_labels)
     #interval_solver.show_results_validate_two()
-    processes = [mp.Process(target=interval_solver.validate_two, args=(model,1, mnist_features, mnist_labels) for ID in
+    processes = [mp.Process(target=interval_solver.validate_two, args=(model,1, mnist_features, mnist_labels)) for ID in
                  parameters.image_ids]
     for p in processes:
         p.start()
