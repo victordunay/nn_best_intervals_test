@@ -1320,7 +1320,7 @@ class find_best_env:
                 # print("num_of_tested_pixels=", num_of_tested_pixels)
 
                 test_time.append(end - start)
-                print("eran time=",end-start)
+                #print("eran time=",end-start)
                 if is_verified:
 
                     valid_tested_idx.extend(tested_idx)
@@ -1336,7 +1336,7 @@ class find_best_env:
                     else:
                         num_of_tested_pixels += 1
 
-                    print("progress=", round(100 * (784 - len(pixels_array)) / 784), "%")
+                    #print("progress=", round(100 * (784 - len(pixels_array)) / 784), "%")
                     iter += 1
                 else:
                     verified_results.append(0)
