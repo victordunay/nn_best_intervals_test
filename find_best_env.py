@@ -1289,10 +1289,7 @@ class find_best_env:
             valid_tested_idx = []
             pixels_array = [i for i in range(784)]
             print("memory=", memory)
-            for i in range(784):
-                if not (memory[i][j]):
-                    #pixels_array = list(set(pixels_array) - set([i]))
-                    #search_space[i] = 0
+
             print("search_space=", search_space)
             print("pixels_array=", pixels_array)
 
