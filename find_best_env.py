@@ -1220,7 +1220,6 @@ class find_best_env:
         print("test_time.shape=", test_time.shape)
         print("M.shape=", M.shape)
 
-
         plt.figure(figsize=(10, 10))
         plt.title("test time per pixel")
         plt.xlabel('pixel index')
@@ -1228,18 +1227,17 @@ class find_best_env:
         plt.plot(pixel_time)
         plt.savefig(results_path + '/pixel_time.png')
 
-        print("pixel_time.mean=",pixel_time.mean())
-        print("pixel_time.var=",pixel_time.std())
-        print("test_time.mean=",test_time.mean())
-        print("test_time.var=",test_time.std())
+        print("pixel_time.mean=", pixel_time.mean())
+        print("pixel_time.var=", pixel_time.std())
+        print("test_time.mean=", test_time.mean())
+        print("test_time.var=", test_time.std())
 
-
-        good=M[verified_results==1]
-        bad=M[verified_results==0]
+        good = M[verified_results == 1]
+        bad = M[verified_results == 0]
         print("good.shape=", good.shape)
         print("bad.shape=", bad.shape)
-        print("good.mean=",good.mean())
-        print("good.var=",good.std())
+        print("good.mean=", good.mean())
+        print("good.var=", good.std())
         print("bad.mean=", bad.mean())
         print("bad.var=", bad.std())
 
@@ -1248,24 +1246,23 @@ class find_best_env:
         print("bad.amin=", np.amin(bad))
         print("bad.amax=", np.amax(bad))
 
-
-        x_valid= []
+        x_valid = []
         x_invalid = []
         for i in range(400):
-            if verified_results[i] ==1:
+            if verified_results[i] == 1:
                 x_valid.append(i)
             else:
                 x_invalid.append(i)
-        #plt.figure(figsize=(10, 10))
-        #plt.title("pixel test")
-        #plt.xlabel('test idx')
-        #plt.ylabel('environment size')
-        #plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.05, markersize=5)
-        #plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.1, markersize=5)
-        #plt.legend(["INVALD RESULT", "VALID RESULT"])
+        # plt.figure(figsize=(10, 10))
+        # plt.title("pixel test")
+        # plt.xlabel('test idx')
+        # plt.ylabel('environment size')
+        # plt.plot(x_invalid, M[x_invalid], color="red", marker='D', mfc='red', linewidth=0.05, markersize=5)
+        # plt.plot(x_valid, M[x_valid], color="green", marker='D', mfc='green', linewidth=0.1, markersize=5)
+        # plt.legend(["INVALD RESULT", "VALID RESULT"])
 
-        #plt.show()
-        #plt.savefig(results_path + '/env_result.png')
+        # plt.show()
+        # plt.savefig(results_path + '/env_result.png')
 
     def validate_two(self, net, ID: int, mnist_features, mnist_labels):
 
@@ -1279,13 +1276,13 @@ class find_best_env:
         chosen_pic = manual_test[ID, :, :] * self.pixel_res
         manual_should_be = mnist_labels[ID]
         result = []
-        memory=[[],[]]
+        memory = [[], []]
         for i in range(784):
             for j in range(784):
-                if i==j:
-                    memory[i][j]=False
+                if i == j:
+                    memory[i].append(False)
                 else:
-                    memory[i][j]=True
+                    memory[i].append(True)
         for j in range(784):
             print("start pixel ", str(j))
             num_of_tested_pixels = 32  ##initial
@@ -1294,13 +1291,13 @@ class find_best_env:
             search_space = torch.ones(784).byte()
             valid_tested_idx = []
             pixels_array = [i for i in range(784)]
-            print("memory=",memory)
+            print("memory=", memory)
             for i in range(784):
-                if not(memory[i][j]):
+                if not (memory[i][j]):
                     pixels_array = list(set(pixels_array) - set([i]))
                     search_space[i] = 0
-            print("search_space=",search_space)
-            print("pixels_array=",pixels_array)
+            print("search_space=", search_space)
+            print("pixels_array=", pixels_array)
 
             while pixels_array:
                 tested_idx = [j]
@@ -1336,7 +1333,7 @@ class find_best_env:
 
                     pixels_array = list(set(pixels_array) - set(valid_tested_idx))
                     search_space[valid_tested_idx] = 0
-                    memory[j][valid_tested_idx]=False
+                    memory[j][valid_tested_idx] = False
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
                     if iter < 10:
