@@ -1277,11 +1277,12 @@ class find_best_env:
         manual_should_be = mnist_labels[ID]
         result = []
         memory = [[True]*784]*784
-  
+        print("memory[:][0]=", memory[:][0])
+        print("memory[:][1]=", memory[:][1])
 
         for j in range(784):
             print("start pixel ", str(j))
-            num_of_tested_pixels = 32  ##initial
+            num_of_tested_pixels = 25  ##initial
             pixel_start = time.time()
             iter = 0
             search_space = torch.ones(784).byte()
