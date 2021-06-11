@@ -1276,13 +1276,12 @@ class find_best_env:
         chosen_pic = manual_test[ID, :, :] * self.pixel_res
         manual_should_be = mnist_labels[ID]
         result = []
-        memory = [[], []]
+        memory = [[True]*784]*784
         for i in range(784):
             for j in range(784):
                 if i == j:
-                    memory[i].append(False)
-                else:
-                    memory[i].append(True)
+                    memory[i][j]=False
+
         for j in range(784):
             print("start pixel ", str(j))
             num_of_tested_pixels = 32  ##initial
