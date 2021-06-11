@@ -1288,10 +1288,15 @@ class find_best_env:
             search_space = torch.ones(784).byte()
             valid_tested_idx = []
             pixels_array = [i for i in range(784)]
+            for i in range(784):
+                if not(memory[i][j]):
+                    search_space[i]=0
+                    pixels_array = list(set(pixels_array) - set([i]))
             print("memory[i][j]=",memory[:][j])
             print("search_space=", search_space)
             print("pixels_array=", pixels_array)
-
+            print("length pixel array=",len(pixels_array))
+            print("len search space=",len(search_space))
             while pixels_array:
                 tested_idx = [j]
                 lowest = self.generate_tested_pixels(net, manual_should_be, chosen_pic, num_of_tested_pixels,
