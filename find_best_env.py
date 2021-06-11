@@ -1219,15 +1219,15 @@ class find_best_env:
         print("verified_results.shape=", verified_results.shape)
         print("test_time.shape=", test_time.shape)
         print("M.shape=", M.shape)
-        
-        
+
+
         plt.figure(figsize=(10, 10))
         plt.title("test time per pixel")
         plt.xlabel('pixel index')
         plt.ylabel('time[sec]')
         plt.plot(pixel_time)
         plt.savefig(results_path + '/pixel_time.png')
-   
+
         print("pixel_time.mean=",pixel_time.mean())
         print("pixel_time.var=",pixel_time.std())
         print("test_time.mean=",test_time.mean())
@@ -1279,15 +1279,29 @@ class find_best_env:
         chosen_pic = manual_test[ID, :, :] * self.pixel_res
         manual_should_be = mnist_labels[ID]
         result = []
-
+        memory=[][]
+        for i in range(784):
+            for j in range(784):
+                if i==j:
+                    memory[i][j]=False
+                else
+                    memory[i][j]=True
         for j in range(784):
             print("start pixel ", str(j))
-            num_of_tested_pixels = 25  ##initial
+            num_of_tested_pixels = 32  ##initial
             pixel_start = time.time()
             iter = 0
             search_space = torch.ones(784).byte()
             valid_tested_idx = []
             pixels_array = [i for i in range(784)]
+            print("memory=",memory)
+            for i in range(784):
+                if not(memory[i][j]):
+                    pixels_array = list(set(pixels_array) - set([i]))
+                    search_space[i] = 0
+            print("search_space=",search_space)
+            print("pixels_array=",pixels_array)
+
             while pixels_array:
                 tested_idx = [j]
                 lowest = self.generate_tested_pixels(net, manual_should_be, chosen_pic, num_of_tested_pixels,
@@ -1322,7 +1336,7 @@ class find_best_env:
 
                     pixels_array = list(set(pixels_array) - set(valid_tested_idx))
                     search_space[valid_tested_idx] = 0
-
+                    memory[j][valid_tested_idx]=False
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
                     if iter < 10:
