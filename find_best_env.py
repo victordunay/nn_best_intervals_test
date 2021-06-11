@@ -1327,7 +1327,7 @@ class find_best_env:
                     pixels_array = list(set(pixels_array) - set(valid_tested_idx))
                     search_space[valid_tested_idx] = 0
                     for k in valid_tested_idx:
-                        memory[j][k] = False
+                        memory[k][j] = False
                     verified_results.append(1)
                     M.append(num_of_tested_pixels)
                     if iter < 10:
