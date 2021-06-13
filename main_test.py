@@ -108,8 +108,8 @@ if __name__ == "__main__":
     #  interval_solver instantiation
     # ================================================================
     interval_solver = find_best_env.find_best_env(parameters.search_params)
-    interval_solver.validate_two(model, 1, mnist_features, mnist_labels)
-    #interval_solver.show_results_validate_two()
+    #interval_solver.validate_two(model, 1, mnist_features, mnist_labels)
+    interval_solver.show_results_validate_two()
     for ID in parameters.image_ids:
         print("start process with ID =", ID)
         # ================================================================
